@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        folder: [ichub-backend, tractusx_sdk/dataspace, tractusx_sdk/industry]
+        folder: [ichub-backend]
 
     steps:
 
