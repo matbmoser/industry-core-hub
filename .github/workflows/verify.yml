@@ -50,7 +50,7 @@ jobs:
             - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
             - name: Verify the MD footer
               run: |-
-                cmd="find . -mindepth 2 -type f -name '*.md' ! -path '*/openapi/*' -print0 | xargs -0 grep -riL 'SPDX-License-Identifier: CC-BY-4.0'"
+                cmd="grep -riL \"SPDX-License-Identifier: CC-BY-4.0\" --include=\*.md . | grep -v '^./[^/]*$'"
                 violations=$(eval $cmd | wc -l)
                 if [[ $violations -ne 0 ]] ; then
                     echo "$violations files without license headers were found:";
