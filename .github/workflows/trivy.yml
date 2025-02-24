@@ -30,8 +30,6 @@ env:
   IMAGE_NAMESPACE: 'tractusx'
   ICHUB_BACKEND_IMAGE_NAME: "ichub-backend"
   ICHUB_FRONTEND_IMAGE_NAME: "ichub-frontend"
-  DATASPACE_SDK_IMAGE_NAME: "dataspace-sdk"
-  INDUSTRY_SDK_IMAGE_NAME: "industry-sdk"
 
 jobs:
   analyze-ichub-backend:
