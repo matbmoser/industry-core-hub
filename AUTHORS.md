@@ -13,4 +13,5 @@ The following people (in alphabetical order) have [contributed to this repositor
 | Samuel Roy | Backend Engineer | Consultant | Capgemini | [@samuelroywork](https://github.com/samuelroywork) |
 | Alejandro Granizo Castro | Junior Full-Stack Engineer | Junior Backend Engineer | XITASO | [@alejandrogranizo](https://github.com/alejandrogranizo) |
 | Koichi Hokonohara | Full-Stack Engineer | Senior Researcher | Fujitsu Ltd | [@hokonohara](https://github.com/hokonohara) |
-|
+| Sonam Aggarwal | Frontend Engineer | Senior Consultant | Capgemini | [@sonama](https://github.com/sonama) |
+| Iñaki Paz | Architect | Innovation Project Manager | LKS Next - Spain | [@inakipaz](https://github.com/inakipaz) |
