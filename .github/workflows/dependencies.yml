@@ -76,10 +76,6 @@ jobs:
             
             if [[ "${{ matrix.folder }}" == "ichub-backend" ]]; then
                 DEP_FILE="DEPENDENCIES_IC-BACKEND"
-            elif [[ "${{ matrix.folder }}" == "tractusx_sdk/dataspace" ]]; then
-                DEP_FILE="DEPENDENCIES_TX_DATASPACE_SDK"
-            else
-                DEP_FILE="DEPENDENCIES_TX_INDUSTRY_SDK"
             fi
 
             echo "DEP_FILE=$DEP_FILE" >> $GITHUB_ENV
