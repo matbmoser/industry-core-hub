@@ -1,0 +1,49 @@
+portal:
+  enabled: true
+  # -- uncomment the following for persistance
+  # postgresql:
+  #   primary:
+  #     persistence:
+  #       enabled: true
+
+centralidp:
+  enabled: true
+  # -- uncomment the following for persistance
+  # keycloak:
+  #   postgresql:
+  #     primary:
+  #       persistence:
+  #         enabled: true
+
+sharedidp:
+  enabled: true
+  # -- uncomment the following for persistance
+  # keycloak:
+  #   postgresql:
+  #     primary:
+  #       persistence:
+  #         enabled: true
+
+tx-data-provider:
+  enabled: true
+  seedTestdata: true
+  # -- uncomment the following for persistance
+  # postgresql:
+  #   primary:
+  #     persistence:
+  #       enabled: true
+  digital-twin-registry:
+    registry:
+      host: dataprovider-dtr.tx.test
+      ingress:
+        enabled: true
+        urlPrefix: /
+
+ssi-dim-wallet-stub:
+  enabled: true
+
+pgadmin4:
+  enabled: true
+  # -- uncomment the following for persistance
+  # persistentVolume:
+  #   enabled: true
