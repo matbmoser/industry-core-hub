@@ -18,17 +18,13 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 ###############################################################
-apiVersion: v2
-name: industry-core-hub
-type: application
-appVersion: "0.0.1"
-version: 0.1.0
-description: A Helm chart for Eclipse Tractus-X - Industry Core Hub
-home: https://github.com/eclipse-tractusx/industry-core-hub
-sources:
-  - https://github.com/eclipse-tractusx/industry-core-hub
-dependencies:
-  - condition: postgresql.enabled
-    name: postgresql
-    repository: https://charts.bitnami.com/bitnami
-    version: 12.x.x
+---
+## For being used in the Integration ArgoCD test environment from the Catena-X Association
+
+postgresql:
+  auth:
+    ## Root password override
+    password: <path:industry-core-hub/data/db#rootPass>
+    ## Industry Core User Password
+    ichubPassword: <path:industry-core-hub/data/db#ichubPass>
+    
