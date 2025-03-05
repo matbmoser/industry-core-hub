@@ -20,15 +20,16 @@
  * SPDX-License-Identifier: Apache-2.0
 ********************************************************************************/
 
-import ProductsList from '../components/ProductsList'
+export enum PRODUCT_STATUS {
+    REGISTERED = "registered",
+    DRAFT = "draft",
+    PENDING = " Share with partner",
+  }
 
-const ProductsListPage = () => {
+export enum PRODUCT_OPTIONS {
+    COPY = "Copy unique ID",
+    DOWNLOAD = "Download",
+    SHARE = "Share with partner",
+  }
 
-  return (
-    <>      
-      <ProductsList />
-    </>
-  )
-}
 
-export default ProductsListPage

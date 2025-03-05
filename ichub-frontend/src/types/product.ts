@@ -20,11 +20,17 @@
  * SPDX-License-Identifier: Apache-2.0
 ********************************************************************************/
 
-import './App.css'
-import AppRoutes from "./routes";
-
-function App() {
-  return <AppRoutes />;
+export interface PartInstance {
+    uuid: string;
+    PartInstanceID: string;
+    Name: string;
+    Status: string;
+    SingleLevelBom: string;
+    Manufacturer: string;
+    Material: string;
+    WeightKg: number;
+    Category: string;
+    Description: string;
+    Image: string;
+    Provider:string
 }
-
-export default App

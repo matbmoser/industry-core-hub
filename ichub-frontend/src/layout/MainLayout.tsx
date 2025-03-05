@@ -41,4 +41,4 @@ function MainLayout() {
   );
 };
 
-export default MainLayout
+export default MainLayout;
