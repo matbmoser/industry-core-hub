@@ -24,14 +24,14 @@ For a deeper understanding, you can reference the full guides: https://github.co
 ### Prerequisites
 
 1. A system with at least:
-- 4 CPU cores
-- 16GB RAM
-- 20GB storage
+  - 4 CPU cores
+  - 16GB RAM
+  - 20GB storage
 
 2. Required tools:
-- kubectl (Installation [kubernetes.io](https://kubernetes.io/docs/tasks/tools/#kubectl))
-- Helm v3.8+ (Installation [helm.sh](https://helm.sh/docs/intro/install/))
-- Minikube (Installation [minikube.sigs.k8s.io](https://minikube.sigs.k8s.io/docs/start/)) *only if you are going to use minikube*
+  - kubectl (Installation [kubernetes.io](https://kubernetes.io/docs/tasks/tools/#kubectl))
+  - Helm v3.8+ (Installation [helm.sh](https://helm.sh/docs/intro/install/))
+  - Minikube (Installation [minikube.sigs.k8s.io](https://minikube.sigs.k8s.io/docs/start/)) *only if you are going to use minikube*
 
 ### 1. Set Up Minikube (for local development)
 
@@ -40,11 +40,15 @@ For a deeper understanding, you can reference the full guides: https://github.co
 >
 > If you follow the guide above ignore all minikube related commands
 
+#### Linux Set Up
+
 Start Minikube with sufficient resources:
 
 ```bash
 minikube start --cpus=4 --memory=8Gb
 ```
+
+#### Windows Set Up
 
 For windows the easy way is to enable Kubernetes in Docker Desktop:
 
@@ -56,6 +60,12 @@ For windows the easy way is to enable Kubernetes in Docker Desktop:
 helm upgrade --install ingress-nginx ingress-nginx --repo https://kubernetes.github.io/ingress-nginx --namespace ingress-nginx --create-namespace
 ```
 Use 127.0.0.1 as the Cluster IP and manually configure ingress.
+
+>[!important]
+> If you follow the windows guide, ignore all minikube commands
+
+>[!warning]
+> The Windows setup isn't extensively tested, and you may encounter issues. We would appreciate any contributions from those who successfully deploy it on Windows.
 
 #### Verifying the Cluster
 After starting Minikube or Docker Desktop Kubernetes, verify the cluster setup:
@@ -107,11 +117,11 @@ Add these entries to your `/etc/hosts` file (replace **192.168.49.2** with your 
 
 ### 1. Custom Values File
 
-The Helm chart configuration for Tractus-X Umbrella is complex and contains hundreds of values across multiple files. The [./minimal-values.yaml] file we're using only overrides specific values from the main `values.yaml` file in the Umbrella chart repository.
+The Helm chart configuration for Tractus-X Umbrella is complex and contains hundreds of values across multiple files. The [minimal-values.yaml](./minimal-values.yaml) file we're using only overrides specific values from the main `values.yaml` file in the Umbrella chart repository.
 
 > **Important**: Only developers familiar with Helm charts and the Tractus-X architecture should modify the values beyond what's provided in this guide. Incorrect configurations can lead to non-functional deployments or security issues.
 
-The base values can be found in the [umbrella chart's values.yaml file](https://github.com/eclipse-tractusx/tractus-x-umbrella/blob/umbrella-2.6.0/charts/umbrella/values.yaml). Our [./minimal-values.yaml] follows a similar structure as the `values-adopter-portal.yaml` file but focuses on only the essential services.
+The base values can be found in the [umbrella chart's values.yaml file](https://github.com/eclipse-tractusx/tractus-x-umbrella/blob/umbrella-2.6.0/charts/umbrella/values.yaml). Our [minimal-values.yaml](./minimal-values.yaml) follows a similar structure as the `values-adopter-portal.yaml` file but focuses on only the essential services.
 
 ### 2. Install the Chart
 
@@ -293,7 +303,7 @@ PGAdmin4 is a web-based administration tool for PostgreSQL databases:
 
 We provide several Postman collections pre-configured with umbrella values in the `postman` folder.
 
-- Digital Twin Registry: [./postman/ic-hub-aas-registry-v3.postman_collection.json]
+- Digital Twin Registry: [ic-hub-aas-registry-v3.postman_collection.json](./postman/ic-hub-aas-registry-v3.postman_collection.json)
 
 ## Troubleshooting
 
