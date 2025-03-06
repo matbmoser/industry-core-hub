@@ -363,7 +363,7 @@ PGAdmin4 is a web-based administration tool for PostgreSQL databases:
      - Port: 5432
      - Maintenance database: postgres
      - Username: postgres
-     - Password: Use the password defined in [Database Connection Details](./umbrella-deployment-guide.md#### Database Connection Details) (e.g., "dbpasswordportal")
+     - Password: Use the password defined in [Database Connection Details](./umbrella-deployment-guide.md#database-connection-details) (e.g., "dbpasswordportal")
 
 ## Postman Collections
 
