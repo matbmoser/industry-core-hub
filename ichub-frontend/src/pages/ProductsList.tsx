@@ -35,16 +35,16 @@ const ProductsList = () => {
     setCarParts(carPartsData);
   }, []);
 
-  const handleButtonClick = (part: PartInstance) => {
-    console.log(part);
-    navigate(`/product/${part.uuid}`);  // Navigate to the details page
+  const handleButtonClick = (itemId: string) => {
+    console.log(itemId);
+    navigate(`/product/${itemId}`);  // Navigate to the details page
   };
 
   
 
   return (
     <CardDecision 
-      onClick = {(item:any) =>handleButtonClick(item)}
+      onClick = {(itemId:any) =>handleButtonClick(itemId)}
       items={carParts.map((part) => ({
           appId: part.uuid,
           provider: part.Provider,
