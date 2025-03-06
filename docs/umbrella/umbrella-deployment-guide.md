@@ -5,17 +5,15 @@ The Tractus-X Umbrella Chart serves as a comprehensive deployment solution for t
 Using Umbrella v2.6.0 released chart
 
 >[!note]
->As Industry Core Hub needs to connect to several Tractus-x components, this guide will ease the local deployment of these services for those who are not familiar with the required configuration of these components or don't know much about Kubernetes and Helm.
+> As Industry Core Hub needs to connect to several Tractus-x components, this guide will ease the local deployment of these services for those who are not familiar with the required configuration of these components or don't know much about Kubernetes and Helm.
 
 
 This guide helps you deploy a minimal version of the Tractus-X Umbrella chart focused on the following services:
-- centralidp
-- sharedidp
-- portal
-- ssi-dim-wallet-stub
-- tx-data-provider (tractus-x connector)
-- digital-twin-registry
-- submodel server
+- [centralidp](https://github.com/eclipse-tractusx/portal-iam/tree/v4.0.1)
+- [sharedidp](https://github.com/eclipse-tractusx/portal-iam/tree/v4.0.1)
+- [portal](https://github.com/eclipse-tractusx/portal/tree/portal-2.3.0)
+- [ssi-dim-wallet-stub](https://github.com/eclipse-tractusx/ssi-dim-wallet-stub/releases/tag/ssi-dim-wallet-stub-0.1.2)
+- [tx-data-provider](https://github.com/eclipse-tractusx/tractus-x-umbrella/tree/main/charts/tx-data-provider) ([tractusx-edc](https://github.com/eclipse-tractusx/tractusx-edc/tree/0.7.1), [digital-twin-registry](https://github.com/eclipse-tractusx/sldt-digital-twin-registry/tree/digital-twin-registry-0.6.3), [vault](https://github.com/hashicorp/vault-helm/tree/v0.20.0), [simple-data-backend](https://github.com/eclipse-tractusx/tractus-x-umbrella/tree/main/charts/simple-data-backend))
 
 For a deeper understanding, you can reference the full guides: https://github.com/eclipse-tractusx/tractus-x-umbrella/tree/main/docs/user
 
@@ -96,7 +94,7 @@ echo "Minikube IP: $MINIKUBE_IP"
 
 ### 4. Configure DNS
 
-Add these entries to your `/etc/hosts` file (replace **192.168.49.2** with your Minikube IP, 192.168.49.2 is the default Minikube IP):
+Add these entries to your `/etc/hosts` file (replace **192.168.49.2** with your Minikube IP, 192.168.49.2 is the default Minikube IP. Replace with **127.0.0.1** if you are using Docker Desktop with ingress-nginx controller):
 
 ```bash
 # Add to /etc/hosts
@@ -112,6 +110,9 @@ Add these entries to your `/etc/hosts` file (replace **192.168.49.2** with your 
 192.168.49.2 ssi-dim-wallet-stub.tx.test
 192.168.49.2 pgadmin4.tx.test
 ```
+
+>[!note]
+> If you wish more advanced configurations, please refer to the documentation available at: https://github.com/eclipse-tractusx/tractus-x-umbrella/tree/main/docs/user/network
 
 ## Deployment
 
@@ -130,7 +131,7 @@ Assuming you are in the root folder of the project, run these commands. If you'r
 ```bash
 kubectl create namespace umbrella
 helm repo add tractusx-dev https://eclipse-tractusx.github.io/charts/dev
-helm repo update
+helm repo update tractusx-dev
 helm install -f docs/umbrella/minimal-values.yaml umbrella tractusx-dev/umbrella --namespace umbrella --version v2.6.0
 ```
 
@@ -297,7 +298,7 @@ PGAdmin4 is a web-based administration tool for PostgreSQL databases:
      - Port: 5432
      - Maintenance database: postgres
      - Username: postgres
-     - Password: Use the password defined in [#### Database Connection Details] (e.g., "dbpasswordportal")
+     - Password: Use the password defined in [Database Connection Details](./umbrella-deployment-guide.md#### Database Connection Details) (e.g., "dbpasswordportal")
 
 ## Postman Collections
 
