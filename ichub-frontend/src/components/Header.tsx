@@ -46,8 +46,8 @@ const Header = () => {
     >
       <a href="/">
         <img
-          src="@/assets/IndustryCoreHubLogo.png"
-          alt="Logo"
+          src="/eclipse-tractus-x-logo.png"
+          alt="Eclipse Tractus-X logo"
           style={{
             display: 'inline-block',
             height: '40px',
@@ -62,7 +62,7 @@ const Header = () => {
             marginRight: '16px',
           }}
         >
-          Help
+          Start
         </Button>
       </div>
     </MainNavigation>
