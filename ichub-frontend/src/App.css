@@ -25,6 +25,19 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  --brand-dark: #000;
+  --brand-orange: #faa023;
+  --brand-text: #f8f9fa;
+  --brand-secondary-text: #d3d3d3;
+  --brand-shadow: #ffffff80;
+}
+body{
+  font-family: "Manrope", sans-serif;
+}
+
+/****** Colors ******/
+.bg-brand-dark {
+  background-color: var(--brand-dark);
 }
 
 /****** General Styling ******/
@@ -153,7 +166,6 @@
 .text-left { text-align: left; }
 .text-right { text-align: right; }
 
-
 /* Wrapper for sidebar and content area */
 .pageWrapper {
   display: flex;
@@ -164,14 +176,26 @@
 .sidebarArea {
   width: 250px;
   padding: 20px;
-  background-color: #f4f4f4;
+  background-color: var(--brand-dark);
+  border-right: 3px outset var(--brand-shadow);
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+.sidebarArea a, .sidebarArea svg, .sidebarArea span {
+  color: #fff!important;
+}
+.sidebarArea .cx-menu a:hover {
+  color: var(--brand-dark);
+  font-weight: bold;
+}
+.sidebarArea .cx-menu .cx-menu a {
+  color: var(--brand-secondary-text)!important;
 }
 
 /* Content area styling */
 .contentArea {
   flex-grow: 1;
   padding: 20px;
+  background-image: url('/main-bg-new.png') !important;
 }
 
 /* Mobile responsiveness: stack layout vertically */
@@ -194,6 +218,59 @@
   margin-right: auto;
 }
 
+.productDetail, .cx-card__decision--item .cx-card__decision--button {
+  background: #1e1e1e !important;
+  border-radius: unset!important;
+  border: none!important;
+  box-shadow: 0 0 10px var(--brand-shadow);
+}
+
+.cx-card__decision *, 
+.productDetail  * {
+  color: var(--brand-text)!important;
+}
+.productDetail .MuiChip-root span{
+  color: var(--brand-dark)!important;
+}
+
+.productDetail .cx-dropdown-menu button {
+  background-color: var(--brand-dark);
+  color: var(--brand-text);
+  border: 1px solid white;
+}
+
+.productDetail .cx-dropdown-menu button:hover {
+  background-color: var(--brand-dark);
+  color: var(--brand-text);
+  border: 1px solid white;
+}
+
+.productDetail .cx-dropdown-menu .dropdown-buttons {
+  background-color: var(--brand-dark);
+}
+
+div[role="presentation"] > div.MuiPaper-root.MuiPopover-paper.MuiMenu-paper {
+  background-color: var(--brand-dark);
+  box-shadow: 0 0 10px var(--brand-shadow)
+}
+
+div[role="presentation"] > div.MuiPaper-root.MuiPopover-paper.MuiMenu-paper button {
+  background-color: var(--brand-orange);
+  color: var(--brand-dark);
+  font-weight: 600;
+}
+div[role="presentation"] > div.MuiPaper-root.MuiPopover-paper.MuiMenu-paper button:hover {
+  box-shadow: 0px 0px 5px 1px rgba(255,255,255,1);
+}
+
+/* List view cards */
+.cx-card__decision--button .cx-card__decision--chip span {
+  color: var(--brand-dark)!important;
+}
+.cx-card__decision--button:hover {
+  box-shadow: 0 0 15px var(--brand-orange)!important;
+}
+
 .grid-70-30{
   display: grid;
   grid-template-columns: 70% 30%;
@@ -206,4 +283,31 @@
 }
 .share-dropdown-btn {
   margin: 5px 0!important;
+}
+
+/* Navigation bar */
+.cx-main-navigation__wrapper {
+  background-image: url('/main-bg-new.png') !important;
+  border-bottom: 2px solid white;
+}
+
+.cx-navigation-item a {
+  color: var(--brand-text);
+}
+
+.cx-navigation-item a:hover {
+  color: var(--brand-orange);
+  font-weight: bold;
+}
+
+.cx-main-navigation__children-bottom button {
+  background-color: var(--brand-dark);
+  color: var(--brand-text);
+  border: 1px solid white;
+}
+.cx-main-navigation__children-bottom button:hover {
+  color: var(--brand-text);
+  font-weight: bold;
+  background-color: var(--brand-dark);
+  box-shadow: 0 0 15px var(--brand-orange)!important;
 }
