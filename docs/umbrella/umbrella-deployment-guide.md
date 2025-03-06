@@ -172,6 +172,71 @@ Verify that the ingress resources are properly created:
 kubectl get ingress -n umbrella
 ```
 
+## Enabling Persistence
+
+By default, the minimal configuration uses ephemeral storage, which means all data will be lost when pods are restarted. For a more robust setup, you can enable persistence.
+
+### 1. Configure Storage Class
+
+For Minikube, enable the default storage provisioner:
+
+```bash
+# For Minikube
+minikube addons enable storage-provisioner
+kubectl get storageclass
+```
+
+For other environments, ensure you have a storage class available:
+
+```bash
+# Check available storage classes
+kubectl get storageclass
+```
+
+### 2. Enable Persistence in Values File
+
+The [minimal-values.yaml](./minimal-values.yaml) file already includes persistence configuration that is commented out. To enable persistence, simply uncomment the persistence sections for the components you want to persist:
+
+1. Open the `minimal-values.yaml` file
+2. Search for the persistence sections (they're typically commented out with `# persistence:`)
+3. Uncomment these sections for the desired components:
+   - Portal PostgreSQL
+   - CentralIDP PostgreSQL
+   - SharedIDP PostgreSQL
+   - Data Provider PostgreSQL
+   - PGAdmin4
+
+For example, to enable persistence for the Portal's database, uncomment these lines:
+
+```yaml
+# Before:
+# persistence:
+#   enabled: true
+
+# After uncommenting:
+persistence:
+  enabled: true
+```
+
+### 3. Apply Changes
+
+After uncommenting the persistence configurations, upgrade your Helm deployment:
+
+```bash
+helm upgrade -f docs/umbrella/minimal-values.yaml umbrella tractusx-dev/umbrella --namespace umbrella --version v2.6.0
+```
+
+### 4. Verify Persistent Volumes
+
+Confirm that PersistentVolumeClaims (PVCs) have been created and bound:
+
+```bash
+kubectl get pvc -n umbrella
+```
+
+>[!note]
+> Enabling persistence will increase resource requirements. Ensure your cluster has sufficient storage capacity.
+
 ## Default Credentials
 
 ### CentralIDP (Keycloak)
