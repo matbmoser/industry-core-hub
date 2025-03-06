@@ -32,7 +32,7 @@
   --brand-shadow: #ffffff80;
 }
 body{
-  font-family: "Manrope", sans-serif;
+  font-family: "Manrope", sans-serif!important;
 }
 
 /****** Colors ******/
@@ -189,6 +189,7 @@ body{
 }
 .sidebarArea .cx-menu .cx-menu a {
   color: var(--brand-secondary-text)!important;
+  word-wrap: break-word;
 }
 
 /* Content area styling */
@@ -294,10 +295,13 @@ div[role="presentation"] > div.MuiPaper-root.MuiPopover-paper.MuiMenu-paper butt
 .cx-navigation-item a {
   color: var(--brand-text);
 }
-
-.cx-navigation-item a:hover {
-  color: var(--brand-orange);
-  font-weight: bold;
+.cx-main-navigation nav.cx-navigation a {
+  color: var(--brand-text);
+  font-weight: 900;
+  font-size: 25px!important;
+  font-family: 'Manrope';
+  padding-top: 0px!important;
+  cursor: default;
 }
 
 .cx-main-navigation__children-bottom button {
@@ -310,4 +314,17 @@ div[role="presentation"] > div.MuiPaper-root.MuiPopover-paper.MuiMenu-paper butt
   font-weight: bold;
   background-color: var(--brand-dark);
   box-shadow: 0 0 15px var(--brand-orange)!important;
+}
+
+.navbar-user-dropdown .MuiPaper-root {
+  margin-top: 20px;
+}
+.navbar-user-dropdown .MuiPaper-root *{
+  color: #fff!important;
+}
+.navbar-user-dropdown .MuiPaper-root hr{
+  border-color: rgba(255, 255, 255, 0.486);
+}
+.navbar-user-dropdown .MuiPaper-root li:hover{
+  color: var(--brand-orange)!important;
 }
