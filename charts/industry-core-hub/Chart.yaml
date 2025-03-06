@@ -32,3 +32,7 @@ dependencies:
     name: postgresql
     repository: https://charts.bitnami.com/bitnami
     version: 12.x.x
+  - condition: pgadmin4.enabled
+    name: pgadmin4
+    repository: https://helm.runix.net
+    version: 1.25.x

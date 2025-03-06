@@ -198,6 +198,24 @@ postgresql:
       # -- StorageClass name (use default if not specified)
       storageClass: ""
 
+# -- pgAdmin4 configuration
+pgadmin4:
+  enabled: false
+  env:
+    email: pgadmin4@txtest.org
+    password: tractusxpgadmin4
+  persistentVolume:
+    enabled: false
+  ingress:
+    enabled: true
+    ingressClassName: "nginx"
+    hosts:
+      - host: pgadmin4.tx.test
+        paths:
+          - path: /
+            pathType: Prefix
+
+
 # -- External database configuration (used when postgresql.enabled is false)
 externalDatabase:
   # -- External PostgreSQL host
