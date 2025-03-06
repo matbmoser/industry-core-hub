@@ -15,7 +15,10 @@ This guide helps you deploy a minimal version of the Tractus-X Umbrella chart fo
 - [ssi-dim-wallet-stub](https://github.com/eclipse-tractusx/ssi-dim-wallet-stub/releases/tag/ssi-dim-wallet-stub-0.1.2)
 - [tx-data-provider](https://github.com/eclipse-tractusx/tractus-x-umbrella/tree/main/charts/tx-data-provider) ([tractusx-edc](https://github.com/eclipse-tractusx/tractusx-edc/tree/0.7.1), [digital-twin-registry](https://github.com/eclipse-tractusx/sldt-digital-twin-registry/tree/digital-twin-registry-0.6.3), [vault](https://github.com/hashicorp/vault-helm/tree/v0.20.0), [simple-data-backend](https://github.com/eclipse-tractusx/tractus-x-umbrella/tree/main/charts/simple-data-backend))
 
-For a deeper understanding, you can reference the full guides: https://github.com/eclipse-tractusx/tractus-x-umbrella/tree/main/docs/user
+>[!note]
+> For detailed documentation on each service, please refer to their respective repositories (links above)
+>
+> For comprehensive guides, visit the [Tractus-X Umbrella documentation](https://github.com/eclipse-tractusx/tractus-x-umbrella/tree/main/docs/user).
 
 ## Cluster Setup
 
