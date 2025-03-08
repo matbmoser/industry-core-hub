@@ -18,7 +18,24 @@ This guide helps you deploy a minimal version of the Tractus-X Umbrella chart fo
 >[!note]
 > For detailed documentation on each service, please refer to their respective repositories (links above)
 >
-> For comprehensive guides, visit the [Tractus-X Umbrella documentation](https://github.com/eclipse-tractusx/tractus-x-umbrella/tree/main/docs/user).
+> For comprehensive guides, visit the [Tractus-X Umbrella documentation](https://github.com/eclipse-tractusx/tractus-x-umbrella/tree/main/docs/user)
+
+## TL;DR
+
+```bash
+helm repo add tractusx-dev https://eclipse-tractusx.github.io/charts/dev
+helm repo update tractusx-dev
+helm install -f docs/umbrella/minimal-values.yaml umbrella tractusx-dev/umbrella --namespace umbrella --version v2.6.0 --create-namespace
+```
+
+>[!important]
+>Once the installation or upgrade is succesfull run this patch
+>```bash
+>kubectl patch ingress umbrella-dataprovider-dtr \
+>  --type='json' \
+>  -p='[{"op": "replace", "path": "/spec/rules/0/http/paths/0/path", "value": "/"}]' \
+>  -n umbrella
+>```
 
 ## Cluster Setup
 
@@ -132,10 +149,9 @@ The base values can be found in the [umbrella chart's values.yaml file](https://
 Assuming you are in the root folder of the project, run these commands. If you're working from a different directory, adjust the path to the minimal-values.yaml file accordingly.
 
 ```bash
-kubectl create namespace umbrella
 helm repo add tractusx-dev https://eclipse-tractusx.github.io/charts/dev
 helm repo update tractusx-dev
-helm install -f docs/umbrella/minimal-values.yaml umbrella tractusx-dev/umbrella --namespace umbrella --version v2.6.0
+helm install -f docs/umbrella/minimal-values.yaml umbrella tractusx-dev/umbrella --namespace umbrella --version v2.6.0 --create-namespace
 ```
 
 If you modify any value in the `minimal-values.yaml` you can upgrade the deployment running
