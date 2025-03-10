@@ -75,11 +75,7 @@ jobs:
             curl -L --output ./org.eclipse.dash.licenses-1.1.1.jar 'https://repo.eclipse.org/service/local/artifact/maven/redirect?r=dash-licenses&g=org.eclipse.dash&a=org.eclipse.dash.licenses&v=LATEST'
             
             if [[ "${{ matrix.folder }}" == "ichub-backend" ]]; then
-                DEP_FILE="DEPENDENCIES_IC-BACKEND"
-            elif [[ "${{ matrix.folder }}" == "tractusx_sdk/dataspace" ]]; then
-                DEP_FILE="DEPENDENCIES_TX_DATASPACE_SDK"
-            else
-                DEP_FILE="DEPENDENCIES_TX_INDUSTRY_SDK"
+                DEP_FILE="DEPENDENCIES_ICHUB-BACKEND"
             fi
 
             echo "DEP_FILE=$DEP_FILE" >> $GITHUB_ENV
