@@ -22,8 +22,16 @@ name: "Eclipse DASH IP Check"
 on:
   push:
     branches: [main]
+    paths:
+      - ichub-backend/requirements.txt
+      - DEPENDENCIES_ICHUB-BACKEND
+      - .github/workflows/dependencies-backend.yml
   pull_request:
     branches: [main]
+    paths:
+      - ichub-backend/requirements.txt
+      - DEPENDENCIES_ICHUB-BACKEND
+      - .github/workflows/dependencies-backend.yml
   workflow_dispatch:
 
 jobs:
