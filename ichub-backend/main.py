@@ -40,9 +40,9 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 sys.dont_write_bytecode = True
 
 ## Import Library Packeges
-from tractusx_sdk.shared.tools import op
-from tractusx_sdk.shared.tools import HttpTools
-from tractusx_sdk.shared.managers import AuthManager
+from tractusx_sdk.dataspace.tools import op
+from tractusx_sdk.dataspace.tools import HttpTools
+from tractusx_sdk.dataspace.managers import AuthManager
 from tractusx_sdk.dataspace.services import EdcService
 from tractusx_sdk.industry.services import AasService
 
@@ -122,11 +122,16 @@ def start():
     
     ## Once initial checks and configurations are done here is the place where it shall be included
     logger.info("[INIT] Application Startup Initialization Completed!")
-    uvicorn.run(app, host=args.host, port=args.port, log_level=("debug" if args.debug else "info"))        
+
+    # Only start the Uvicorn server if not in test mode
+    if not args.test_mode:
+        uvicorn.run(app, host=args.host, port=args.port, log_level=("debug" if args.debug else "info"))        
     
 def get_arguments():
     
     parser = argparse.ArgumentParser()
+
+    parser.add_argument('--test-mode', action='store_true', help="Run in test mode (skips uvicorn.run())", required=False)
     
     parser.add_argument("--debug", default=False, action="store_false", help="Enable and disable the debug", required=False)
     
