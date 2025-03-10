@@ -28,32 +28,46 @@ const Sidebar = () => {
       items={[
         {
           children: [
-            {
-              href: '/',
-              title: 'Submenu Item 1'
-            },
-            {
-              href: '/',
-              title: 'Submenu Item 2'
-            },
-            {
-              disable: true,
-              hint: 'coming soon',
-              href: '/',
-              title: 'Submenu Item 3'
-            }
+            { href: '/', title: 'Bosch' },
+            { href: '/', title: 'MagnaFlow' },
+            { href: '/', title: 'Brembo' },
+            { href: '/', title: 'Pirelli' },
+            { href: '/', title: 'Monroe' },
+            { href: '/', title: 'Valeo' }
           ],
           href: '/',
-          title: 'Menu Item 1'
+          title: 'Brands'
         },
         {
+          children: [
+            { href: '/', title: 'Turbochargers' },
+            { href: '/', title: 'Suspension Parts' },
+            { href: '/', title: 'Brake Pads' },
+            { href: '/', title: 'Engine Blocks' }
+          ],
           href: '/',
-          title: 'Menu Item 2'
+          title: 'Categories'
         },
         {
+          children: [
+            { href: '/', title: 'BASF' },
+            { href: '/', title: 'BMW' },
+            { href: '/', title: 'BOSCH' },
+            { href: '/', title: 'Mercedes-Benz' },
+            { href: '/', title: 'Volkswagen' },
+          ],
           href: '/',
-          title: 'Menu Item 3'
-        }
+          title: 'Shared with'
+        },
+        {
+          children: [
+            { href: '/', title: 'Draft' },
+            { href: '/', title: 'Pending' },
+            { href: '/', title: 'Registered' }
+          ],
+          href: '/',
+          title: 'Status'
+        },
       ]}
     />
   )

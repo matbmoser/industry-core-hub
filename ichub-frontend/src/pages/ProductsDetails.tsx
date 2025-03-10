@@ -25,7 +25,7 @@ import { useParams } from "react-router-dom";
 import carPartsData from "../data/sample-data.json";
 import { DropdownMenu, StatusTag, Button, Icon, Typography, PageNotifications } from '@catena-x/portal-shared-components';
 import { PRODUCT_STATUS, PRODUCT_OPTIONS } from "../types/common";
-
+import JsonViewerDialog from "../components/JsonViewerDialog";
 
 const ProductsDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -253,6 +253,8 @@ const ProductsDetails = () => {
           Transmission Passport v5.0
         </Button>
       </div>
+
+      <JsonViewerDialog open={dialogOpen} onClose={handleCloseDialog} carJsonData={part}/>
     </div>
   );
 }
