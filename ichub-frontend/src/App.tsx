@@ -20,7 +20,9 @@
  * SPDX-License-Identifier: Apache-2.0
 ********************************************************************************/
 
-import './App.css'
+import './App.css';
+import './assets/styles/main.scss';
+
 import AppRoutes from "./routes";
 
 function App() {

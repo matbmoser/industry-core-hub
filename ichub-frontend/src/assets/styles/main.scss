@@ -20,25 +20,12 @@
  * SPDX-License-Identifier: Apache-2.0
 ********************************************************************************/
 
-import { Outlet } from "react-router-dom";
+@use 'config/variables' as *;
 
-import Header from '../components/general/Header';
-import Sidebar from '../components/general/Sidebar';
+@use 'components';
+@use 'pages';
+@use 'layout';
 
-function MainLayout() {
-  return (
-    <main className="contentWrapper">
-      <Header />
-      <div className="pageWrapper d-lg-flex">
-        <aside className="sidebarArea shadow bg-white" id="sidebarArea">
-          <Sidebar />
-        </aside>
-        <div className="contentArea">
-          <Outlet />
-        </div>
-      </div>
-    </main>
-  );
-};
-
-export default MainLayout;
+* {
+    font-family: 'Manrope', sans-serif!important;
+}
