@@ -21,7 +21,7 @@
 ********************************************************************************/
 
 import { useState } from 'react';
-import { MainNavigation, Button, IconButton } from '@catena-x/portal-shared-components';
+import { MainNavigation, IconButton } from '@catena-x/portal-shared-components';
 import PersonIcon from '@mui/icons-material/Person';
 import { Menu, MenuItem, Typography, Divider, ListItemIcon } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';

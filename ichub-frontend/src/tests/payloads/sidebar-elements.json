@@ -1,0 +1,40 @@
+[
+  {
+    "title": "Brands",
+    "subitems": [
+      { "name": "Bosch", "link": "/" },
+      { "name": "MagnaFlow", "link": "/" },
+      { "name": "Brembo", "link": "/" },
+      { "name": "Pirelli", "link": "/" },
+      { "name": "Monroe", "link": "/" },
+      { "name": "Valeo", "link": "/" }
+    ]
+  },
+  {
+    "title": "Categories",
+    "subitems": [
+      { "name": "Turbochargers", "link": "/" },
+      { "name": "Suspension Parts", "link": "/" },
+      { "name": "Brake Pads", "link": "/" },
+      { "name": "Engine Blocks", "link": "/" }
+    ]
+  },
+  {
+    "title": "Shared with",
+    "subitems": [
+      { "name": "BASF", "link": "/" },
+      { "name": "BMW", "link": "/" },
+      { "name": "BOSCH", "link": "/" },
+      { "name": "Mercedes-Benz", "link": "/" },
+      { "name": "Volkswagen", "link": "/" }
+    ]
+  },
+  {
+    "title": "Status",
+    "subitems": [
+      { "name": "Draft", "link": "/" },
+      { "name": "Pending", "link": "/" },
+      { "name": "Registered", "link": "/" }
+    ]
+  }
+]
