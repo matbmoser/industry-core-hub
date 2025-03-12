@@ -22,10 +22,12 @@
 
 import React from "react";
 import { useParams } from "react-router-dom";
-import carPartsData from "../data/sample-data.json";
-import { DropdownMenu, StatusTag, Button, Icon, Typography, PageNotifications } from '@catena-x/portal-shared-components';
+import carPartsData from "../tests/payloads/sample-data.json";
+import instanceData from "../tests/payloads/instance-data.json";
+import { DropdownMenu, StatusTag, Button, Icon, Typography, PageNotifications, Table } from '@catena-x/portal-shared-components';
 import { PRODUCT_STATUS, PRODUCT_OPTIONS } from "../types/common";
 import JsonViewerDialog from "../components/JsonViewerDialog";
+import { Grid2 } from '@mui/material';
 
 const ProductsDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -67,7 +69,7 @@ const ProductsDetails = () => {
   };
 
   const handleDownload = () => {
-    const fileName = part.Name.toLowerCase().replace(/\s+/g, "-") + ".txt";
+    const fileName = part.name.toLowerCase().replace(/\s+/g, "-") + ".txt";
     const blob = new Blob([part.uuid], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -83,8 +85,8 @@ const ProductsDetails = () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: part.Name,
-          text: `Check out this part: ${part.Name} (UUID: ${part.uuid})`,
+          title: part.name,
+          text: `Check out this part: ${part.name} (UUID: ${part.uuid})`,
           url: window.location.href
         });
       } catch (error) {
@@ -99,162 +101,224 @@ const ProductsDetails = () => {
   const getStatusTag = (status: string) => {
     switch (status.toLowerCase()) {
       case PRODUCT_STATUS.REGISTERED:
-        return <StatusTag color="confirmed" label="Registered" variant="filled" />;
+        return <StatusTag color="confirmed" label="Registered" variant="outlined" />;
       case PRODUCT_STATUS.DRAFT:
-        return <StatusTag color="declined" label="Draft" variant="filled" />;
-      case PRODUCT_STATUS.PENDING:
-        return <StatusTag color="pending" label="Pending" variant="filled" />;
+        return <StatusTag color="info" label="Draft" variant="outline" />;
+      case PRODUCT_STATUS.SHARED:
+        return <StatusTag color="warning" label="Shared" variant="filled" />;
       default:
         return null;
     }
   };
 
   return (
+    <div className="productWrapper">
+      
+    {notification && (
+      <div style={{ maxWidth: '300px', marginLeft: 'auto' }}>
+        <PageNotifications open severity="success" showIcon title="Copy successful" />
+      </div>
+    )}
     <div className="productDetail">
-      {notification && (
-        <div style={{ maxWidth: '300px', marginLeft: 'auto' }}>
-          <PageNotifications open severity="success" showIcon title="Copy successful" />
-        </div>
-      )}
-      <div className="flex flex-content-between mx-3">
-        {getStatusTag(part.Status)}
+      <div className="flex flex-content-between m-3">
+        {getStatusTag(part.status)}
         <Button size="small"
           onClick={() => console.log("DCM v2.0 button")}
           style={{
-            backgroundColor: "purple",
+            backgroundColor: "rgba(77, 77, 77, 0.56)",
             height: "32px",
             boxSizing: "border-box",
             borderRadius: "6px",
             fontSize: "0.8125rem"
-          }}>
-          <Icon fontSize="16" iconName="Edit" />
-          Edit
+          }} 
+          endIcon={<Icon fontSize="16" iconName="Edit" />}>
+          
+          <span className="update-button-content">UPDATE</span>
+          
         </Button>
-      </div>
-      <div className="grid-70-30" style={{ marginBottom: "7%" }}>
-        <div>
-          <div className="my-5 flex flex-content-between px-3">
-            <div className="title-subtitle">
-              <Typography variant="h2">{part.Name}</Typography>
-              <Typography variant="caption1">{part.Category}</Typography>
-            </div>
-            <DropdownMenu
+        <DropdownMenu
               buttonSx={{
                 'padding': '10px 10px',
                 'border': '1px solid #b4b4b4!important',
                 'font-size': '14px',
               }}
               buttonText="Share"
+              startIcon={<Icon fontSize="16" iconName="IosShare" />}
             >
               <div className="flex flex-column">
-                <Button color="secondary" size="small" onClick={handleCopy} className="share-dropdown-btn">
-                  <Icon fontSize="16" iconName="ContentCopy" />
-                  {PRODUCT_OPTIONS.COPY}
+                <Button className="dropdown-button" color="secondary" size="small" onClick={handleCopy} className="share-dropdown-btn" startIcon={<Icon fontSize="16" iconName="ContentCopy" />}>
+                  <span className="dropdown-button-content">{PRODUCT_OPTIONS.COPY}</span>
                 </Button>
-                <Button color="secondary" size="small" onClick={handleDownload} className="share-dropdown-btn">
-                  <Icon fontSize="16" iconName="FileDownload" />
-                  {PRODUCT_OPTIONS.DOWNLOAD}
+                <Button className="dropdown-button" color="secondary" size="small" onClick={handleDownload} className="share-dropdown-btn" startIcon={<Icon fontSize="16" iconName="FileDownload" />}>
+                  <span className="dropdown-button-content">{PRODUCT_OPTIONS.DOWNLOAD}</span>
                 </Button>
-                <Button color="secondary" size="small" onClick={handleShare} className="share-dropdown-btn">
-                  <Icon fontSize="16" iconName="IosShare" />
-                  {PRODUCT_OPTIONS.SHARE}
+                <Button className="dropdown-button" color="secondary" size="small" onClick={handleShare} className="share-dropdown-btn" startIcon={<Icon fontSize="16" iconName="IosShare" />}>
+                  <span className="dropdown-button-content">{PRODUCT_OPTIONS.SHARE}</span>
                 </Button>
               </div>
             </DropdownMenu>
-          </div>
+      </div>
+      <Grid2 container spacing={1} direction="row"   sx={{
+    justifyContent: "space-between",
+    alignItems: "top",
+  }}>
+        <Grid2 size={5}>
+          <Grid2 className="my-5 flex flex-content-between px-3">
+            <div className="title-subtitle">
+              <Typography variant="h2">{part.name}</Typography>
+              <Typography variant="caption1">{part.class}</Typography>
+            </div>
+          </Grid2>
 
-          <div>
-            <div className="flex mb-1">
-              <Typography variant="label2" style={{ marginRight: "5px" }}>🔢 Part Instance ID:</Typography>
-              <Typography variant="body2">{part.PartInstanceID}</Typography>
+          <Grid2 className="ml-3 product-card">
+            <div className="mb-2">
+              <Typography variant="label3">Manufacturer</Typography>
+              <Typography variant="body1">{part.manufacturer}</Typography>
             </div>
-            <div className="flex mb-1">
-              <Typography variant="label2" style={{ marginRight: "5px" }}>🏭 Manufacturer:</Typography>
-              <Typography variant="body2">{part.Manufacturer}</Typography>
+            <div className="mt-2 mb-2">
+              <Typography variant="label3">Manufacturer Part Id</Typography>
+              <Typography variant="body1">{part.manufacturerPartId}</Typography>
             </div>
-            <div className="flex mb-1">
-              <Typography variant="label2" style={{ marginRight: "5px" }}>📌 Status:</Typography>
-              <Typography variant="body2">{part.Status}</Typography>
+            <div className="mb-2" style={{margin: '30px 0px 10px 0'}}>
+              <Typography variant="label4">Description</Typography>
+              <Typography variant="body2">{part.description}</Typography>
             </div>
-            <div className="flex mb-1">
-              <Typography variant="label2" style={{ marginRight: "5px" }}>🔩 Material:</Typography>
-              <Typography variant="body2">{part.Material}</Typography>
+            <div className="flex flex-content-between">
+            <div className="mr-2">
+              <Typography variant="label4">Created</Typography>
+              <Typography variant="body2">{part.created}</Typography>
             </div>
-            <div className="flex mb-1">
-              <Typography variant="label2" style={{ marginRight: "5px" }}>📂 Category:</Typography>
-              <Typography variant="body2">{part.Category}</Typography>
+            <div className="ml-2">
+              <Typography variant="label4">Updated</Typography>
+              <Typography variant="body2">{part.created}</Typography>
             </div>
-            <div className="flex mb-1">
-              <Typography variant="label2" style={{ marginRight: "5px" }}>⚖️ Weight:</Typography>
-              <Typography variant="body2">{part.WeightKg} kg</Typography>
             </div>
-            <div className="flex mb-1">
-              <Typography variant="label2" style={{ marginRight: "5px" }}>📊 Single Level Bom:</Typography>
-              <Typography variant="body2">{part.SingleLevelBom} kg</Typography>
-            </div>
-            <div className="flex mb-1">
-              <Typography variant="label2" style={{ marginRight: "5px" }}>📝 Description:</Typography>
-              <Typography variant="body2">{part.Description} kg</Typography>
-            </div>
-          </div>
-        </div>
-        <div className="my-auto">
-          <img src={part.Image} alt={part.Name} className="img-fluid my-auto" />
+          </Grid2>
+        </Grid2>
+        <Grid2 size={{lg: 3, md: 6, sm: 6}}>
+          <img src={part.image} alt={part.name} className="product-image img-fluid my-auto" />
           <div className="mt-3">
-            <ul>
+          <div className="mt-2 mb-2 flex flex-items-center">
+              <Typography variant="label4">{part.uuid}</Typography>
+            </div>
+            <h2>Shared With:</h2>
+            <ul className="mt-3">
               <li className="flex">
                 <Icon fontSize="16" iconName="Polyline" className="my-auto mr-1" />
-                <Typography variant="label2" style={{ marginRight: "5px" }}>Relationship 1:</Typography>
-                <Typography variant="body2">PI-702</Typography>
+                <Typography variant="label2" style={{ marginRight: "5px" }}>Volkswagen AG -</Typography>
+                <Typography variant="body2">BPNL42621500AS61</Typography>
               </li>
               <li className="flex">
                 <Icon fontSize="16" iconName="Polyline" className="my-auto mr-1" />
-                <Typography variant="label2" style={{ marginRight: "5px" }}>Relationship 2:</Typography>
-                <Typography variant="body2">PI-244</Typography>
+                <Typography variant="label2" style={{ marginRight: "5px" }}>BMW Racing Gmbh -</Typography>
+                <Typography variant="body2">BPNL3A4T8A5621S3</Typography>
               </li>
               <li className="flex">
                 <Icon fontSize="16" iconName="Polyline" className="my-auto mr-1" />
-                <Typography variant="label2" style={{ marginRight: "5px" }}>Relationship 3:</Typography>
-                <Typography variant="body2">PI-089</Typography>
+                <Typography variant="label2" style={{ marginRight: "5px" }}>John the Recycler KG - </Typography>
+                <Typography variant="body2">BPNL5ASD5428800A</Typography>
               </li>
               <li className="flex">
-                <Icon fontSize="16" iconName="Polyline" className="my-auto mr-1" />
-                <Typography variant="label2" style={{ marginRight: "5px" }}>Relationship 4:</Typography>
-                <Typography variant="body2">PI-011</Typography>
+                <Icon fontSize="16" iconName="Launch" className="my-auto mr-1" />
+                <a href="">512 more</a>
+  
               </li>
             </ul>
           </div>
-        </div>
-      </div>
+        </Grid2>
+      </Grid2>
 
       <div className="flex m-5">
-        <Button color="success" size="large" onClick={() => console.log("Add button")} fullWidth={true} style={{ padding: "5px" }}>
+        <Button className="submodel-button" variant="outlined" color="primary" size="large" onClick={handleOpenDialog} fullWidth={true} style={{ padding: "10px" }}>
+          <span className="submodel-button-content">DIGITAL PRODUCT PASSPORT v5.0.0</span>
+          <Icon fontSize="16" iconName="OpenInNew" />
+        </Button>
+      </div>
+      <div className="flex m-5 flex-content-between flex-gap-5">
+        <Button className="submodel-button" variant="outlined" color="primary" size="large" onClick={() => console.log("PCF v3.0 button")} fullWidth={true} style={{ padding: "10px" }}>
+          <span className="submodel-button-content">PCF v3.0.0</span>
+          <Icon fontSize="16" iconName="OpenInNew" />
+        </Button>
+        <Button className="submodel-button" variant="outlined" color="primary" size="large" onClick={() => console.log("DPP v2.0 button")} fullWidth={true} style={{ padding: "10px" }}>
+          <span className="submodel-button-content">TRANSMISSION PASS v2.0.0</span>
+          <Icon fontSize="16" iconName="OpenInNew" />
+        </Button>
+        <Button className="submodel-button" variant="outlined"color="primary" size="large" fullWidth={true} style={{ padding: "10px" }}>
+          <span className="submodel-button-content">DCM v2.0.0</span>
+          <Icon fontSize="16" iconName="OpenInNew" />
+        </Button>
+      </div>
+      <div className="flex m-5">
+        <Button className="submodel-button" color="success" size="small" onClick={() => console.log("Add button")} fullWidth={true} style={{ padding: "5px" }}>
           <Icon fontSize="18" iconName="Add" />
         </Button>
       </div>
 
-      <div className="flex m-5 flex-content-between flex-gap-5">
-        <Button color="primary" size="large" onClick={() => console.log("PCF v3.0 button")} fullWidth={true} style={{ padding: "10px" }}>
-          <Icon fontSize="16" iconName="Add" />
-          PCF v3.0
-        </Button>
-        <Button color="primary" size="large" onClick={() => console.log("DPP v2.0 button")} fullWidth={true} style={{ padding: "10px" }}>
-          <Icon fontSize="16" iconName="Add" />
-          DPP v2.0
-        </Button>
-        <Button color="primary" size="large" onClick={handleOpenDialog} fullWidth={true} style={{ padding: "10px" }}>
-          <Icon fontSize="16" iconName="Add" />
-          DCM v2.0
-        </Button>
-      </div>
-      <div className="flex m-5">
-        <Button color="error" size="large" onClick={() => console.log("Transmission Passport v5.0")} fullWidth={true} style={{ padding: "10px" }}>
-          <Icon fontSize="16" iconName="Add" />
-          Transmission Passport v5.0
-        </Button>
-      </div>
-
       <JsonViewerDialog open={dialogOpen} onClose={handleCloseDialog} carJsonData={part}/>
+    </div>
+    <div className="product-table-wrapper">
+    <Table
+      className="product-table"
+      columnHeadersBackgroundColor="#fff"
+      getRowId={(row) => row.uuid}
+
+      rowsCount="5 of 52.0213 Digital Twins"
+      columns={[
+        {
+          field: 'uuid',  
+          flex: 3,
+          headerName: 'uuid'
+        },
+        {
+          field: 'partInstanceId',
+          flex: 3,
+          headerName: 'Part Instance ID'
+        },
+        {
+          field: 'submodels',
+          flex: 1,
+          headerName: 'Submodels'
+        },
+        {
+          field: 'status',
+          flex: 1,
+          headerName: 'Status'
+        },
+        {
+          field: 'type',
+          flex: 1,
+          headerName: 'Type'
+        },
+        {
+          field: 'created',
+          flex: 1,
+          headerName: 'Created'
+        },
+        {
+          field: 'updated',
+          flex: 2,
+          headerName: 'Updated'
+        },
+        {
+          field: 'manufacturer',
+          flex: 2,
+          headerName: 'Manufacturer'
+        }
+      ]}
+      disableColumnMenu
+      disableColumnSelector
+      disableDensitySelector
+      hasBorder
+      hideFooter
+      noRowsMsg="No rows"
+      rowHeight={50}
+      rows={instanceData}
+      
+      searchPlaceholder=""
+      title="Instance Products"
+      toolbarVariant="basic"
+    />
+    </div>
     </div>
   );
 }
