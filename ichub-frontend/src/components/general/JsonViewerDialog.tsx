@@ -31,7 +31,7 @@ const JsonViewerDialog = ({ open, onClose, carJsonData }: JsonViewerDialogProps)
     const description = carJsonData?.Description ? `${carJsonData.Description}` : "";
 
     const handleCopy = () => {
-        var json_string = JSON.stringify(carJsonData, null, 2);
+        const json_string = JSON.stringify(carJsonData, null, 2);
         navigator.clipboard.writeText(json_string)
           .then(() => {
             setCopied(true);

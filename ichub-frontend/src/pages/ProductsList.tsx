@@ -25,7 +25,7 @@ import { useNavigate } from "react-router-dom";
 import carPartsData from "../tests/payloads/sample-data.json";
 import { ProductCard } from "../components/general/ProductCard";
 import { PartInstance } from "../types/product";
-import { Grid2, Typography } from "@mui/material";
+import { Grid2 } from "@mui/material";
 
 const ProductsList = () => {
   const [carParts, setCarParts] = useState<PartInstance[]>([]);
