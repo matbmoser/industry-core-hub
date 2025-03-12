@@ -28,6 +28,7 @@ helm install industry-core-hub tractusx/industry-core-hub
 | Repository | Name | Version |
 |------------|------|---------|
 | https://charts.bitnami.com/bitnami | postgresql | 12.x.x |
+| https://helm.runix.net | pgadmin4 | 1.25.x |
 
 ## Values
 
@@ -80,6 +81,7 @@ helm install industry-core-hub tractusx/industry-core-hub
 | livenessProbe.timeoutSeconds | int | `10` |  |
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` |  |
+| pgadmin4 | object | `{"enabled":false,"env":{"email":"pgadmin4@txtest.org","password":"tractusxpgadmin4"},"ingress":{"enabled":false},"persistentVolume":{"enabled":false}}` | pgAdmin4 configuration |
 | postgresql | object | `{"audit":{"logLinePrefix":"%m %u %d ","pgAuditLog":"write, ddl"},"auth":{"database":"ichub-postgres","existingSecret":"ichub-postgres-secret","ichubPassword":"","ichubUser":"ichub","password":"","port":5432},"enabled":true,"fullnameOverride":"","nameOverride":"","primary":{"extendedConfiguration":"","extraEnvVars":[{"name":"ICHUB_PASSWORD","valueFrom":{"secretKeyRef":{"key":"ichub-password","name":"{{ .Values.auth.existingSecret }}"}}}],"initdb":{"scriptsConfigMap":"{{ .Release.Name }}-cm-postgres"},"persistence":{"enabled":true,"size":"10Gi","storageClass":""}}}` | PostgreSQL chart configuration |
 | postgresql.auth.database | string | `"ichub-postgres"` | Database name |
 | postgresql.auth.existingSecret | string | `"ichub-postgres-secret"` | Secret containing the passwords for root usernames postgres and non-root usernames repl_user and ichub. |

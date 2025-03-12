@@ -28,3 +28,17 @@ postgresql:
     ## Industry Core User Password
     ichubPassword: <path:industry-core-hub/data/db#ichubPass>
     
+# -- pgAdmin4 configuration
+pgadmin4:
+  enabled: true
+  env:
+    email: <path:industry-core-hub/data/pgadmin#email>
+    password: <path:industry-core-hub/data/pgadmin#password>
+  ingress:
+    enabled: true
+    ingressClassName: "nginx"
+    hosts:
+      - host: pgadmin-ichub.int.catena-x.net
+        paths:
+          - path: /
+            pathType: Prefix
