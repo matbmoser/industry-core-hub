@@ -167,33 +167,75 @@
 .text-left { text-align: left; }
 .text-right { text-align: right; }
 
-/* Wrapper for sidebar and content area */
-.pageWrapper {
-  display: flex;
-  min-height: 100vh;
-}
-
 /* Sidebar styling */
-.sidebarArea {
-  width: 250px;
-  padding: 20px;
+.sidebarContainer {
+  display: flex;
+  flex-direction: row;
   background: linear-gradient(180deg, rgba(1,32,96,0.8323704481792717) 0%, rgba(5,107,153,0.5690651260504201) 100%);
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
+/* Sidebar en escritorio */
+@media (min-width: 626px) {
+  .sidebarContainer {
+    height: 100vh;
+  }
+}
 
-.sidebarArea a, .sidebarArea svg, .sidebarArea span {
+.iconBar {
+  width: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+  background: linear-gradient(180deg, rgba(0, 8, 24, 0.832) 0%, rgba(5, 60, 85, 0.569) 100%);
+}
+
+.iconButton {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  margin: 10px 0;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+
+.iconButton.active,
+.iconButton:hover {
+  opacity: 1;
+}
+
+.sidebarContent {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.sidebarContent h2 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  color: var(--brand-text);
+}
+
+.sidebarContent ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebarContent li {
+  padding: 5px 0;
+  font-size: 1rem;
+  color: #666;
+}
+
+.sidebarContent li a {
+  text-decoration: none;
   color: #fff!important;
 }
-
-
-.sidebarArea .cx-menu a:hover {
+.sidebarContent li a:hover {
   color: var(--brand-dark);
   font-weight: bold;
-}
-.sidebarArea .cx-menu .cx-menu a {
-  color: var(--brand-secondary-text)!important;
-  word-wrap: break-word;
 }
 
 .cx-card__decision--button{
@@ -212,9 +254,6 @@
   padding: auto;
   
 }
-.sidebarArea{
-  min-width: 250px;
-}
 .side-logo {
   height: 150px;
   margin-top: 20px;
@@ -227,23 +266,8 @@
 
 /* Content area styling */
 .contentArea {
-  flex-grow: 1;
   padding: 20px;
-  height: 100
 }
-/* Mobile responsiveness: stack layout vertically */
-@media (max-width: 992px) {
-  .pageWrapper {
-    flex-direction: column;
-  }
-
-  .sidebarArea {
-    width: 100%;
-    box-shadow: none;
-  }
-}
-
-
 
 .productWrapper{
   width: 100%;
@@ -470,5 +494,10 @@ div[role="presentation"] > div.MuiPaper-root.MuiPopover-paper.MuiMenu-paper butt
 }
 
 .main-logo {
- height: 65px;
+ height: 30px;
+}
+@media (min-width: 626px) {
+  .main-logo {
+    height: 50px;
+  }
 }

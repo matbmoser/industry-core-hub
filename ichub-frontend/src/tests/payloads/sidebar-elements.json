@@ -1,6 +1,7 @@
 [
   {
     "title": "Brands",
+    "icon": "Storefront",
     "subitems": [
       { "name": "Bosch", "link": "/" },
       { "name": "MagnaFlow", "link": "/" },
@@ -12,6 +13,7 @@
   },
   {
     "title": "Categories",
+    "icon": "Category",
     "subitems": [
       { "name": "Turbochargers", "link": "/" },
       { "name": "Suspension Parts", "link": "/" },
@@ -21,6 +23,7 @@
   },
   {
     "title": "Shared with",
+    "icon": "Shared",
     "subitems": [
       { "name": "BASF", "link": "/" },
       { "name": "BMW", "link": "/" },
@@ -31,6 +34,7 @@
   },
   {
     "title": "Status",
+    "icon": "Status",
     "subitems": [
       { "name": "Draft", "link": "/" },
       { "name": "Pending", "link": "/" },
