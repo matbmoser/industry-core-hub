@@ -20,18 +20,50 @@
  * SPDX-License-Identifier: Apache-2.0
 ********************************************************************************/
 
-import { Menu } from '@catena-x/portal-shared-components';
+import { useState, JSX } from "react";
 import sidebarElements from '../../tests/payloads/sidebar-elements.json'
 
+import { Box } from "@mui/material";
+
+import { Storefront as StorefrontIcon, Category as CategoryIcon, People as PeopleIcon, Assignment as AssignmentIcon } from '@mui/icons-material';
+
+const iconMap: { [key: string]: JSX.Element } = {
+  Storefront: <StorefrontIcon />, 
+  Category: <CategoryIcon />, 
+  Shared: <PeopleIcon />, 
+  Status: <AssignmentIcon />
+};
+
 const Sidebar = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
   return (
-    <Menu
-      items={sidebarElements.map(({ title, subitems }) => ({
-        title,
-        href: '#',
-        children: subitems.map(({ name, link }) => ({ title: name, href: link }))
-      }))}
-    />
+    <Box className="sidebarContainer">
+      {/* Barra de Iconos */}
+      <Box className="iconBar">
+        {sidebarElements.map((item, index) => (
+          <button
+            key={index}
+            className={`iconButton ${index === activeIndex ? "active" : ""}`}
+            onClick={() => setActiveIndex(index)}
+          >
+            {iconMap[item.icon] || <StorefrontIcon />}
+          </button>
+        ))}
+      </Box>
+
+      {/* Contenido del Sidebar */}
+      <Box className="sidebarContent">
+        <h2>{sidebarElements[activeIndex].title}</h2>
+        <ul>
+          {sidebarElements[activeIndex].subitems.map((subitem, idx) => (
+            <li key={idx}>
+              <a href={subitem.link}>{subitem.name}</a>
+            </li>
+          ))}
+        </ul>
+      </Box>
+    </Box>
   );
 };
 

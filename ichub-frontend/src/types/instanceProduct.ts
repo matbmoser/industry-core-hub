@@ -20,15 +20,14 @@
  * SPDX-License-Identifier: Apache-2.0
 ********************************************************************************/
 
-export interface PartInstance {
+export interface InstanceProduct {
+    id: number,
     uuid: string,
-    name: string,
+    partInstanceId: string,
+    submodels: number,
     status: string,
-    manufacturer: string,
-    manufacturerPartId: string,
-    class: string,
-    description: string,
-    image: string
-    created: string
-    updated: string
+    type: string,
+    created: string,
+    updated: string,
+    manufacturer: string
 }
