@@ -27,7 +27,8 @@ import instanceData from "../tests/payloads/instance-data.json";
 import { DropdownMenu, StatusTag, Button, Icon, Typography, PageNotifications, Table } from '@catena-x/portal-shared-components';
 import { PRODUCT_STATUS, PRODUCT_OPTIONS } from "../types/common";
 import JsonViewerDialog from "../components/general/JsonViewerDialog";
-import { Grid2 } from '@mui/material';
+import { Box, Grid2 } from '@mui/material';
+import InstanceProductsTable from "../components/product-detail/InstanceProductsTable";
 
 const ProductsDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -112,31 +113,25 @@ const ProductsDetails = () => {
   };
 
   return (
-    <div className="productWrapper">
+    <>      
+      {notification && (
+        <Grid2 size={{xs: 12}}>
+          <PageNotifications open severity={notification.severity} showIcon title={notification.title} />
+        </Grid2>
+      )}
       
-    {notification && (
-      <div style={{ maxWidth: '300px', marginLeft: 'auto' }}>
-        <PageNotifications open severity="success" showIcon title="Copy successful" />
-      </div>
-    )}
-    <div className="productDetail">
-      <div className="flex flex-content-between m-3">
-        {getStatusTag(part.status)}
-        <Button size="small"
-          onClick={() => console.log("DCM v2.0 button")}
-          style={{
-            backgroundColor: "rgba(77, 77, 77, 0.56)",
-            height: "32px",
-            boxSizing: "border-box",
-            borderRadius: "6px",
-            fontSize: "0.8125rem"
-          }} 
-          endIcon={<Icon fontSize="16" iconName="Edit" />}>
-          
-          <span className="update-button-content">UPDATE</span>
-          
-        </Button>
-        <DropdownMenu
+      <Grid2 container direction="column" className="productDetail">
+        <Grid2 container spacing={2} className="mb-5" justifyContent={{ md: "space-between", sm: "center" }} alignItems="center" direction={{ sm: "column", md: "row" }}>
+          <Grid2 size={{md: 3, sm: 12}} display="flex" justifyContent="center">
+            {getStatusTag(part.status)}
+          </Grid2>
+          <Grid2 size={{md: 3, sm: 12}} display="flex" justifyContent="center">
+            <Button size="small" onClick={() => console.log("DCM v2.0 button")} className="update-button" endIcon={<Icon fontSize="16" iconName="Edit" />}>            
+                <span className="update-button-content">UPDATE</span>            
+            </Button>
+          </Grid2>
+          <Grid2 size={{md: 3, sm: 12}} display="flex" justifyContent="center">
+            <DropdownMenu
               buttonSx={{
                 'padding': '10px 10px',
                 'border': '1px solid #b4b4b4!important',
@@ -145,7 +140,7 @@ const ProductsDetails = () => {
               buttonText="Share"
               startIcon={<Icon fontSize="16" iconName="IosShare" />}
             >
-              <div className="flex flex-column">
+              <Grid2 container direction="column">
                 <Button className="dropdown-button share-dropdown-btn" color="secondary" size="small" onClick={handleCopy} startIcon={<Icon fontSize="16" iconName="ContentCopy" />}>
                   <span className="dropdown-button-content">{PRODUCT_OPTIONS.COPY}</span>
                 </Button>
@@ -155,171 +150,114 @@ const ProductsDetails = () => {
                 <Button className="dropdown-button share-dropdown-btn" color="secondary" size="small" onClick={handleShare} startIcon={<Icon fontSize="16" iconName="IosShare" />}>
                   <span className="dropdown-button-content">{PRODUCT_OPTIONS.SHARE}</span>
                 </Button>
-              </div>
+              </Grid2>
             </DropdownMenu>
-      </div>
-      <Grid2 container spacing={1} direction="row"   sx={{
-    justifyContent: "space-between",
-    alignItems: "top",
-  }}>
-        <Grid2 size={5}>
-          <Grid2 className="my-5 flex flex-content-between px-3">
-            <div className="title-subtitle">
-              <Typography variant="h2">{part.name}</Typography>
-              <Typography variant="caption1">{part.class}</Typography>
-            </div>
-          </Grid2>
-
-          <Grid2 className="ml-3 product-card">
-            <div className="mb-2">
-              <Typography variant="label3">Manufacturer</Typography>
-              <Typography variant="body1">{part.manufacturer}</Typography>
-            </div>
-            <div className="mt-2 mb-2">
-              <Typography variant="label3">Manufacturer Part Id</Typography>
-              <Typography variant="body1">{part.manufacturerPartId}</Typography>
-            </div>
-            <div className="mb-2" style={{margin: '30px 0px 10px 0'}}>
-              <Typography variant="label4">Description</Typography>
-              <Typography variant="body2">{part.description}</Typography>
-            </div>
-            <div className="flex flex-content-between">
-            <div className="mr-2">
-              <Typography variant="label4">Created</Typography>
-              <Typography variant="body2">{part.created}</Typography>
-            </div>
-            <div className="ml-2">
-              <Typography variant="label4">Updated</Typography>
-              <Typography variant="body2">{part.created}</Typography>
-            </div>
-            </div>
           </Grid2>
         </Grid2>
-        <Grid2 size={{lg: 3, md: 6, sm: 6}}>
-          <img src={part.image} alt={part.name} className="product-image img-fluid my-auto" />
-          <div className="mt-3">
-          <div className="mt-2 mb-2 flex flex-items-center">
+
+        <Grid2 container justifyContent="space-between" className="mb-5">
+          <Grid2 size={{lg: 4, md: 12}}>
+            <Grid2 className="title-subtitle">
+                <Typography variant="h2">{part.name}</Typography>
+                <Typography variant="caption1">{part.class}</Typography>
+            </Grid2>
+
+            <Grid2 className="ml-3 mb-2 product-card">
+              <Box>
+                <Typography variant="label3">Manufacturer</Typography>
+                <Typography variant="body1">{part.manufacturer}</Typography>
+              </Box>
+              <Box>
+                <Typography variant="label3">Manufacturer Part Id</Typography>
+                <Typography variant="body1">{part.manufacturerPartId}</Typography>
+              </Box>
+              <Box>
+                <Typography variant="label4">Description</Typography>
+                <Typography variant="body2">{part.description}</Typography>
+              </Box>
+              <Grid2 container>
+                <Grid2 size={{md:6, xs:12}}>
+                  <Typography variant="label4">Created</Typography>
+                  <Typography variant="body2">{part.created}</Typography>
+                </Grid2>
+                <Grid2 size={{md:6, xs:12}}>
+                  <Typography variant="label4">Updated</Typography>
+                  <Typography variant="body2">{part.created}</Typography>
+                </Grid2>
+              </Grid2>
+            </Grid2>
+          </Grid2>
+          <Grid2 size={{lg: 4, md: 12}} alignContent="right" alignItems="right">
+            <img src={part.image} alt={part.name} className="product-image img-fluid my-auto" />
+            <Box>
               <Typography variant="label4">{part.uuid}</Typography>
-            </div>
-            <h2>Shared With:</h2>
-            <ul className="mt-3">
-              <li className="flex">
-                <Icon fontSize="16" iconName="Polyline" className="my-auto mr-1" />
-                <Typography variant="label2" style={{ marginRight: "5px" }}>Volkswagen AG -</Typography>
-                <Typography variant="body2">BPNL42621500AS61</Typography>
-              </li>
-              <li className="flex">
-                <Icon fontSize="16" iconName="Polyline" className="my-auto mr-1" />
-                <Typography variant="label2" style={{ marginRight: "5px" }}>BMW Racing Gmbh -</Typography>
-                <Typography variant="body2">BPNL3A4T8A5621S3</Typography>
-              </li>
-              <li className="flex">
-                <Icon fontSize="16" iconName="Polyline" className="my-auto mr-1" />
-                <Typography variant="label2" style={{ marginRight: "5px" }}>John the Recycler KG - </Typography>
-                <Typography variant="body2">BPNL5ASD5428800A</Typography>
-              </li>
-              <li className="flex">
-                <Icon fontSize="16" iconName="Launch" className="my-auto mr-1" />
-                <a href="">512 more</a>
-  
-              </li>
-            </ul>
-          </div>
+            </Box>
+            <h2 className="mt-4">Shared With:</h2>
+              <ul className="mt-3">
+                <li className="flex">
+                  <Icon fontSize="16" iconName="Polyline" className="my-auto mr-1" />
+                  <Typography variant="label2" style={{ marginRight: "5px" }}>Volkswagen AG -</Typography>
+                  <Typography variant="body2">BPNL42621500AS61</Typography>
+                </li>
+                <li className="flex">
+                  <Icon fontSize="16" iconName="Polyline" className="my-auto mr-1" />
+                  <Typography variant="label2" style={{ marginRight: "5px" }}>BMW Racing Gmbh -</Typography>
+                  <Typography variant="body2">BPNL3A4T8A5621S3</Typography>
+                </li>
+                <li className="flex">
+                  <Icon fontSize="16" iconName="Polyline" className="my-auto mr-1" />
+                  <Typography variant="label2" style={{ marginRight: "5px" }}>John the Recycler KG - </Typography>
+                  <Typography variant="body2">BPNL5ASD5428800A</Typography>
+                </li>
+                <li className="flex">
+                  <Icon fontSize="16" iconName="Launch" className="my-auto mr-1" />
+                  <a href="">512 more</a>
+                </li>
+              </ul>
+          </Grid2>
         </Grid2>
+
+        <Grid2 container spacing={2} direction="column" className="add-on-buttons">
+          <Grid2 size={{ sm: 12 }}>
+            <Button className="submodel-button" variant="outlined" color="primary" size="large" onClick={handleOpenDialog} fullWidth={true}>
+              <span className="submodel-button-content">DIGITAL PRODUCT PASSPORT v5.0.0</span>
+              <Icon fontSize="16" iconName="OpenInNew" />
+            </Button>
+          </Grid2>
+
+        <Grid2 container spacing={2} justifyContent="center">
+          <Grid2 size={{ lg: 4, md: 12, sm: 12 }}>
+            <Button className="submodel-button" variant="outlined" color="primary" size="large" onClick={() => console.log("PCF v3.0 button")} fullWidth={true}>
+              <span className="submodel-button-content">PCF v3.0.0</span>
+              <Icon fontSize="16" iconName="OpenInNew" />
+            </Button>
+          </Grid2>
+          <Grid2 size={{ lg: 4, md: 12, sm: 12 }}>
+            <Button className="submodel-button" variant="outlined" color="primary" size="large" onClick={() => console.log("DPP v2.0 button")} fullWidth={true}>
+              <span className="submodel-button-content">TRANSMISSION PASS v2.0.0</span>
+              <Icon fontSize="16" iconName="OpenInNew" />
+            </Button>
+          </Grid2>
+          <Grid2 size={{ lg: 4, md: 12, sm: 12 }}>
+            <Button className="submodel-button" variant="outlined"color="primary" size="large" fullWidth={true}>
+              <span className="submodel-button-content">DCM v2.0.0</span>
+              <Icon fontSize="16" iconName="OpenInNew" />
+            </Button>
+          </Grid2>
+        </Grid2>
+        <Grid2 size={{ sm: 12 }}>
+          <Button className="submodel-button" color="success" size="small" onClick={() => console.log("Add button")} fullWidth={true} style={{ padding: "5px" }}>
+            <Icon fontSize="18" iconName="Add" />
+          </Button>
+        </Grid2>
+
+        </Grid2>
+
+        <JsonViewerDialog open={dialogOpen} onClose={handleCloseDialog} carJsonData={part}/>
       </Grid2>
-
-      <div className="flex m-5">
-        <Button className="submodel-button" variant="outlined" color="primary" size="large" onClick={handleOpenDialog} fullWidth={true} style={{ padding: "10px" }}>
-          <span className="submodel-button-content">DIGITAL PRODUCT PASSPORT v5.0.0</span>
-          <Icon fontSize="16" iconName="OpenInNew" />
-        </Button>
-      </div>
-      <div className="flex m-5 flex-content-between flex-gap-5">
-        <Button className="submodel-button" variant="outlined" color="primary" size="large" onClick={() => console.log("PCF v3.0 button")} fullWidth={true} style={{ padding: "10px" }}>
-          <span className="submodel-button-content">PCF v3.0.0</span>
-          <Icon fontSize="16" iconName="OpenInNew" />
-        </Button>
-        <Button className="submodel-button" variant="outlined" color="primary" size="large" onClick={() => console.log("DPP v2.0 button")} fullWidth={true} style={{ padding: "10px" }}>
-          <span className="submodel-button-content">TRANSMISSION PASS v2.0.0</span>
-          <Icon fontSize="16" iconName="OpenInNew" />
-        </Button>
-        <Button className="submodel-button" variant="outlined"color="primary" size="large" fullWidth={true} style={{ padding: "10px" }}>
-          <span className="submodel-button-content">DCM v2.0.0</span>
-          <Icon fontSize="16" iconName="OpenInNew" />
-        </Button>
-      </div>
-      <div className="flex m-5">
-        <Button className="submodel-button" color="success" size="small" onClick={() => console.log("Add button")} fullWidth={true} style={{ padding: "5px" }}>
-          <Icon fontSize="18" iconName="Add" />
-        </Button>
-      </div>
-
-      <JsonViewerDialog open={dialogOpen} onClose={handleCloseDialog} carJsonData={part}/>
-    </div>
-    <div className="product-table-wrapper">
-    <Table
-      className="product-table"
-      columnHeadersBackgroundColor="#fff"
-      getRowId={(row) => row.uuid}
-
-      rowsCount="5 of 52.0213 Digital Twins"
-      columns={[
-        {
-          field: 'uuid',  
-          flex: 3,
-          headerName: 'uuid'
-        },
-        {
-          field: 'partInstanceId',
-          flex: 3,
-          headerName: 'Part Instance ID'
-        },
-        {
-          field: 'submodels',
-          flex: 1,
-          headerName: 'Submodels'
-        },
-        {
-          field: 'status',
-          flex: 1,
-          headerName: 'Status'
-        },
-        {
-          field: 'type',
-          flex: 1,
-          headerName: 'Type'
-        },
-        {
-          field: 'created',
-          flex: 1,
-          headerName: 'Created'
-        },
-        {
-          field: 'updated',
-          flex: 2,
-          headerName: 'Updated'
-        },
-        {
-          field: 'manufacturer',
-          flex: 2,
-          headerName: 'Manufacturer'
-        }
-      ]}
-      disableColumnMenu
-      disableColumnSelector
-      disableDensitySelector
-      hasBorder
-      hideFooter
-      noRowsMsg="No rows"
-      rowHeight={50}
-      rows={instanceData}
       
-      searchPlaceholder=""
-      title="Instance Products"
-      toolbarVariant="basic"
-    />
-    </div>
-    </div>
+      <InstanceProductsTable />
+    </>
   );
 }
 
