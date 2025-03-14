@@ -174,13 +174,7 @@
   flex-direction: row;
   background: linear-gradient(180deg, rgba(1,32,96,0.8323704481792717) 0%, rgba(5,107,153,0.5690651260504201) 100%);
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-}
-
-/* Sidebar en escritorio */
-@media (min-width: 626px) {
-  .sidebarContainer {
-    height: 100vh;
-  }
+  height: 100%;
 }
 
 .iconBar {

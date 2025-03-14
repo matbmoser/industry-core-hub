@@ -56,7 +56,7 @@ const ProductsDetails = () => {
           severity: "success",
           title: "PartInstanceID copied to clipboard",
         });
-        setTimeout(() => setNotification(null), 15500); // Cierra la notificación después de 3 segundos
+        setTimeout(() => setNotification(null), 3000);
       })
       .catch((error) => {
         setNotification({
@@ -64,7 +64,7 @@ const ProductsDetails = () => {
           severity: "error",
           title: "Failed to copy PartInstanceID",
         });
-        setTimeout(() => setNotification(null), 15500); // Cierra la notificación después de 3 segundos
+        setTimeout(() => setNotification(null), 3000);
         console.error("Failed to copy text: ", error);
       });
   };
@@ -255,7 +255,7 @@ const ProductsDetails = () => {
 
         <JsonViewerDialog open={dialogOpen} onClose={handleCloseDialog} carJsonData={part}/>
       </Grid2>
-      
+
       <InstanceProductsTable />
     </>
   );
