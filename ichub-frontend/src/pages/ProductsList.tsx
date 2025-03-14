@@ -37,7 +37,6 @@ const ProductsList = () => {
   }, []);
 
   const handleButtonClick = (itemId: string) => {
-    console.log(itemId);
     navigate(`/product/${itemId}`); // Navigate to the details page
   };
 

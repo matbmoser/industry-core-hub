@@ -42,7 +42,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 
 import instanceData from "../../tests/payloads/instance-data.json";
-import { InstanceProduct } from '../../types/InstanceProduct';
+import { InstanceProduct } from '../../types/instanceProduct';
 
 const rows = instanceData;
 

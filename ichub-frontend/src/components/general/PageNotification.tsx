@@ -20,15 +20,22 @@
  * SPDX-License-Identifier: Apache-2.0
 ********************************************************************************/
 
-export interface PartInstance {
-    uuid: string,
-    name: string,
-    status: string,
-    manufacturer: string,
-    manufacturerPartId: string,
-    class: string,
-    description: string,
-    image: string
-    created: string
-    updated: string
+
+import { Grid2 } from '@mui/material';
+import { PageNotifications } from '@catena-x/portal-shared-components';
+
+interface PageNotificationProps {
+  notification: { open: boolean; severity: "success" | "error"; title: string } | null;
 }
+
+const PageNotification = ({ notification }: PageNotificationProps) => {
+  return (
+    notification && (
+      <Grid2 size={{xs: 12}}>
+        <PageNotifications open severity={notification.severity} showIcon title={notification.title} />
+      </Grid2>
+    )
+  );
+};
+
+export default PageNotification;

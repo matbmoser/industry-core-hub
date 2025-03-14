@@ -368,6 +368,7 @@
   padding: 10px;
 }
 
+/* Dropdown menu borders */
 div[role="presentation"] > div.MuiPaper-root.MuiPopover-paper.MuiMenu-paper {
   background-color: var(--brand-dark);
   box-shadow: 0 0 10px var(--brand-shadow)
@@ -396,6 +397,7 @@ div[role="presentation"] > div.MuiPaper-root.MuiPopover-paper.MuiMenu-paper butt
   max-width: 100%;
   height: auto;
 }
+
 .share-dropdown-btn {
   border-radius: 0px!important;
   background-color: #000!important;
@@ -454,6 +456,7 @@ div[role="presentation"] > div.MuiPaper-root.MuiPopover-paper.MuiMenu-paper butt
 
 .submodel-button{
   border-radius: 8px!important;
+  border-color: #0f71cb!important;
 }
 
 
