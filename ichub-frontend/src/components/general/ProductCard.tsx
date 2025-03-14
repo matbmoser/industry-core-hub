@@ -177,9 +177,9 @@ export const ProductCard = ({
                 <Typography
                   variant="h5"
                   sx={{
-                    "-webkit-line-clamp": "2",
-                    display: "-webkit-box",
-                    "-webkit-box-orient": "vertical",
+                    WebkitLineClamp: 2,
+                    display: "WebkitBox",
+                    WebkitBoxOrient: "vertical",
                     overflow: "hidden",
                     fontWeight: "bold",
                     fontSize: "18px",
