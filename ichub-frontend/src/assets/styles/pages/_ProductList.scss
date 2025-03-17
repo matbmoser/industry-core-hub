@@ -38,3 +38,20 @@
         @include mixins.space-shadow-strong;
     }
 }
+
+.product-cards {
+    .product-card {
+        background: black !important;
+        border-radius: 8px !important;
+        box-shadow: 0 0 12px rgb(1, 40, 119);
+        border: 1px solid var(--brand-border) !important;
+
+        &:hover {
+            border: 2px solid $brand-card-hover-border !important;
+        }
+    }
+
+    .MuiChip-icon {
+        color: black !important;
+    }
+}

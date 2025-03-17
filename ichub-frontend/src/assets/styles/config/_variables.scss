@@ -29,17 +29,26 @@ $gradient-start: rgba(1, 32, 96, 0.83);
 $gradient-end: rgba(5, 107, 153, 0.57);
 $blue-gradient-bg: linear-gradient(180deg, $gradient-start 0%, $gradient-end 100%);
 
-$brand-blue: rgb(1, 40, 119);
+$dark-gradient-start: rgba(0, 8, 24, 0.83);
+$dark-gradient-end: rgba(5, 60, 85, 0.57);
+$dark-blue-gradient-bg: linear-gradient(180deg, $dark-gradient-start 0%, $dark-gradient-end 100%);
 
 // Brand colors
+$brand-blue: rgb(1, 40, 119);
+$brand-light-blue: rgb(15, 113, 203);
+$brand-dark: rgb(0, 0, 0);
 $brand-primary: rgb(1, 32, 96);
-$brand-text: #f8f9fa;
-$brand-secondary-text: #d3d3d3;
+$brand-orange: rgb(250, 160, 35);
+$brand-orange-hover: rgba(255, 165, 0, 0.83);
+$brand-gray: rgba(77, 77, 77, 0.56);
+$brand-text: rgb(248, 249, 250);
+$brand-secondary-text: rgb(211, 211, 211);
 $brand-shadow: rgba(255, 255, 255, 0.50);
-$brand-border: rgba(1, 86, 255, 0.83);
+$brand-border: rgba(1, 86, 255, 0.26);
+
+// Card Styles
 $brand-card-border: rgba(95, 185, 255, 0.26);
 $brand-card-hover-border: rgba(1, 86, 255, 0.83);
-$brand-orange-hover: rgba(255, 165, 0, 0.83);
 
 // Dropdown button
 $dropdown-hover-bg: #7cb0b0;

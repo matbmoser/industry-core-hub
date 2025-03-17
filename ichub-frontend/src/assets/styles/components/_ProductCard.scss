@@ -20,3 +20,164 @@
  * SPDX-License-Identifier: Apache-2.0
 ********************************************************************************/
 
+@use "../config/variables" as *;
+
+.productDetail {
+    padding: 20px;
+    width: 100%;
+    margin: 20px 0 30px;
+  
+    * {
+        color: $brand-text !important;
+    }
+  
+    .product-card {
+        background: black !important;
+        border-radius: 8px !important;
+        box-shadow: 0 0 12px $brand-blue;
+        border: 1px solid $brand-border !important;
+        padding: 20px;
+    }
+  
+    &, 
+    .cx-card__decision--item .cx-card__decision--button {
+        background: black !important;
+        border-radius: 8px !important;
+        box-shadow: 0 0 10px $brand-primary;
+        border: 2px solid $brand-border !important;
+    }
+
+    .MuiChip-root span {
+        color: $brand-dark !important;
+    }
+  
+    .cx-dropdown-menu {
+        button {
+            background-color: $brand-dark;
+            color: $brand-text;
+            border: 1px solid white;
+
+            &:hover {
+                background-color: $brand-dark;
+                color: $brand-text;
+            }
+        }
+
+        .dropdown-buttons {
+            background-color: $brand-dark;
+        }
+    }
+  
+    button.update-button {
+        background-color: $brand-gray;
+        height: 32px;
+        box-sizing: border-box;
+        border-radius: 6px;
+        font-size: 0.8125rem;
+    }
+  
+    .title-subtitle {
+        margin: 20px 0;
+    }
+  
+    .product-card {
+        .MuiBox-root,
+        .MuiGrid2-root {
+            margin: 10px 0;
+        }
+    }
+  
+    .add-on-buttons button {
+        padding: 10px;
+    }
+
+    .product-image{
+        max-height: 250px;
+        border-radius: 25px;
+    }
+
+
+
+
+
+    .product-table-wrapper {
+        margin-top: 40px;
+
+        * {
+            color: white !important;
+        }
+      
+        > div.MuiPaper-root {
+            background: black !important;
+            box-shadow: 0 0 10px rgb(1, 32, 96);
+            border-radius: 8px !important;
+            border: 2px solid var(--brand-border) !important;
+        }
+
+        tbody {
+            td, th {
+                font-size: 14px;
+            }
+        }
+
+        tr.Mui-selected {
+            background-color: var(--brand-border) !important;
+        }
+    }
+      
+}
+  
+.MuiChip-icon {
+    color: black !important;
+}
+
+.cx-card__decision *,
+.productDetail * {
+    color: $brand-text !important;
+}
+
+div[role="presentation"] {
+    > div.MuiPaper-root.MuiPopover-paper.MuiMenu-paper {
+        background-color: $brand-dark;
+        box-shadow: 0 0 10px $brand-shadow;
+
+        button {
+            background-color: $brand-orange;
+            color: $brand-dark;
+            font-weight: 600;
+        }
+    }
+}
+
+.share-dropdown-btn {
+    border-radius: 0 !important;
+    background-color: #000 !important;
+    color: white !important;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  
+    &:hover {
+        background: $blue-gradient-bg;
+    }
+}
+
+.update-button-content{
+    font-size: 15px;
+}
+
+.submodel-button-content{
+    padding-right: 5px;
+    font-size: 15px;
+    text-transform:initial 
+}
+
+.submodel-button{
+    border-radius: 8px!important;
+    border-color: $brand-light-blue!important;
+
+    &:hover {
+        background: $blue-gradient-bg;
+        border-color: $brand-text!important;
+    }
+}

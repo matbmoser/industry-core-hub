@@ -63,7 +63,7 @@ const ProductData = ({ part }: ProductDataProps) => {
             </Grid2>
         </Grid2>
         <Grid2 size={{lg: 4, md: 12}} alignContent="right" alignItems="right">
-            <img src={part.image} alt={part.name} className="product-image img-fluid my-auto" />
+            <img src={part.image} alt={part.name} className="product-image my-auto" />
             <Box>
                 <Typography variant="label4">{part.uuid}</Typography>
             </Box>

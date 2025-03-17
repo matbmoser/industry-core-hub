@@ -155,9 +155,9 @@ const ProductsDetails = () => {
         </Grid2>
 
         <JsonViewerDialog open={dialogOpen} onClose={handleCloseDialog} carJsonData={part}/>
-      </Grid2>
 
-      <InstanceProductsTable />
+        <InstanceProductsTable />
+      </Grid2>
     </>
   );
 }
