@@ -55,11 +55,11 @@ $spacing: (
 .text-center { text-align: center; }
 
 @mixin center-flex {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
 
 @mixin space-title-h2-font {
     font-size: 20px;
@@ -68,10 +68,17 @@ $spacing: (
     letter-spacing: 10px;
 }
 
-@mixin space-shadow-strong {
-    box-shadow: 0 0 12px $brand-blue;
+@mixin space-shadow($color) {
+    box-shadow: 0 0 12px $color;
 }
 
-@mixin space-shadow-light {
-    box-shadow: 0 0 10px $brand-blue;
+@mixin dark-bg-white-text {
+  background-color: $brand-dark!important;
+  color: $brand-text!important;
+}
+
+@mixin rounded-bordered($radius: 8px, $shadow: 0 0 10px $brand-primary, $border: 2px solid $brand-border) {
+  border-radius: $radius !important;
+  box-shadow: $shadow;
+  border: $border !important;
 }
