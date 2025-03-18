@@ -32,6 +32,10 @@ $dark-blue-gradient-bg: linear-gradient(180deg, $dark-gradient-start 0%, $dark-g
 $header-gradient-end: rgba(0, 165, 255, 0.57);
 $header-gradient-bg: linear-gradient(180deg, $gradient-start 0%, $header-gradient-end 100%);
 
+$opaque-gradient-start: rgb(0, 42, 126);
+$opaque-gradient-end: rgb(0, 108, 167);
+$header-opaque-gradient-bg: linear-gradient(180deg, $opaque-gradient-start 0%, $opaque-gradient-end 100%);
+
 // Brand colors
 $brand-blue: rgb(1, 40, 119);
 $brand-light-blue: rgb(15, 113, 203);

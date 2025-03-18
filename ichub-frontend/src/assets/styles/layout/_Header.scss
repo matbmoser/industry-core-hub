@@ -30,6 +30,11 @@ header.ichub-header {
   border-bottom: 5px solid $brand-header-blue;
   padding: 0 !important;
   position: sticky !important;
+  transition: background-color 0.3s ease-in-out;
+
+  &.scrolled {
+    background: $header-opaque-gradient-bg;
+  }
 
   button.user-button {
     background-color: $brand-border;
