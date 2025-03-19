@@ -29,7 +29,7 @@ import Sidebar from '../components/general/Sidebar';
 function MainLayout() {
   return (
     <Grid2 container direction="column" className="contentWrapper">
-      <Grid2>
+      <Grid2 className="headerWrapper">
         <Header/>
       </Grid2>
       <Grid2 container className="pageWrapper" spacing={2}>

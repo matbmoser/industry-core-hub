@@ -31,10 +31,26 @@
     }
     .text{
         @include mixins.space-title-h2-font;
-        color: $darkmode-text;
+        color: $brand-text;
         padding: 5px 80px;
         text-align: center;
         background: rgba($brand-primary, 0.3);
-        @include mixins.space-shadow-strong;
+        @include mixins.space-shadow($brand-blue);
+    }
+}
+
+.product-cards {
+    .product-card {
+        background: $brand-dark !important;
+        @include mixins.space-shadow($brand-blue);
+        @include mixins.rounded-bordered;
+
+        &:hover {
+            border: 2px solid rgba($brand-light-blue, 0.85) !important;
+        }
+    }
+
+    .MuiChip-icon {
+        color: $brand-dark !important;
     }
 }
