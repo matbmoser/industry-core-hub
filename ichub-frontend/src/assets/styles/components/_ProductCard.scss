@@ -88,7 +88,10 @@
     }
 
     .product-image{
+        display: block;
         max-height: 250px;
+        max-width: 100%;
+        height: auto;
         border-radius: 25px;
     }
 
