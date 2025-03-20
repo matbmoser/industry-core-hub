@@ -139,6 +139,15 @@ div[role="presentation"] {
             color: $brand-dark;
             font-weight: 600;
         }
+
+        svg {
+            fill: $brand-text;
+        }
+
+        p {
+            color: $brand-text;
+            margin-left: 10px;
+        }
     }
 }
 
