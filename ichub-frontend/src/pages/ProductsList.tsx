@@ -35,7 +35,7 @@ const ProductsList = () => {
   const [carParts, setCarParts] = useState<PartInstance[]>([]);
   const [initialCarParts, setInitialCarParts] = useState<PartInstance[]>([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const rowsPerPage = 10;
 
 
    const handleChangePage = (
@@ -49,7 +49,7 @@ const ProductsList = () => {
     // Define the async function inside useEffect
     const fetchData = async () => {
       try {
-        const data = await carPartsData;  // Resolve the promise
+        const data =  carPartsData;  // Resolve the promise
         setCarParts(data);
         setInitialCarParts(data);
       } catch (error) {
