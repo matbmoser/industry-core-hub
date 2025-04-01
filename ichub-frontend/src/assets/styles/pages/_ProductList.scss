@@ -32,9 +32,14 @@
     .text{
         @include mixins.space-title-h2-font;
         color: $darkmode-text;
-        padding: 5px 80px;
+        padding:10px;
         text-align: center;
         background: rgba($brand-primary, 0.3);
         @include mixins.space-shadow-strong;
+        width: 74%;
+    }
+    .pagination-text .MuiTablePagination-displayedRows{
+        margin: 20px 0px;
+        color: $darkmode-text;
     }
 }

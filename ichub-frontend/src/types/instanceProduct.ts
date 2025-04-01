@@ -31,3 +31,4 @@ export interface InstanceProduct {
     updated: string,
     manufacturer: string
 }
+
