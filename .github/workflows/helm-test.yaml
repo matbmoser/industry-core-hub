@@ -54,12 +54,12 @@ jobs:
                 push: true
                 tags: kind-registry:5000/ichub-backend:latest
 
-            - name: Build frontend image
-              uses: docker/build-push-action@v3
-              with:
-                context: "{{defaultContext}}:ichub-frontend"
-                push: true
-                tags: kind-registry:5000/ichub-frontend:latest
+            #- name: Build frontend image
+            #  uses: docker/build-push-action@v3
+            #  with:
+            #    context: "{{defaultContext}}:ichub-frontend"
+            #    push: true
+            #    tags: kind-registry:5000/ichub-frontend:latest
 
             - name: Set up Helm
               uses: azure/setup-helm@v3
