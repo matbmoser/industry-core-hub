@@ -10,6 +10,7 @@ on:
       paths:
         - 'charts/industry-core-hub/**'
         - '.github/workflows/helm-test.yaml'
+      branches: main
     workflow_dispatch:
       inputs:
         node_image:
@@ -52,14 +53,14 @@ jobs:
               with:
                 context: "{{defaultContext}}:ichub-backend"
                 push: true
-                tags: kind-registry:5000/ichub-backend:latest
+                tags: kind-registry:5000/ichub-backend:testing
 
             #- name: Build frontend image
             #  uses: docker/build-push-action@v3
             #  with:
             #    context: "{{defaultContext}}:ichub-frontend"
             #    push: true
-            #    tags: kind-registry:5000/ichub-frontend:latest
+            #    tags: kind-registry:5000/ichub-frontend:testing
 
             - name: Set up Helm
               uses: azure/setup-helm@v3
@@ -83,17 +84,19 @@ jobs:
 
             - name: Run chart-testing (lint)
               run: ct lint --validate-maintainers=false --target-branch ${{ github.event.repository.default_branch }}
+            
             - name: Run chart-testing (install)
-              run: ct install --charts charts/industry-core-hub
+              run: ct install --charts charts/industry-core-hub --target-branch ${{ github.event.repository.default_branch }} --helm-extra-set-args "--set backend.image.repository=kind-registry:5000/ichub-backend --set backend.image.tag=testing --set frontend.image.repository=kind-registry:5000/ichub-backend --set frontend.image.tag=testing"
               if: github.event_name != 'pull_request' || steps.list-changed.outputs.changed == 'true'
 
               # Upgrade the released chart version with the locally available chart
               # default value for event_name != workflow_dispatch
-            - name: Run helm upgrade
-              run: |
-                helm repo add bitnami https://charts.bitnami.com/bitnami
-                helm repo add tractusx-dev https://eclipse-tractusx.github.io/charts/dev
-                helm install [NAME] tractusx-dev/[CHART] --version ${{ github.event.inputs.upgrade_from || 'x.x.x' }}
-                helm dependency update charts/[CHART]
-                helm upgrade [NAME] charts/[CHART]
-              if: github.event_name != 'pull_request' || steps.list-changed.outputs.changed == 'true'
+              # industry-core-hub: we don't have yet a released chart
+            #- name: Run helm upgrade
+            #  run: |
+            #    helm repo add bitnami https://charts.bitnami.com/bitnami
+            #    helm repo add tractusx-dev https://eclipse-tractusx.github.io/charts/dev
+            #    helm install [NAME] tractusx-dev/[CHART] --version ${{ github.event.inputs.upgrade_from || 'x.x.x' }}
+            #    helm dependency update charts/[CHART]
+            #    helm upgrade [NAME] charts/[CHART]
+            #  if: github.event_name != 'pull_request' || steps.list-changed.outputs.changed == 'true'
