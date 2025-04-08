@@ -29,7 +29,7 @@ replicaCount: 1
 
 # -- Backend configuration
 backend:
-  enabled: false
+  enabled: true
   name: "industry-core-hub-backend"
   image:
     repository: "ichub-backend"
