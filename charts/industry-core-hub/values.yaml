@@ -42,8 +42,8 @@ backend:
   service:
     # -- [Service type](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to expose the running application on a set of Pods as a network service
     type: ClusterIP
-    port: 80
-    targetPort: 8000
+    portService: 8000
+    portContainer: 8000
   
   podAnnotations: {}
 
@@ -175,8 +175,8 @@ frontend:
   service:
     # -- [Service type](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to expose the running application on a set of Pods as a network service
     type: ClusterIP
-    port: 80
-    targetPort: 8080
+    portService: 8080
+    portContainer: 8080
   
   podAnnotations: {}
 
