@@ -38,9 +38,7 @@ postgresql:
           - path: /
             pathType: Prefix
     tls:
-       - secretName: "metadata-registry.int.catena-x.net-tls"
-         hosts:
-           - "metadata-registry.int.catena-x.net" 
+       enabled: true
     
 # -- pgAdmin4 configuration
 pgadmin4:
