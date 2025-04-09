@@ -21,12 +21,12 @@ on:
         default: "kindest/node:v1.27.3"
         required: false
         type: string
-      upgrade_from:
-        description: "chart version to upgrade from"
-        # chart version from 3.1 release as default
-        default: "x.x.x"
-        required: false
-        type: string
+      # upgrade_from:
+      #   description: "chart version to upgrade from"
+      #   # chart version from 3.1 release as default
+      #   default: "x.x.x"
+      #   required: false
+      #   type: string
       helm_version:
         description: "helm version to test (default = latest)"
         default: "latest"
