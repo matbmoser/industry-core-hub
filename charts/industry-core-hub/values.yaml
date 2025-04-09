@@ -176,7 +176,7 @@ frontend:
     # -- [Service type](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to expose the running application on a set of Pods as a network service
     type: ClusterIP
     port: 80
-    targetPort: 8000
+    targetPort: 8080
   
   podAnnotations: {}
 
