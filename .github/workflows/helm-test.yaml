@@ -26,14 +26,10 @@ on:
   push:
     paths:
       - "charts/industry-core-hub/**"
-      - ".github/workflows/helm-test.yaml"
-      - "**/Dockerfile"
     branches: main
   pull_request:
     paths:
       - "charts/industry-core-hub/**"
-      - ".github/workflows/helm-test.yaml"
-      - "**/Dockerfile"
     branches: main
   workflow_dispatch:
     inputs:
