@@ -105,6 +105,11 @@ jobs:
       - name: Run chart-testing (lint)
         run: ct lint --validate-maintainers=false --target-branch ${{ github.event.repository.default_branch }}
 
+      - name: Setup Helm repos
+        run: |
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo add runix https://helm.runix.net
+
       - name: Run chart-testing (install)
         run: ct install --charts charts/industry-core-hub --target-branch ${{ github.event.repository.default_branch }} --helm-extra-set-args "--set backend.image.repository=kind-registry:5000/ichub-backend --set backend.image.tag=testing --set frontend.image.repository=kind-registry:5000/ichub-frontend --set frontend.image.tag=testing"
         if: github.event_name != 'pull_request' || steps.list-changed.outputs.changed == 'true'
