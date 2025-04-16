@@ -118,7 +118,7 @@ Get the database host
 */}}
 {{- define "industry-core-hub.postgresql.host" -}}
 {{- if .Values.postgresql.enabled }}
-{{- (include "industry-core-hub.fullname" .) -}}
+{{- (include "industry-core-hub.postgresql.fullname" .) -}}
 {{- else -}}
 {{- .Values.externalDatabase.host -}}
 {{- end -}}
