@@ -50,8 +50,8 @@ class PartManagementService():
                 raise ValueError(f"Legal Entity with manufacturer BPNL '{catalog_part_create.manufacturer_id}' does not exist. Please create it first.")
 
             # Check if the catalog part already exists
-            db_catalog_part = repos.catalog_part_repository.get_by_manufacturer_id_manufacturer_part_id(
-                catalog_part_create.manufacturer_id, catalog_part_create.manufacturer_part_id
+            db_catalog_part = repos.catalog_part_repository.get_by_legal_entity_id_manufacturer_part_id(
+                db_legal_entity.id, catalog_part_create.manufacturer_part_id
             )
             if db_catalog_part:
                 raise ValueError("Catalog part already exists.")
