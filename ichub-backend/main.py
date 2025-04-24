@@ -20,6 +20,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
 
+from config.log_manager import LoggingManager
 
 from fastapi import FastAPI, HTTPException, Request
 
@@ -59,16 +60,9 @@ auth_manager: AuthManager
 urllib3.disable_warnings()
 logging.captureWarnings(True)
 
-## Create Logging Folder
-op.make_dir("logs")
-
-# Load the logging config file
-with open('./config/logging.yml', 'rt') as f:
-    log_config = yaml.safe_load(f.read())
-    date = op.get_filedate()
-    op.make_dir(dir_name="logs/"+date)
-    log_config["handlers"]["file"]["filename"] = f'logs/{date}/{op.get_filedatetime()}-ic-backend-sdk.log'
-    config.dictConfig(log_config)
+# Load the logging config
+LoggingManager.init_logging()
+logger = LoggingManager.get_logger(__name__)
 
 # Load the configuation for the application
 with open('./config/configuration.yml', 'rt') as f:
