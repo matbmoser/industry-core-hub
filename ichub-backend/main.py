@@ -21,6 +21,7 @@
 #################################################################################
 
 from config.log_manager import LoggingManager
+from config.config_manager import ConfigManager
 
 from fastapi import FastAPI, HTTPException, Request
 
@@ -65,9 +66,10 @@ LoggingManager.init_logging()
 logger = LoggingManager.get_logger(__name__)
 
 # Load the configuation for the application
-with open('./config/configuration.yml', 'rt') as f:
-    # Read the yaml configuration
-    app_configuration = yaml.safe_load(f.read())
+ConfigManager.load_config()
+
+# Test database connection
+connect_and_test()
     
 # Add the previous folder structure to the system path to import the utilities
 app = FastAPI(title="main")
