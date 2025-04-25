@@ -109,7 +109,7 @@ class PartManagementService():
             customer_part_ids=partner_catalog_parts
         )
 
-        self.create_catalog_part(catalog_part_create)
+        return self.create_catalog_part(catalog_part_create)
 
 
     def delete_catalog_part(self, catlog_part: CatalogPartDelete) -> None:

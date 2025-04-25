@@ -34,17 +34,19 @@ def validate_bpnl(bpnl: str, field_name: str) -> str:
     
     return bpnl
 
-class BusinessPartner(BaseModel):
+class BusinessPartnerRead(BaseModel):
     """Represents a partner with a validated name field."""
     
     name: str = Field(description="The unique name of the business partner.")
     bpnl: str = Field(description="The Catena-X Business Partner Number (BPNL) of the business partner.")
 
+class BusinessPartnerCreate(BusinessPartnerRead):
     @field_validator("bpnl")
     def validate_bpnl(self, bpnl: str) -> str:
         """Validates the BPNL format."""
         return validate_bpnl(bpnl, "bpnl")
-    
+
+
 class DataExchangeContractRead(BaseModel):
     """Represents document type specific contract terms belonging to a data exchange agreement."""
 
@@ -54,7 +56,7 @@ class DataExchangeContractRead(BaseModel):
 class DataExchangeAgreementRead(BaseModel):
     """Represents a data exchange agreement between two business partners."""
 
-    business_partner: BusinessPartner = Field(alias="businessPartner", description="The business partner to whom the data exchange agreement applies.")
+    business_partner: BusinessPartnerRead = Field(alias="businessPartner", description="The business partner to whom the data exchange agreement applies.")
     name: str = Field(description="The unique name of the data exchange agreement with the given business partner.")
     contracts: List[DataExchangeContractRead] = Field(description="The list of data exchange contracts that are part of the agreement.")
 
