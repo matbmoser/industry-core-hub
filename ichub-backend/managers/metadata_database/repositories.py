@@ -105,6 +105,20 @@ class CatalogPartRepository(BaseRepository[CatalogPart]):
             CatalogPart.manufacturer_part_id == manufacturer_part_id)
         return self._session.scalars(stmt).first()
 
+    def find_by_manufacturer_id_manufacturer_part_id(self, manufacturer_id: Optional[str], manufacturer_part_id: Optional[str], join_partner_catalog_parts : bool = False) -> List[CatalogPart]:
+        stmt = select(CatalogPart)
+
+        if join_partner_catalog_parts:
+            stmt = stmt.join(PartnerCatalogPart, CatalogPart.id == PartnerCatalogPart.catalog_part_id).join(BusinessPartner, BusinessPartner.id == PartnerCatalogPart.business_partner_id)
+
+        if manufacturer_id:
+            stmt = stmt.join(LegalEntity).where(LegalEntity.bpnl == manufacturer_id)
+
+        if manufacturer_part_id:
+            stmt = stmt.where(CatalogPart.manufacturer_part_id == manufacturer_part_id)
+        
+        return self._session.exec(stmt).all()
+
 class LegalEntityRepository(BaseRepository[LegalEntity]):
 
     def get_by_bpnl(self, bpnl: str) -> Optional[LegalEntity]:
