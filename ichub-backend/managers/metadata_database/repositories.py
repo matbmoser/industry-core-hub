@@ -25,7 +25,7 @@
 from sqlmodel import SQLModel, Session, select
 from typing import TypeVar, Type, List, Optional, Generic
 
-from models.metadata_database.models import BusinessPartner, CatalogPart, LegalEntity, PartnerCatalogPart
+from models.metadata_database.models import BusinessPartner, CatalogPart, DataExchangeAgreement, LegalEntity, PartnerCatalogPart
 
 ModelType = TypeVar("ModelType", bound=SQLModel)
 
@@ -44,7 +44,8 @@ class BaseRepository(Generic[ModelType]):
         return cls._type  # type: ignore
 
     def create(self, obj_in: ModelType) -> ModelType:
-        pass
+        self._session.add(obj_in)
+        return obj_in
     
     def find_by_id(self, obj_id: int) -> Optional[ModelType]:
         stmt = select(self.get_type()).where(
@@ -119,6 +120,9 @@ class CatalogPartRepository(BaseRepository[CatalogPart]):
         
         return self._session.exec(stmt).all()
 
+class DataExchangeAgreementRepository(BaseRepository[DataExchangeAgreement]):
+    pass
+
 class LegalEntityRepository(BaseRepository[LegalEntity]):
 
     def get_by_bpnl(self, bpnl: str) -> Optional[LegalEntity]:
@@ -127,10 +131,5 @@ class LegalEntityRepository(BaseRepository[LegalEntity]):
         return self._session.scalars(stmt).first()
 
 class PartnerCatalogPartRepository(BaseRepository[PartnerCatalogPart]):
+    pass
 
-    def create(self, catalog_part: CatalogPart, business_partner: BusinessPartner, customer_part_id: str) -> PartnerCatalogPart:
-        """
-        Create a new partner catalog part.
-        """
-        # Logic to create a new partner catalog part
-        pass
