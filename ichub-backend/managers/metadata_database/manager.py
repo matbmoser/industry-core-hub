@@ -22,6 +22,8 @@
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
 
+from threading import Lock
+
 from sqlmodel import create_engine, Session
 
 class RepositoryManager:
@@ -31,6 +33,7 @@ class RepositoryManager:
         self._session = session
         self._business_partner_repository = None
         self._catalog_part_repository = None
+        self._data_exchange_agreement_repository = None
         self._legal_entity_repository = None
         self._partner_catalog_part_repository = None
 
@@ -62,6 +65,10 @@ class RepositoryManager:
         """Manually close the session."""
         self._session.close()
 
+    def refresh(self, obj):
+        """Refresh the state of an instance from the database."""
+        self._session.refresh(obj)
+
     # Lazy Initialization of Repositories
     @property
     def business_partner_repository(self):
@@ -80,6 +87,14 @@ class RepositoryManager:
         return self._catalog_part_repository
 
     @property
+    def data_exchange_agreement_repository(self):
+        """Lazy initialization of the data exchange agreement repository."""
+        if self._data_exchange_agreement_repository is None:
+            from managers.metadata_database.repositories import DataExchangeAgreementRepository
+            self._data_exchange_agreement_repository = DataExchangeAgreementRepository(self._session)
+        return self._data_exchange_agreement_repository
+
+    @property
     def legal_entity_repository(self):
         """Lazy initialization of the legal entity repository."""
         if self._legal_entity_repository is None:
@@ -96,16 +111,19 @@ class RepositoryManager:
         return self._partner_catalog_part_repository
     
 
-class RepositoryManagerFactory():
-    """Factory class for creating repository managers."""
+class RepositoryManagerFactory:
+    """Factory class for creating repository managers with singleton behavior."""
+
+    _engine_instance: RepositoryManager = None
+    _lock: Lock = Lock()
 
     @staticmethod
     def create() -> RepositoryManager:
-        # Create a SQLModel engine for PostgreSQL
-        engine = create_engine("postgresql://username:password@localhost/dbname")
+        """Create or return the singleton instance of RepositoryManager."""
+        if RepositoryManagerFactory._engine_instance is None:
+            with RepositoryManagerFactory._lock:
+                if RepositoryManagerFactory._engine_instance is None:
+                    # Create a SQLModel engine for PostgreSQL
+                    RepositoryManagerFactory._engine_instance = create_engine("postgresql://username:password@localhost/dbname")
 
-        # Create a new session
-        session = Session(engine)
-
-        # Create a new instance of RepositoryManager.
-        return RepositoryManager(session)
+        return RepositoryManager(Session(RepositoryManagerFactory._engine_instance))
