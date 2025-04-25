@@ -24,30 +24,51 @@
 
 from typing import List, Optional
 
-from models.services.partner_management import BusinessPartner
-from managers.metadata_database.repositories import BusinessPartnerRepository
+from models.services.partner_management import BusinessPartnerCreate, BusinessPartnerRead
+from models.metadata_database.models import BusinessPartner, DataExchangeAgreement
+from managers.metadata_database.manager import RepositoryManagerFactory
 
 class PartnerManagementService():
     """
     Service class for managing partners and exchange agreements.
     """
 
-    def __init__(self):
-        self.business_partner_repository = BusinessPartnerRepository()
+    def __init__(self, ):
+        self.repositories = RepositoryManagerFactory.create()
 
-    def create_partner(self, partner_create: BusinessPartner) -> BusinessPartner:
+    def create_partner(self, partner_create: BusinessPartnerCreate) -> BusinessPartnerRead:
         """
         Create a new partner in the system.
         """
-        # Logic to create a new partner
-        pass
+        with self.repositories as repo:
+            
+            # First create the business partner entity
+            db_partner = repo.business_partner_repository.create(BusinessPartner(
+                name=partner_create,
+                bpnl=partner_create.bpnl
+            ))
 
-    def get_partner(self, partner_name: str) -> BusinessPartner:
+            # Needed to get the generated ID from the database into the entity
+            repo.commit()
+            repo.refresh(db_partner)
+
+            # Always create a default data exchange agreement for the partner
+            # (TODO: to be replaced by an explicit API call in a later version)
+            repo.data_exchange_agreement_repository.create(
+                DataExchangeAgreement(
+                    business_partner=db_partner,
+                    name='Default'
+                ))
+
+    def get_partner(self, partner_name: str) -> BusinessPartnerRead:
         """
         Retrieve a partner by its ID.
         """
-        # Logic to retrieve a partner by ID
-        pass
+        
+        with self.repositories as repo:
+            db_partner = repo.business_partner_repository.get_by_name(partner_name)
+            return BusinessPartnerRead(name=db_partner.name, bpnl=db_partner.bpnl) if db_partner else None
+
 
     def delete_partner(self, partner_name: str) -> bool:
         """
@@ -56,9 +77,10 @@ class PartnerManagementService():
         # Logic to delete a partner
         pass
 
-    def list_partners(self) -> List[BusinessPartner]:
+    def list_partners(self) -> List[BusinessPartnerRead]:
         """
         List all partners in the system.
         """
-        # Logic to list all partners
-        pass
+        with self.repositories as repo:
+            db_partners = repo.business_partner_repository.find_all()
+            return [BusinessPartnerRead(name=bp.name, bpnl=bp.bpnl) for bp in db_partners]

@@ -25,7 +25,7 @@
 from sqlmodel import SQLModel, Session, select
 from typing import TypeVar, Type, List, Optional, Generic
 
-from models.metadata_database.models import BusinessPartner, CatalogPart, LegalEntity, PartnerCatalogPart
+from models.metadata_database.models import BusinessPartner, CatalogPart, DataExchangeAgreement, LegalEntity, PartnerCatalogPart
 
 ModelType = TypeVar("ModelType", bound=SQLModel)
 
@@ -44,7 +44,8 @@ class BaseRepository(Generic[ModelType]):
         return cls._type  # type: ignore
 
     def create(self, obj_in: ModelType) -> ModelType:
-        pass
+        self._session.add(obj_in)
+        return obj_in
     
     def find_by_id(self, obj_id: int) -> Optional[ModelType]:
         stmt = select(self.get_type()).where(
@@ -88,42 +89,47 @@ class BaseRepository(Generic[ModelType]):
 class BusinessPartnerRepository(BaseRepository[BusinessPartner]):
 
     def get_by_name(self, name: str) -> Optional[BusinessPartner]:
-        """
-        Retrieve a business partner by its name.
-        """
-        # Logic to retrieve a business partner by name
-        pass
+        stmt = select(BusinessPartner).where(
+            BusinessPartner.name == name)  # type: ignore
+        return self._session.scalars(stmt).first()
 
     def get_by_bpnl(self, bpnl: str) -> Optional[BusinessPartner]:
-        """
-        Retrieve a business partner by its BPNL / Manufacturer ID.
-        """
-        # Logic to retrieve a business partner by BPNL
-        pass
+        stmt = select(BusinessPartner).where(
+            BusinessPartner.bpnl == bpnl)  # type: ignore
+        return self._session.scalars(stmt).first()
 
 class CatalogPartRepository(BaseRepository[CatalogPart]):
 
-    def get_by_manufacturer_id_manufacturer_part_id(self, manufacturer_id: str, manufacturer_part_id: str) -> Optional[CatalogPart]:
-        """
-        Retrieve a catalog part by its manufacturer ID and manufacturer part ID.
-        """
-        # Logic to retrieve a catalog part by manufacturer ID
-        pass
+    def get_by_legal_entity_id_manufacturer_part_id(self, legal_entity_id: int, manufacturer_part_id: str) -> Optional[CatalogPart]:
+        stmt = select(CatalogPart).where(
+            CatalogPart.legal_entity_id == legal_entity_id).where(
+            CatalogPart.manufacturer_part_id == manufacturer_part_id)
+        return self._session.scalars(stmt).first()
+
+    def find_by_manufacturer_id_manufacturer_part_id(self, manufacturer_id: Optional[str], manufacturer_part_id: Optional[str], join_partner_catalog_parts : bool = False) -> List[CatalogPart]:
+        stmt = select(CatalogPart)
+
+        if join_partner_catalog_parts:
+            stmt = stmt.join(PartnerCatalogPart, CatalogPart.id == PartnerCatalogPart.catalog_part_id).join(BusinessPartner, BusinessPartner.id == PartnerCatalogPart.business_partner_id)
+
+        if manufacturer_id:
+            stmt = stmt.join(LegalEntity).where(LegalEntity.bpnl == manufacturer_id)
+
+        if manufacturer_part_id:
+            stmt = stmt.where(CatalogPart.manufacturer_part_id == manufacturer_part_id)
+        
+        return self._session.exec(stmt).all()
+
+class DataExchangeAgreementRepository(BaseRepository[DataExchangeAgreement]):
+    pass
 
 class LegalEntityRepository(BaseRepository[LegalEntity]):
 
     def get_by_bpnl(self, bpnl: str) -> Optional[LegalEntity]:
-        """
-        Retrieve a legal entity by its BPNL.
-        """
-        # Logic to retrieve a legal entity by BPNL
-        pass
+        stmt = select(LegalEntity).where(
+            LegalEntity.bpnl == bpnl)  # type: ignore
+        return self._session.scalars(stmt).first()
 
 class PartnerCatalogPartRepository(BaseRepository[PartnerCatalogPart]):
+    pass
 
-    def create(self, catalog_part: CatalogPart, business_partner: BusinessPartner, customer_part_id: str) -> PartnerCatalogPart:
-        """
-        Create a new partner catalog part.
-        """
-        # Logic to create a new partner catalog part
-        pass

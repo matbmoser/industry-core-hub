@@ -50,8 +50,8 @@ class PartManagementService():
                 raise ValueError(f"Legal Entity with manufacturer BPNL '{catalog_part_create.manufacturer_id}' does not exist. Please create it first.")
 
             # Check if the catalog part already exists
-            db_catalog_part = repos.catalog_part_repository.get_by_manufacturer_id_manufacturer_part_id(
-                catalog_part_create.manufacturer_id, catalog_part_create.manufacturer_part_id
+            db_catalog_part = repos.catalog_part_repository.get_by_legal_entity_id_manufacturer_part_id(
+                db_legal_entity.id, catalog_part_create.manufacturer_part_id
             )
             if db_catalog_part:
                 raise ValueError("Catalog part already exists.")
@@ -109,7 +109,7 @@ class PartManagementService():
             customer_part_ids=partner_catalog_parts
         )
 
-        self.create_catalog_part(catalog_part_create)
+        return self.create_catalog_part(catalog_part_create)
 
 
     def delete_catalog_part(self, catlog_part: CatalogPartDelete) -> None:
@@ -119,38 +119,42 @@ class PartManagementService():
         # Logic to delete a catalog part
         pass
 
-    def get_catalog_part(self, manufacturer_id: str, manufacturer_part_id: str) -> Optional[CatalogPartRead]:
+    def get_catalog_parts(self, manufacturer_id: str = None, manufacturer_part_id: str = None) -> List[CatalogPartRead]:
         with self.repositories as repos:
-            db_catalog_part: Optional[CatalogPart] = repos.catalog_part_repository.get_by_manufacturer_id_manufacturer_part_id(
-                manufacturer_id, manufacturer_part_id
+            result = []
+            
+            db_catalog_parts: List[CatalogPart] = repos.catalog_part_repository.find_by_manufacturer_id_manufacturer_part_id(
+                manufacturer_id, manufacturer_part_id, join_partner_catalog_parts=True
             )
             
-            if not db_catalog_part:
-                return None
-            else:
-                customer_parts: Dict[str, BusinessPartner] = {}
+            if db_catalog_parts:
+                for db_catalog_part in db_catalog_parts:
+                    customer_parts: Dict[str, BusinessPartner] = {}
 
-                if db_catalog_part.partner_catalog_parts:
-                    for db_partner_catalog_part in db_catalog_part.partner_catalog_parts:
-                        customer_parts[db_partner_catalog_part.customer_part_id] = BusinessPartner(
-                            name=db_partner_catalog_part.business_partner.name,
-                            bpnl=db_partner_catalog_part.business_partner.bpnl
+                    if db_catalog_part.partner_catalog_parts:
+                        for db_partner_catalog_part in db_catalog_part.partner_catalog_parts:
+                            customer_parts[db_partner_catalog_part.customer_part_id] = BusinessPartner(
+                                name=db_partner_catalog_part.business_partner.name,
+                                bpnl=db_partner_catalog_part.business_partner.bpnl
+                            )
+
+                    result.append(
+                        CatalogPartRead(
+                            legal_entity_bpnl=db_catalog_part.legal_entity.bpnl,
+                            manufacturer_part_id=db_catalog_part.manufacturer_part_id,
+                            customer_part_ids=customer_parts
                         )
-
-                return CatalogPartRead(
-                    legal_entity_bpnl=db_catalog_part.legal_entity.bpnl,
-                    manufacturer_part_id=db_catalog_part.manufacturer_part_id,
-                    customer_part_ids=customer_parts
-                )
+                    )
             
+            return result
 
-    def get_catalog_parts(self, manufacturer_id: str = None, manufacturer_part_id: str = None) -> List[CatalogPartRead]:
+    def get_catalog_part(self, manufacturer_id: str, manufacturer_part_id: str) -> Optional[CatalogPartRead]:
         """
-        Retrieves catalog parts from the system according to given parameters.
+        Retrieve a catalog part from the system.
         """
-        
-        # Logic to retrieve all catalog parts
-        pass
+
+        part_list = self.get_catalog_parts(manufacturer_id, manufacturer_part_id)
+        return part_list[0] if part_list else None
 
     def create_batch(self, batch_create: BatchCreate) -> BatchRead:
         """
