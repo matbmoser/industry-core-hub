@@ -42,7 +42,8 @@ class BusinessPartnerRead(BaseModel):
 
 class BusinessPartnerCreate(BusinessPartnerRead):
     @field_validator("bpnl")
-    def validate_bpnl(self, bpnl: str) -> str:
+    @staticmethod
+    def validate_bpnl(bpnl: str) -> str:
         """Validates the BPNL format."""
         return validate_bpnl(bpnl, "bpnl")
 
