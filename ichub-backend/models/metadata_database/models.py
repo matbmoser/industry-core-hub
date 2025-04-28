@@ -26,7 +26,7 @@ from typing import Any, Dict, List, Optional
 from uuid import UUID
 from datetime import datetime
 from sqlmodel import Field, SQLModel, Relationship
-from sqlalchemy import Column, JSON
+from sqlalchemy import Column, JSON, UniqueConstraint
 
 class LegalEntity(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
