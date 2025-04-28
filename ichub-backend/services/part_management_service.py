@@ -24,10 +24,10 @@
 
 from typing import Dict, List, Optional
 from models.services.part_management import BatchCreate, BatchRead, CatalogPartCreate, CatalogPartDelete, CatalogPartRead, JISPartCreate, JISPartDelete, JISPartRead, PartnerCatalogPartBase, PartnerCatalogPartCreate, PartnerCatalogPartDelete, SerializedPartCreate, SerializedPartDelete, SerializedPartRead
-from models.services.partner_management import BusinessPartner
+from models.services.partner_management import BusinessPartnerRead
 from managers.metadata_database.repositories import CatalogPartRepository, BusinessPartnerRepository, LegalEntityRepository, PartnerCatalogPartRepository
 from managers.metadata_database.manager import RepositoryManager, RepositoryManagerFactory
-from models.metadata_database.models import CatalogPart, Batch, SerializedPart, JISPart
+from models.metadata_database.models import CatalogPart, Batch, SerializedPart, JISPart, PartnerCatalogPart
 
 class PartManagementService():
     """
@@ -85,10 +85,14 @@ class PartManagementService():
                         raise ValueError(f"Business partner '{partner_catalog_part_create.business_partner_name}' does not exist. Please create it first.")
 
                     # Create the partner catalog part entry in the metadata database
-                    repos.partner_catalog_part_repository.create(db_catalog_part, db_business_partner, partner_catalog_part_create.customer_part_id)
+                    repos.partner_catalog_part_repository.create(PartnerCatalogPart(
+                        business_partner_id=db_business_partner.id,
+                        customer_part_id=partner_catalog_part_create.customer_part_id,
+                        catalog_part_id=db_catalog_part.id
+                    ))
                     # TODO: error handling (issue: if one customer part ID fails, all should fail???)
 
-                    result.customer_part_ids[partner_catalog_part_create.customer_part_id] = BusinessPartner(name = db_business_partner.name, bpnl = db_business_partner.bpnl)  
+                    result.customer_part_ids[partner_catalog_part_create.customer_part_id] = BusinessPartnerRead(name = db_business_partner.name, bpnl = db_business_partner.bpnl)  
 
             return result
 
@@ -129,11 +133,11 @@ class PartManagementService():
             
             if db_catalog_parts:
                 for db_catalog_part in db_catalog_parts:
-                    customer_parts: Dict[str, BusinessPartner] = {}
+                    customer_parts: Dict[str, BusinessPartnerRead] = {}
 
                     if db_catalog_part.partner_catalog_parts:
                         for db_partner_catalog_part in db_catalog_part.partner_catalog_parts:
-                            customer_parts[db_partner_catalog_part.customer_part_id] = BusinessPartner(
+                            customer_parts[db_partner_catalog_part.customer_part_id] = BusinessPartnerRead(
                                 name=db_partner_catalog_part.business_partner.name,
                                 bpnl=db_partner_catalog_part.business_partner.bpnl
                             )
