@@ -147,7 +147,7 @@ class Batch(SQLModel, table=True):
 
     # Composite Unique Constraint
     __table_args__ = (
-        {"unique": ("catalog_part_id", "batch_id")},
+        UniqueConstraint("catalog_part_id", "batch_id", name="uq_catalog_batch_id"),
     )
 
     __tablename__ = "batch"
