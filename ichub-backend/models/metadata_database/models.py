@@ -102,7 +102,7 @@ class PartnerCatalogPart(SQLModel, table=True):
 
     # Composite Unique Constraint
     __table_args__ = (
-        {"unique": ("business_partner_id", "catalog_part_id")},
+        UniqueConstraint("business_partner_id", "catalog_part_id", name="uq_partner_catalog_part"),
     )
 
     __tablename__ = "partner_catalog_part"
