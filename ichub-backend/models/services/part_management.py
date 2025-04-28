@@ -97,7 +97,7 @@ class JISPartBase(CatalogPartBase):
 class JISPartRead(JISPartBase):
     parent_order_number: Optional[str] = Field(alias="parentOrderNumber", description="The parent order number of the JIS part.", default=None)
     jis_call_date: Optional[datetime] = Field(alias="jisCallDate", description="The JIS call date of the JIS part.", default=None)
-    business_partner: BusinessPartner = Field(alias="businessPartner", description="The business partner to whom the part is being offered.")
+    business_partner: BusinessPartnerRead = Field(alias="businessPartner", description="The business partner to whom the part is being offered.")
 
 class JISPartCreate(JISPartBase):
     parent_order_number: Optional[str] = Field(description="The parent order number of the JIS part.", default=None)
