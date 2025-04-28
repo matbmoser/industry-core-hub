@@ -44,7 +44,7 @@ from .part_management import (
 )
 
 from .partner_management import (
-    BusinessPartner,
+    BusinessPartnerRead,
     DataExchangeContractRead,
     DataExchangeContractCreate,
     DataExchangeAgreementCreate,
