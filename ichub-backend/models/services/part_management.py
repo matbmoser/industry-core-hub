@@ -27,7 +27,7 @@ from typing import Dict, Optional, List
 
 from pydantic import BaseModel, Field
 
-from models.services.partner_management import BusinessPartner
+from models.services.partner_management import BusinessPartnerRead
 
 class CatalogPartBase(BaseModel):
     manufacturer_id: str = Field(alias="manufacturerId", description="The BPNL (manufactuer ID) of the part to register.")
@@ -38,7 +38,7 @@ class PartnerCatalogPartBase(BaseModel):
     business_partner_name: str = Field(alias="businessPartnerName", description="The unique name of the business partner to map the catalog part to.")
 
 class CatalogPartRead(CatalogPartBase):
-    customer_part_ids: Optional[Dict[str, BusinessPartner]] = Field(alias="customerPartIds", description="The list of customer part IDs mapped to the respective Business Partners.", default={})
+    customer_part_ids: Optional[Dict[str, BusinessPartnerRead]] = Field(alias="customerPartIds", description="The list of customer part IDs mapped to the respective Business Partners.", default={})
 
 class CatalogPartCreate(CatalogPartBase):
     customer_part_ids: Optional[List[PartnerCatalogPartBase]] = Field(alias="customerPartIds", description="An optional list of customer part IDs to business partner name mappings.", default=[])
@@ -77,7 +77,7 @@ class SerializedPartBase(CatalogPartBase):
 
 class SerializedPartRead(SerializedPartBase):
     van: Optional[str] = Field(description="The optional VAN (Vehicle Assembly Number) of the serialized part.", default=None)
-    business_partner: BusinessPartner = Field(alias="businessPartner", description="The business partner to whom the part is being offered.")
+    business_partner: BusinessPartnerRead = Field(alias="businessPartner", description="The business partner to whom the part is being offered.")
 
 class SerializedPartCreate(SerializedPartBase):
     van: Optional[str] = Field(description="The optional VAN (Vehicle Assembly Number) of the serialized part.", default=None)
