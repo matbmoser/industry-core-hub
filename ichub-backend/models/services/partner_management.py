@@ -41,7 +41,8 @@ class BusinessPartner(BaseModel):
     bpnl: str = Field(description="The Catena-X Business Partner Number (BPNL) of the business partner.")
 
     @field_validator("bpnl")
-    def validate_bpnl(self, bpnl: str) -> str:
+    @staticmethod
+    def validate_bpnl(bpnl: str) -> str:
         """Validates the BPNL format."""
         return validate_bpnl(bpnl, "bpnl")
     
