@@ -21,3 +21,23 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
+
+from .models import (
+    LegalEntity,
+    BusinessPartner,
+    Twin,
+    CatalogPart,
+    PartnerCatalogPart,
+    SerializedPart,
+    JISPart,
+    Batch,
+    BatchBusinessPartner,
+    DataExchangeAgreement,
+    DataExchangeContract,
+    EnablementServiceStack,
+    TwinAspect,
+    TwinAspectRegistration,
+    TwinExchange,
+    TwinRegistration,
+)
+

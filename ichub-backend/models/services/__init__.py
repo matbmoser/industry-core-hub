@@ -21,3 +21,48 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
+
+from .part_management import (
+    CatalogPartRead,
+    CatalogPartCreate,
+    CatalogPartDelete,
+    CatalogPartQuery,
+    PartnerCatalogPartCreate,
+    PartnerCatalogPartDelete,
+    BatchRead,
+    BatchCreate,
+    BatchDelete,
+    BatchQuery,
+    SerializedPartRead,
+    SerializedPartCreate,
+    SerializedPartDelete,
+    SerializedPartQuery,
+    JISPartRead,
+    JISPartCreate,
+    JISPartDelete,
+    JISPartQuery
+)
+
+from .partner_management import (
+    BusinessPartner,
+    DataExchangeContractRead,
+    DataExchangeContractCreate,
+    DataExchangeAgreementCreate,
+    DataExchangeAgreementRead
+)
+
+from .twin_management import (
+    TwinAspectRegistrationStatus,
+    TwinsAspectRegistrationMode,
+    TwinAspectRegistration,
+    TwinAspectRead,
+    TwinAspectCreate,
+    TwinRead,
+    TwinCreateBase,
+    TwinDetailsRead,
+    CatalogPartTwinCreate,
+    BatchTwinCreate,
+    JISPartTwinCreate,
+    SerializedPartTwinCreate
+)
+
