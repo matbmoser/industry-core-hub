@@ -37,15 +37,33 @@ class TwinManagementService:
         self.repositories = RepositoryManagerFactory.create()
 
     def create_catalog_part_twin(self, twin_catalog_part_create: CatalogPartTwinCreate) -> TwinRead:
+        # Step 1: Retrieve the catalog part entity according to the catalog part data (manufacturer_id, manufacturer_part_id)
+        # (if not there => raise error)
+
+        # Step 2 (future): Retrieve the enablement service stack entity from the DB according to the given name
+        # (for the moment: we have a singleton entity for that - e.g. with id 1)
+        # (if not there => raise error)
+
+        # Step 3: Check the twin_id field of that entity if a twin is already registered
+
+        # Step 4: If no twin was there, create it now in the DB (generating on demand a new global_id and dtr_aas_id)
+
+        # Step 5: Try to find the twin registration for the twin id and enablement service stack id
+        # (if not there => create it now, setting the dtr_registered flag to False)
+    
+        # Step 6: Check the dtr_registered flag on the twin registration entity
+        # (if True => we can skip the operation from here on => nothing to do)
+        # (if False => we need to register the twin in the DTR using the industry core SDK, then
+        #  update the twin registration entity with the dtr_registered flag to True)
+
         pass
 
     def create_catalog_part_twin_share(self, global_id: UUID, business_partner_name: str) -> TwinRead:
         # Step 1: Retrieve the twin entity according to the global_id
         # (if not there => raise error)
-        # (TBD: we can discuss to create the twin entity now automatically; but then then
-        #  we need to generate a new global id and DTR AAS ID;
-        #  we would also need to link the twin entity via the twin registration entity to the
-        #  'default' enablement service stack entity; in the first version we just have one default)
+        # (as an alternative we could also call create_catalog_part_twin() here to create a twin accordingly;
+        #  remark: this will not return the primary key of the twin entity; maybe we need to move the logic
+        #  to an internal helper function called by both this function and create_catalog_part_twin())
 
         # Step 2: Retrieve the catalog part entity according to the id of the twin entity
         # (if not there => raise error)
