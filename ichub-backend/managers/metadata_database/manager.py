@@ -114,7 +114,7 @@ class RepositoryManager:
 class RepositoryManagerFactory:
     """Factory class for creating repository managers with singleton behavior."""
 
-    _engine_instance: RepositoryManager = None
+    _engine_instance = None
     _lock: Lock = Lock()
 
     @staticmethod
