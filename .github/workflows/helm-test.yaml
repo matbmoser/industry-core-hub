@@ -30,7 +30,8 @@ on:
   pull_request:
     paths:
       - "charts/industry-core-hub/**"
-    branches: main
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       node_image:
