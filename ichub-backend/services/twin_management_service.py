@@ -1,0 +1,102 @@
+#################################################################################
+# Eclipse Tractus-X - Industry Core Hub Backend
+#
+# Copyright (c) 2025 DRÄXLMAIER Group
+# (represented by Lisa Dräxlmaier GmbH)
+# Copyright (c) 2025 Contributors to the Eclipse Foundation
+#
+# See the NOTICE file(s) distributed with this work for additional
+# information regarding copyright ownership.
+#
+# This program and the accompanying materials are made available under the
+# terms of the Apache License, Version 2.0 which is available at
+# https://www.apache.org/licenses/LICENSE-2.0.
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+# either express or implied. See the
+# License for the specific language govern in permissions and limitations
+# under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+#################################################################################
+
+from uuid import UUID
+
+from managers.metadata_database.manager import RepositoryManagerFactory
+from models.services.twin_management import CatalogPartTwinCreate, TwinRead, TwinAspectCreate, TwinAspectRead
+
+
+class TwinManagementService:
+    """
+    Service class for managing twin-related operations (CRUD and Twin sharing).
+    """
+
+    def __init__(self, ):
+        self.repositories = RepositoryManagerFactory.create()
+
+    def create_catalog_part_twin(self, twin_catalog_part_create: CatalogPartTwinCreate) -> TwinRead:
+        pass
+
+    def create_catalog_part_twin_share(self, global_id: UUID, business_partner_name: str) -> TwinRead:
+        # Step 1: Retrieve the twin entity according to the global_id
+        # (if not there => raise error)
+        # (TBD: we can discuss to create the twin entity now automatically; but then then
+        #  we need to generate a new global id and DTR AAS ID;
+        #  we would also need to link the twin entity via the twin registration entity to the
+        #  'default' enablement service stack entity; in the first version we just have one default)
+
+        # Step 2: Retrieve the catalog part entity according to the id of the twin entity
+        # (if not there => raise error)
+
+        # Step 3: Retrieve the business partner entity according to the business_partner_name
+        # (if not there => raise error)
+
+        # Step 4: Retrieve the data exchange agreement entity for the business partner (with name 'default')
+        # (the 'default' agreement will later be replaced with an explicit mechanism)
+        # (if not there => raise error)
+
+        # Step 5: Check if there is already a twin exchange entity for the twin and data exchange agreement
+        # (if there => we can skip the operation from here on => nothing to do)
+
+        # Step 6: Find the partner catalog part entity for the given catalog part and business partner
+        # (if there => fine)
+        # (if not there => we normally now would need a customer part ID - either we take it as optional arg
+        #  and raise now an error when not there or we create an artificial one; but both need to be reworked
+        #  in a later release; finally create the partner catalog part entity)
+
+        # Step 7: Create the twin exchange entity for the twin and data exchange agreement
+
+        # Step 8: Create the shell descriptor in the DTR via the industry core SDK
+        pass
+
+    def create_twin_aspect(self, twin_aspect_create: TwinAspectCreate) -> TwinAspectRead:
+        """
+        Create a new twin aspect for a give twin.
+        """
+        # Step 1: Retrieve the twin entity according to the global_id
+        # (if not there => raise error)
+
+        # Step 2: Retrieve a potentially existing twin aspect entity for the given twin_id and semantic_id
+        # (if there => for the moment we could raise an error; but in the future I recommend
+        #  the API to be "repeatable" - e.g. to update the payload in the submodel service)
+
+        # Step 3: Create the twin aspect entity in the database
+        # (generate a new submodel_id for it if not given)
+        # Step 3a: Create a twin aspect registration entry pointing to the singleton enablement service stack
+        # (set the status to PLANNED and the mode to SINGLE)
+
+        # Step 4: Upload the payload to the submodel service
+        # (use industry core SDK or it's wrapper for that)
+        # Step 4a: Update the twin aspect registration entry with the status to STORED
+
+        # Step 5: (later to be implemented): Register the aspect as asset in the EDC (if necessary)
+        # (use industry core SDK or it's wrapper for that)
+        # Step 5a: Update the twin aspect registration entry with the status to EDC_REGISTERED
+
+        # Step 6: Attach a submodel descriptor to the shell descriptor in the DTR
+        # (use industry core SDK or it's wrapper for that)
+        # Step 6a: Update the twin aspect registration entry with the status to DTR_REGISTERED
+
+        pass
