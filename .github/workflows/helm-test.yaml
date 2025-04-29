@@ -26,7 +26,8 @@ on:
   push:
     paths:
       - "charts/industry-core-hub/**"
-    branches: main
+    branches: 
+      - main
   pull_request:
     paths:
       - "charts/industry-core-hub/**"
