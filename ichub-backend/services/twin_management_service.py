@@ -25,7 +25,7 @@
 from uuid import UUID
 
 from managers.metadata_database.manager import RepositoryManagerFactory
-from models.services.twin_management import CatalogPartTwinCreate, TwinRead, TwinAspectCreate, TwinAspectRead
+from models.services.twin_management import CatalogPartTwinCreate, TwinRead, TwinDetailsRead, TwinAspectCreate, TwinAspectRead
 
 
 class TwinManagementService:
@@ -87,6 +87,9 @@ class TwinManagementService:
         # Step 7: Create the twin exchange entity for the twin and data exchange agreement
 
         # Step 8: Create the shell descriptor in the DTR via the industry core SDK
+        # Step 8a: if twin was existing before => add access to the twin for the new business partner
+        # (this inculudes: register all specified specific asset IDs visible for partners - e.g. customer part ID - not sure about
+        #  manufacturer)
         pass
 
     def create_twin_aspect(self, twin_aspect_create: TwinAspectCreate) -> TwinAspectRead:
@@ -116,5 +119,9 @@ class TwinManagementService:
         # Step 6: Attach a submodel descriptor to the shell descriptor in the DTR
         # (use industry core SDK or it's wrapper for that)
         # Step 6a: Update the twin aspect registration entry with the status to DTR_REGISTERED
+        # (tricky: use the right asset ID for the EDC and the right URLs for data plane and control plane)
 
+        pass
+
+    def get_twin_details(self, global_id: UUID) -> TwinDetailsRead:
         pass
