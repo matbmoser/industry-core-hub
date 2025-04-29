@@ -251,8 +251,10 @@ frontend:
     # -- The owner for volumes and any files created within volumes will belong to this guid
     runAsGroup: 10001
   
-  # -- specifies additional volume mounts for the backend deployment
-  additionalVolumeMounts: []
+  # -- specifies volume mounts for the frontend deployment
+  volumeMounts:
+    - name: tmp
+      mountPath: /tmp
 
   # -- additional volume claims for the containers
   additionalVolumes: []
