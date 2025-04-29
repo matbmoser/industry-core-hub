@@ -262,7 +262,7 @@ frontend:
   resources:
     requests:
       cpu: 100m
-      memory: 128Mi
+      memory: 256Mi
       ephemeral-storage: "128Mi"
     limits:
       cpu: 500m
