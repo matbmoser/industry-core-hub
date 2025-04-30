@@ -116,29 +116,24 @@ const ProductsDetails = () => {
   };
 
   return (
-    <>      
-      
       <Grid2 container direction="column" className="productDetail">
         <Grid2 container spacing={2} className="mb-5" justifyContent={{ md: "space-between", sm: "center" }} alignItems="center" direction={{ sm: "column", md: "row" }}>
-        <PageNotification notification={notification} />
-
-          <Grid2 size={{md: 3, sm: 12}} display="flex" justifyContent="center">
+          <PageNotification notification={notification} />
+          <Grid2 size={{ md: 3, sm: 12 }} display="flex" justifyContent="center">
             {getStatusTag(part.status)}
           </Grid2>
-          <Grid2 size={{md: 3, sm: 12}} display="flex" justifyContent="center">
-            <Button size="small" onClick={() => console.log("DCM v2.0 button")} className="update-button" endIcon={<Icon fontSize="16" iconName="Edit" />}>            
-                <span className="update-button-content">UPDATE</span>            
+          <Grid2 size={{ md: 3, sm: 12 }} display="flex" justifyContent="center">
+            <Button size="small" onClick={() => console.log("DCM v2.0 button")} className="update-button" endIcon={<Icon fontSize="16" iconName="Edit" />}>
+              <span className="update-button-content">UPDATE</span>
             </Button>
           </Grid2>
-          <Grid2 size={{md: 3, sm: 12}} display="flex" justifyContent="center">
+          <Grid2 size={{ md: 3, sm: 12 }} display="flex" justifyContent="center">
             <ShareDropdown handleCopy={handleCopy} handleDownload={handleDownload} handleShare={handleShare} />
           </Grid2>
         </Grid2>
-
         <ProductData part={part} />
-
         <Grid2 container spacing={2} direction="column" className="add-on-buttons">
-          
+
           <ProductButton gridSize={{ sm: 12 }} buttonText="DIGITAL PRODUCT PASSPORT v5.0.0" onClick={handleOpenDialog} />
 
           <Grid2 container spacing={2} justifyContent="center">
@@ -154,13 +149,9 @@ const ProductsDetails = () => {
           </Grid2>
 
         </Grid2>
-
-        <JsonViewerDialog open={dialogOpen} onClose={handleCloseDialog} carJsonData={part}/>
+        <JsonViewerDialog open={dialogOpen} onClose={handleCloseDialog} carJsonData={part} />
         <InstanceProductsTable />
-
       </Grid2>
-
-    </>
   );
 }
 

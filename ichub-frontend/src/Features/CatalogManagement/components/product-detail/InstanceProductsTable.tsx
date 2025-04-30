@@ -21,7 +21,6 @@
 ********************************************************************************/
 
 import { useMemo, useState } from 'react';
-import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -137,7 +136,7 @@ interface EnhancedTableProps {
   rowCount: number;
 }
 
-function EnhancedTableHead(props: EnhancedTableProps) {
+function EnhancedTableHead(props: Readonly<EnhancedTableProps>) {
   const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
     props;
   const createSortHandler =
@@ -153,9 +152,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all instances',
-            }}
           />
         </TableCell>
         {headCells.map((headCell) => (
@@ -320,12 +316,12 @@ export default function EnhancedTable() {
               {visibleRows.map((row, index) => {
                 const isItemSelected = selected.includes(row.id);
                 const labelId = `enhanced-table-checkbox-${index}`;
+                
 
                 return (
                   <TableRow
                     hover
                     onClick={(event) => handleClick(event, row.id)}
-                    role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
                     key={row.id}
@@ -335,9 +331,6 @@ export default function EnhancedTable() {
                     <TableCell padding="checkbox">
                       <Checkbox
                         checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
                       />
                     </TableCell>
                     <TableCell

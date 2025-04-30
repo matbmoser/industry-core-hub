@@ -309,7 +309,8 @@ header.ichub-header button.user-button:hover {
 /* Dropdown menu borders */
 #primary-search-account-menu > div.MuiPaper-root.MuiPopover-paper.MuiMenu-paper {
   background-color: var(--brand-dark);
-  box-shadow: 0 0 10px var(--brand-shadow)
+  box-shadow: 0 0 10px var(--brand-shadow);
+  margin-top: 20px;
 }
 
 #primary-search-account-menu > div.MuiPaper-root.MuiPopover-paper.MuiMenu-paper ul * {
@@ -321,9 +322,7 @@ header.ichub-header button.user-button:hover {
   background-color: var(--brand-dark);
   box-shadow: 0 0 15px var(--brand-orange)!important;
 }
-#primary-search-account-menu > div.MuiPaper-root.MuiPopover-paper.MuiMenu-paper {
-  margin-top: 20px;
-}
+
 #primary-search-account-menu > div.MuiPaper-root.MuiPopover-paper.MuiMenu-paper hr{
   border-color: rgba(255, 255, 255, 0.486);
 }

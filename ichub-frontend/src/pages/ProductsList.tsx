@@ -26,7 +26,7 @@ import carPartsData from "../tests/payloads/sample-data.json";
 import { ProductCard } from "../components/general/ProductCard";
 import { PartInstance } from "../types/product";
 import TablePagination from '@mui/material/TablePagination';
-import { AppBar, Toolbar, Typography, IconButton, CssBaseline,Grid2 } from '@mui/material';
+import { AppBar, Typography, IconButton,Grid2 } from '@mui/material';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 import Sidebar from '../Features/CatalogManagement/components/sideBar/SideBar';
@@ -62,22 +62,7 @@ const ProductsList = () => {
     })
   );
   
-  const MyAppBar = styled(AppBar, { shouldForwardProp: (prop) => prop !== 'open' })<{ open: boolean }>(
-    ({ theme, open }) => ({
-      transition: theme.transitions.create(['margin', 'width'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-      ...(open && {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: `${drawerWidth}px`,
-        transition: theme.transitions.create(['margin', 'width'], {
-          easing: theme.transitions.easing.easeOut,
-          duration: theme.transitions.duration.enteringScreen,
-        }),
-      }),
-    })
-  );
+
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
@@ -108,17 +93,6 @@ const ProductsList = () => {
   const handleButtonClick = (part: string) => {
     navigate(`/product/${part}`);  // Navigate to the details page
   };
-
-  const handleShare = (itemId: string) => {
-    console.log('Sharing item with id:', itemId);
-    // Share logic
-  };
-
-  const handleMore = (itemId: string) => {
-    console.log('More options for item with id:', itemId);
-    // More options logic
-  };
-
 
   const visibleRows = useMemo(
     () => {
