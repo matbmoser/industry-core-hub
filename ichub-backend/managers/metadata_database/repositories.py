@@ -64,6 +64,9 @@ class BaseRepository(Generic[ModelType]):
         return list(result)
 
     def update(self, id: int, obj_in: dict) -> Optional[ModelType]:
+        '''
+        TODO
+        '''
         pass
 
     def commit(self) -> None:
