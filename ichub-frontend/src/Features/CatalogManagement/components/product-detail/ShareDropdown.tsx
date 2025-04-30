@@ -22,7 +22,7 @@
 
 import { DropdownMenu, Button, Icon } from '@catena-x/portal-shared-components';
 import { PRODUCT_OPTIONS } from "../../../../types/common";
-import { Grid2 } from '@mui/material';
+import Grid2 from '@mui/material/Grid2';
 
 interface ShareDropdownProps {
     handleCopy: () => void;
