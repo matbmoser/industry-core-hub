@@ -44,7 +44,7 @@ backend:
     type: ClusterIP
     portService: 8000
     portContainer: 8000
-  
+
   # -- Backend configuration, changes to these values will be reflected in the configuration.yml file.
   configuration:
     authorization:
@@ -55,7 +55,7 @@ backend:
     # -- Database connection config; database connection settings are inferred from postgresql or externalDatabase sections.
     database:
       echo: true
-  
+
   podAnnotations: {}
 
   podLabels: {}
@@ -128,7 +128,7 @@ backend:
     runAsUser: 10000
     # -- The owner for volumes and any files created within volumes will belong to this guid
     runAsGroup: 10001
-  
+
   # -- specifies volume mounts for the backend deployment
   volumeMounts:
     - name: data-volume
@@ -269,7 +269,7 @@ frontend:
     runAsUser: 10000
     # -- The owner for volumes and any files created within volumes will belong to this guid
     runAsGroup: 10001
-  
+
   # -- specifies volume mounts for the frontend deployment
   volumeMounts:
     - name: tmp
