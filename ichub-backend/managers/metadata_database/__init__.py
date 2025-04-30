@@ -24,3 +24,15 @@
 # Package-level variables
 __author__ = 'Eclipse Tractus-X Contributors'
 __license__ = "Apache License, Version 2.0"
+
+
+from .manager import RepositoryManager, RepositoryManagerFactory
+
+from .repositories import (
+    BusinessPartnerRepository,
+    CatalogPartRepository,
+    DataExchangeAgreementRepository,
+    LegalEntityRepository,
+    PartnerCatalogPartRepository
+)
+
