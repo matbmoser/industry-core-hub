@@ -1,6 +1,8 @@
 #################################################################################
-# Eclipse Tractus-X - Industry Core Hub Frontend
+# Eclipse Tractus-X - Industry Core Hub Backend
 #
+# Copyright (c) 2025 DRÄXLMAIER Group
+# (represented by Lisa Dräxlmaier GmbH)
 # Copyright (c) 2025 Contributors to the Eclipse Foundation
 #
 # See the NOTICE file(s) distributed with this work for additional
@@ -20,15 +22,22 @@
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
 
-server {
-    listen 8080;
-    server_name _;
-    
-    location / {
-        root /usr/share/nginx/html;
-        index index.html;
-        try_files $uri $uri/index.html /index.html;
-    }
+from .models import (
+    LegalEntity,
+    BusinessPartner,
+    Twin,
+    CatalogPart,
+    PartnerCatalogPart,
+    SerializedPart,
+    JISPart,
+    Batch,
+    BatchBusinessPartner,
+    DataExchangeAgreement,
+    DataExchangeContract,
+    EnablementServiceStack,
+    TwinAspect,
+    TwinAspectRegistration,
+    TwinExchange,
+    TwinRegistration,
+)
 
-    error_page 404 /index.html;
-}

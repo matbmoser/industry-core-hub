@@ -71,11 +71,26 @@ Common labels
 */}}
 {{- define "industry-core-hub.labels" -}}
 helm.sh/chart: {{ include "industry-core-hub.chart" . }}
-{{ include "industry-core-hub.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Backend labels (includes backend selector labels)
+*/}}
+{{- define "industry-core-hub.backend.labels" -}}
+{{ include "industry-core-hub.backend.selectorLabels" . }}
+{{ include "industry-core-hub.labels" . }}
+{{- end }}
+
+{{/*
+Frontend labels (includes frontend selector labels)
+*/}}
+{{- define "industry-core-hub.frontend.labels" -}}
+{{ include "industry-core-hub.frontend.selectorLabels" . }}
+{{ include "industry-core-hub.labels" . }}
 {{- end }}
 
 {{/*
@@ -211,15 +226,6 @@ Get the database secret key
 {{- print "ichub-password" -}}
 {{- else -}}
 {{- .Values.externalDatabase.existingIchubSecretKey -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Return true if a secret object should be created for external database
-*/}}
-{{- define "industry-core-hub.externalDatabase.createSecret" -}}
-{{- if and (not .Values.postgresql.enabled) (not .Values.externalDatabase.existingSecret) }}
-    {{- true -}}
 {{- end -}}
 {{- end -}}
 
