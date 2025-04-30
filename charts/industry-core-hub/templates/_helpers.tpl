@@ -255,5 +255,5 @@ Return the postgresql DSN URL
 {{- $name := include "industry-core-hub.postgresql.databaseName" . -}}
 {{- $user := include "industry-core-hub.postgresql.ichubUser" . -}}
 {{- $sslMode := include "industry-core-hub.postgresql.sslMode" . -}}
-{{- printf "postgresql://%s:$(DATABASE_PASSWORD)@%s:%s/%s?sslmode=%s" $user $host $port $name $sslMode -}}
+{{- printf "postgresql://%s:$DATABASE_PASSWORD@%s:%s/%s?sslmode=%s" $user $host $port $name $sslMode -}}
 {{- end -}}
