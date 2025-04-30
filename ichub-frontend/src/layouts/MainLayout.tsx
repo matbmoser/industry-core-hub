@@ -38,7 +38,6 @@ function MainLayout() {
         <Grid2 size={{md:11, xs: 12}} className="contentArea flex flex-content-center" >
           <Outlet />
         </Grid2>
-      </Grid2>
     </Grid2>
   );
 };

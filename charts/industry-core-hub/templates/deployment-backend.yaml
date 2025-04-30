@@ -18,20 +18,20 @@
 *
 * SPDX-License-Identifier: Apache-2.0
 */}}
-
+{{ if .Values.backend.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "industry-core-hub.fullname.backend" . }}
   labels:
-    {{- include "industry-core-hub.labels" . | nindent 4 }}
+    {{- include "industry-core-hub.backend.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   strategy:
     {{- toYaml .Values.updateStrategy | nindent 4 }}
   selector:
     matchLabels:
-      {{- include "industry-core-hub.selectorLabels" . | nindent 6 }}
+      {{- include "industry-core-hub.backend.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.backend.podAnnotations }}
@@ -39,7 +39,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "industry-core-hub.labels" . | nindent 8 }}
+        {{- include "industry-core-hub.backend.labels" . | nindent 8 }}
         {{- with .Values.backend.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -59,27 +59,21 @@ spec:
           imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.backend.service.port }}
+              containerPort: {{ .Values.backend.service.portContainer }}
               protocol: TCP
           env:
-            - name: DATABASE__HOST
-              value: {{ include "industry-core-hub.postgresql.host" . }}
-            - name: DATABASE_PORT
-              value: {{ include "industry-core-hub.postgresql.port" . | quote }}
-            - name: DATABASE_NAME
-              value: {{ include "industry-core-hub.postgresql.databaseName" . }}
-            - name: DATABASE_USER
-              value: {{ include "industry-core-hub.postgresql.ichubUser" . }}
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ include "industry-core-hub.postgresql.secretName" . }}
                   key: {{ include "industry-core-hub.postgresql.ichub.secretKey" . }}
+            - name: DATABASE_CONNECTION_STRING
+              value: {{ include "industry-core-hub.postgresql.dsn" . | quote }}
           {{- if .Values.backend.healthChecks.startup.enabled }}
           startupProbe:
             httpGet:
               path: {{ .Values.backend.healthChecks.startup.path }}
-              port: {{ .Values.backend.service.port }}
+              port: {{ .Values.backend.service.portContainer }}
               scheme: HTTP
             initialDelaySeconds: {{ .Values.startupProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.startupProbe.periodSeconds }}
@@ -91,7 +85,7 @@ spec:
           livenessProbe:
             httpGet:
               path: {{ .Values.backend.healthChecks.liveness.path }}
-              port: {{ .Values.backend.service.port }}
+              port: {{ .Values.backend.service.portContainer }}
               scheme: HTTP
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
@@ -103,7 +97,7 @@ spec:
           readinessProbe:
             httpGet:
               path: {{ .Values.backend.healthChecks.readiness.path }}
-              port: {{ .Values.backend.service.port }}
+              port: {{ .Values.backend.service.portContainer }}
               scheme: HTTP
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
@@ -153,3 +147,4 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+{{- end }}

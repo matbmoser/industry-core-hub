@@ -40,3 +40,19 @@
         color: $darkmode-text;
     }
 }
+
+.product-cards {
+    .product-card {
+        background: $brand-dark !important;
+        @include mixins.space-shadow($brand-blue);
+        @include mixins.rounded-bordered;
+
+        &:hover {
+            border: 2px solid rgba($brand-light-blue, 0.85) !important;
+        }
+    }
+
+    .MuiChip-icon {
+        color: $brand-dark !important;
+    }
+}
