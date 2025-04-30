@@ -40,7 +40,6 @@ function MainLayout() {
         </Grid2>
       </Grid2>
     </Grid2>
-    </Grid2>
   );
 };
 
