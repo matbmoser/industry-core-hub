@@ -19,13 +19,13 @@
 * SPDX-License-Identifier: Apache-2.0
 */}}
 
-{{- if and .Values.backend.enabled .Values.backend.persistence.enabled .Values.backend.persistence.data.enabled }}
+{{- if and .Values.backend.persistence.enabled .Values.backend.persistence.data.enabled }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ .Release.Name }}-pvc-data-backend
   labels:
-    {{- include "industry-core-hub.backend.labels" . | nindent 4 }}
+    {{- include "industry-core-hub.labels" . | nindent 4 }}
   namespace: {{ .Release.Namespace }}
   {{- with .Values.backend.persistence.data.annotations }}
   annotations:
@@ -49,7 +49,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Release.Name }}-pvc-logs-backend
   labels:
-    {{- include "industry-core-hub.backend.labels" . | nindent 4 }}
+    {{- include "industry-core-hub.labels" . | nindent 4 }}
   namespace: {{ .Release.Namespace }}
   {{- with .Values.backend.persistence.logs.annotations }}
   annotations:

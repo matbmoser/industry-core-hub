@@ -35,7 +35,7 @@ helm install industry-core-hub tractusx/industry-core-hub
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
-| backend | object | `{"additionalVolumeMounts":[],"additionalVolumes":[],"enabled":false,"healthChecks":{"liveness":{"enabled":false,"path":"/"},"readiness":{"enabled":false,"path":"/"},"startup":{"enabled":false,"path":"/"}},"image":{"pullPolicy":"IfNotPresent","pullSecrets":[],"repository":"ichub-backend","tag":""},"ingress":{"className":"nginx","enabled":false,"hosts":[{"host":"","paths":[{"backend":{"port":8000,"service":"backend"},"path":"/","pathType":"ImplementationSpecific"}]}],"tls":[]},"name":"industry-core-hub-backend","persistence":{"data":{"accessMode":"ReadWriteOnce","enabled":true,"size":"1Gi","storageClass":"standard"},"enabled":true,"logs":{"accessMode":"ReadWriteOnce","enabled":true,"size":"1Gi","storageClass":"standard"}},"podAnnotations":{},"podLabels":{},"podSecurityContext":{"fsGroup":3000,"runAsGroup":3000,"runAsUser":1000,"seccompProfile":{"type":"RuntimeDefault"}},"resources":{"limits":{"cpu":"500m","ephemeral-storage":"2Gi","memory":"512Mi"},"requests":{"cpu":"250m","ephemeral-storage":"2Gi","memory":"512Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"add":[],"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsGroup":10001,"runAsNonRoot":true,"runAsUser":10000},"service":{"port":80,"targetPort":8000,"type":"ClusterIP"}}` | Backend configuration |
+| backend | object | `{"additionalVolumeMounts":[],"additionalVolumes":[],"healthChecks":{"liveness":{"enabled":false,"path":"/"},"readiness":{"enabled":false,"path":"/"},"startup":{"enabled":false,"path":"/"}},"image":{"pullPolicy":"IfNotPresent","pullSecrets":[],"repository":"ichub-backend","tag":""},"ingress":{"className":"nginx","enabled":false,"hosts":[{"host":"","paths":[{"backend":{"port":8000,"service":"backend"},"path":"/","pathType":"ImplementationSpecific"}]}],"tls":[]},"name":"industry-core-hub-backend","persistence":{"data":{"accessMode":"ReadWriteOnce","enabled":true,"size":"1Gi","storageClass":"standard"},"enabled":true,"logs":{"accessMode":"ReadWriteOnce","enabled":true,"size":"1Gi","storageClass":"standard"}},"podAnnotations":{},"podLabels":{},"podSecurityContext":{"fsGroup":3000,"runAsGroup":3000,"runAsUser":1000,"seccompProfile":{"type":"RuntimeDefault"}},"resources":{"limits":{"cpu":"500m","ephemeral-storage":"2Gi","memory":"512Mi"},"requests":{"cpu":"250m","ephemeral-storage":"2Gi","memory":"512Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"add":[],"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsGroup":10001,"runAsNonRoot":true,"runAsUser":10000},"service":{"port":80,"targetPort":8000,"type":"ClusterIP"}}` | Backend configuration |
 | backend.additionalVolumeMounts | list | `[]` | specifies additional volume mounts for the backend deployment |
 | backend.additionalVolumes | list | `[]` | additional volume claims for the containers |
 | backend.image.pullSecrets | list | `[]` | Existing image pull secret to use to [obtain the container image from private registries](https://kubernetes.io/docs/concepts/containers/images/#using-a-private-registry) |
@@ -65,7 +65,7 @@ helm install industry-core-hub tractusx/industry-core-hub
 | backend.securityContext.runAsNonRoot | bool | `true` | Requires the container to run without root privileges |
 | backend.securityContext.runAsUser | int | `10000` | The container's process will run with the specified uid |
 | backend.service.type | string | `"ClusterIP"` | [Service type](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to expose the running application on a set of Pods as a network service |
-| externalDatabase | object | `{"database":"postgres","existingIchubSecretKey":"ichub-password","existingSecret":"","host":"","ichubPassword":"","ichubUser":"ichub","port":5432,"sslMode":"prefer"}` | External database configuration (used when postgresql.enabled is false) |
+| externalDatabase | object | `{"database":"postgres","existingIchubSecretKey":"ichub-password","existingSecret":"","host":"","ichubPassword":"","ichubUser":"ichub","port":5432}` | External database configuration (used when postgresql.enabled is false) |
 | externalDatabase.database | string | `"postgres"` | External PostgreSQL database name |
 | externalDatabase.existingIchubSecretKey | string | `"ichub-password"` | Key in the existing secret that contains database password for ichub user |
 | externalDatabase.existingSecret | string | `""` | Existing secret containing database password |
@@ -73,42 +73,6 @@ helm install industry-core-hub tractusx/industry-core-hub
 | externalDatabase.ichubPassword | string | `""` | External PostgreSQL password for ichub user |
 | externalDatabase.ichubUser | string | `"ichub"` | External PostgreSQL username for ichub user |
 | externalDatabase.port | int | `5432` | External PostgreSQL port |
-| externalDatabase.sslMode | string | `"prefer"` | Determines whether or with what priority a secure SSL TCP/IP connection will be negotiated with the server. There are [six modes](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNECT-SSLMODE) |
-| frontend.additionalVolumeMounts | list | `[]` | specifies additional volume mounts for the backend deployment |
-| frontend.additionalVolumes | list | `[]` | additional volume claims for the containers |
-| frontend.enabled | bool | `true` |  |
-| frontend.env.ichubBackendUrl | string | `""` | industry-core-hub backend base URL |
-| frontend.healthChecks.liveness.enabled | bool | `true` |  |
-| frontend.healthChecks.liveness.path | string | `"/"` |  |
-| frontend.healthChecks.readiness.enabled | bool | `true` |  |
-| frontend.healthChecks.readiness.path | string | `"/"` |  |
-| frontend.healthChecks.startup.enabled | bool | `true` |  |
-| frontend.healthChecks.startup.path | string | `"/"` |  |
-| frontend.image.pullPolicy | string | `"IfNotPresent"` |  |
-| frontend.image.pullSecrets | list | `[]` | Existing image pull secret to use to [obtain the container image from private registries](https://kubernetes.io/docs/concepts/containers/images/#using-a-private-registry) |
-| frontend.image.repository | string | `"ichub-frontend"` |  |
-| frontend.image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion |
-| frontend.ingress | object | `{"className":"nginx","enabled":false,"hosts":[{"host":"","paths":[{"backend":{"port":8080,"service":"frontend"},"path":"/","pathType":"ImplementationSpecific"}]}],"tls":[]}` | ingress declaration to expose the industry-core-hub-backend service |
-| frontend.ingress.tls | list | `[]` | Ingress TLS configuration |
-| frontend.name | string | `"industry-core-hub-frontend"` |  |
-| frontend.podAnnotations | object | `{}` |  |
-| frontend.podLabels | object | `{}` |  |
-| frontend.podSecurityContext | object | `{"fsGroup":3000,"runAsGroup":3000,"runAsUser":1000,"seccompProfile":{"type":"RuntimeDefault"}}` | The [pod security context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod) defines privilege and access control settings for a Pod within the deployment |
-| frontend.podSecurityContext.fsGroup | int | `3000` | The owner for volumes and any files created within volumes will belong to this guid |
-| frontend.podSecurityContext.runAsGroup | int | `3000` | Processes within a pod will belong to this guid |
-| frontend.podSecurityContext.runAsUser | int | `1000` | Runs all processes within a pod with a special uid |
-| frontend.podSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` | Restrict a Container's Syscalls with seccomp |
-| frontend.resources | object | `{"limits":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"256Mi"},"requests":{"cpu":"100m","ephemeral-storage":"128Mi","memory":"128Mi"}}` | Review the default resource limits as this should a conscious choice. |
-| frontend.securityContext.allowPrivilegeEscalation | bool | `false` | Controls [Privilege Escalation](https://kubernetes.io/docs/concepts/security/pod-security-policy/#privilege-escalation) enabling setuid binaries changing the effective user ID |
-| frontend.securityContext.capabilities.add | list | `[]` | Specifies which capabilities to add to issue specialized syscalls |
-| frontend.securityContext.capabilities.drop | list | `["ALL"]` | Specifies which capabilities to drop to reduce syscall attack surface |
-| frontend.securityContext.readOnlyRootFilesystem | bool | `true` | Whether the root filesystem is mounted in read-only mode |
-| frontend.securityContext.runAsGroup | int | `10001` | The owner for volumes and any files created within volumes will belong to this guid |
-| frontend.securityContext.runAsNonRoot | bool | `true` | Requires the container to run without root privileges |
-| frontend.securityContext.runAsUser | int | `10000` | The container's process will run with the specified uid |
-| frontend.service.port | int | `80` |  |
-| frontend.service.targetPort | int | `8000` |  |
-| frontend.service.type | string | `"ClusterIP"` | [Service type](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to expose the running application on a set of Pods as a network service |
 | fullnameOverride | string | `""` |  |
 | livenessProbe.failureThreshold | int | `3` |  |
 | livenessProbe.initialDelaySeconds | int | `10` |  |
@@ -118,14 +82,13 @@ helm install industry-core-hub tractusx/industry-core-hub
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` |  |
 | pgadmin4 | object | `{"enabled":false,"env":{"email":"pgadmin4@txtest.org","password":"tractusxpgadmin4"},"ingress":{"enabled":false},"persistentVolume":{"enabled":false}}` | pgAdmin4 configuration |
-| postgresql | object | `{"audit":{"logLinePrefix":"%m %u %d ","pgAuditLog":"write, ddl"},"auth":{"database":"ichub-postgres","existingSecret":"ichub-postgres-secret","ichubPassword":"","ichubUser":"ichub","password":"","port":5432,"sslMode":"prefer"},"enabled":true,"fullnameOverride":"","nameOverride":"","primary":{"extendedConfiguration":"","extraEnvVars":[{"name":"ICHUB_PASSWORD","valueFrom":{"secretKeyRef":{"key":"ichub-password","name":"{{ .Values.auth.existingSecret }}"}}}],"initdb":{"scriptsConfigMap":"{{ .Release.Name }}-cm-postgres"},"persistence":{"enabled":true,"size":"10Gi","storageClass":""}}}` | PostgreSQL chart configuration |
+| postgresql | object | `{"audit":{"logLinePrefix":"%m %u %d ","pgAuditLog":"write, ddl"},"auth":{"database":"ichub-postgres","existingSecret":"ichub-postgres-secret","ichubPassword":"","ichubUser":"ichub","password":"","port":5432},"enabled":true,"fullnameOverride":"","nameOverride":"","primary":{"extendedConfiguration":"","extraEnvVars":[{"name":"ICHUB_PASSWORD","valueFrom":{"secretKeyRef":{"key":"ichub-password","name":"{{ .Values.auth.existingSecret }}"}}}],"initdb":{"scriptsConfigMap":"{{ .Release.Name }}-cm-postgres"},"persistence":{"enabled":true,"size":"10Gi","storageClass":""}}}` | PostgreSQL chart configuration |
 | postgresql.auth.database | string | `"ichub-postgres"` | Database name |
 | postgresql.auth.existingSecret | string | `"ichub-postgres-secret"` | Secret containing the passwords for root usernames postgres and non-root usernames repl_user and ichub. |
 | postgresql.auth.ichubPassword | string | `""` | Password for the non-root username 'ichub'. Secret-key 'ichub-password'. |
 | postgresql.auth.ichubUser | string | `"ichub"` | Non-root username for ichub. |
 | postgresql.auth.password | string | `""` | Password for the root username 'postgres' (will be stored in a secret if existingSecret is not provided) |
 | postgresql.auth.port | int | `5432` | Database port number |
-| postgresql.auth.sslMode | string | `"prefer"` | Determines whether or with what priority a secure SSL TCP/IP connection will be negotiated with the server. There are [six modes](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNECT-SSLMODE) |
 | postgresql.enabled | bool | `true` | Switch to enable or disable the PostgreSQL helm chart |
 | postgresql.primary.extendedConfiguration | string | `""` | Extended PostgreSQL Primary configuration (increase of max_connections recommended - default is 100) |
 | postgresql.primary.persistence.enabled | bool | `true` | Enable persistent storage |

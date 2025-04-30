@@ -21,7 +21,7 @@
 #################################################################################
 
 
-FROM alpine:3.21
+FROM alpine:3.19
 
 USER root
 
@@ -37,7 +37,7 @@ RUN ls -la
 RUN apk add python3 py3-pip libpq --no-cache
 
 ## Install application requirements
-RUN pip3 install --break-system-packages --no-cache-dir -r ./requirements.txt
+RUN pip3 install --break-system-packages --no-cache-dir --upgrade -r ./requirements.txt
 
 ## Create user groups
 RUN addgroup -g 3000 appgroup \

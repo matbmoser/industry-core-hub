@@ -20,7 +20,7 @@
  * SPDX-License-Identifier: Apache-2.0
 ********************************************************************************/
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -38,7 +38,6 @@ import { Logout, Settings } from '@mui/icons-material';
 export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<null | HTMLElement>(null);
-  const [scrolled, setScrolled] = useState(false);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -59,15 +58,6 @@ export default function PrimarySearchAppBar() {
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -148,6 +138,8 @@ export default function PrimarySearchAppBar() {
         <IconButton
           size="large"
           aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
         >
           <AccountCircle />
         </IconButton>
@@ -158,30 +150,17 @@ export default function PrimarySearchAppBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" className={`ichub-header ${scrolled ? "scrolled" : ""}`}>
+      <AppBar position="static" className='ichub-header'>
         <Toolbar>
-          <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
-            <a href="/">
-              <img
-                src="/241117_Tractus_X_Logo_Only_RGB.png"
-                alt="Eclipse Tractus-X logo"
-                className='small-logo'
-              />
-            </a>
-          </Box>
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <a href="/">
-              <img
-                src="/241117_Tractus_X_Logo_RGB_Light_Version.png"
-                alt="Eclipse Tractus-X logo"
-                className='main-logo'
-              />
-            </a>
-          </Box>
+          <a href="/">
+            <img
+              src="/241117_Tractus_X_Logo_RGB_Light_Version.png"
+              alt="Eclipse Tractus-X logo"
+              className='main-logo'
+            />
+          </a>
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
-            <Typography variant="h2" sx={{ fontSize: { xs: '1.2rem', md: '1.5rem' } }}>
-              Industry Core Hub
-            </Typography>
+            <h2>Industry Core Hub</h2>
           </Box>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show 4 new mails">

@@ -1,7 +1,0 @@
-.chart
-.git
-.github
-.gitignore
-.husky
-Dockerfile
-**/node_modules

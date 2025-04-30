@@ -18,19 +18,18 @@
 *
 * SPDX-License-Identifier: Apache-2.0
 */}}
-
-{{ if .Values.frontend.enabled }}
 apiVersion: v1
-kind: Service
+kind: Pod
 metadata:
-  name: {{ include "industry-core-hub.fullname.frontend" . }}
-  labels: {{ include "industry-core-hub.frontend.labels" . | nindent 4 }}
+  name: "{{ include "industry-core-hub.fullname.backend" . }}-test-connection"
+  labels:
+    {{- include "industry-core-hub.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
 spec:
-  type: {{ .Values.frontend.service.type }}
-  ports:
-    - port: {{ .Values.frontend.service.portService }}
-      targetPort: {{ .Values.frontend.service.portContainer }}
-      protocol: TCP
-      name: http
-  selector: {{ include "industry-core-hub.frontend.selectorLabels" . | nindent 4 }}
-{{- end }}
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "industry-core-hub.fullname.backend" . }}:{{ .Values.backend.service.port }}']
+  restartPolicy: Never

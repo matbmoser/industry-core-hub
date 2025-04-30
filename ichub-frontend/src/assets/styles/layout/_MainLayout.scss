@@ -19,37 +19,3 @@
  *
  * SPDX-License-Identifier: Apache-2.0
 ********************************************************************************/
-
-@use "../config/variables" as *;
-
-.contentWrapper {
-  background: black;
-  background-image: 
-    linear-gradient(rgba($brand-dark, 0.3), rgba($brand-dark, 0.6)), 
-    url('/stars-background.png') !important;
-}
-
-.headerArea{
-  position: sticky;
-  top: 0;
-  z-index: 1100;
-}
-
-/* Content area styling */
-.contentArea {
-  padding: 20px;
-}
-
-.productWrapper {
-  width: 100%;
-  height: 100%;
-}
-
-.main-logo {
-  height: 50px;
-}
-
-.small-logo {
-  height: 35px;
-}
-  

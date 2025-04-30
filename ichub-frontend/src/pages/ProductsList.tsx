@@ -26,7 +26,7 @@ import carPartsData from "../tests/payloads/sample-data.json";
 import { ProductCard } from "../components/general/ProductCard";
 import { PartInstance } from "../types/product";
 import TablePagination from '@mui/material/TablePagination';
-import { Typography, IconButton,Grid2 } from '@mui/material';
+import { AppBar, Typography, IconButton,Grid2 } from '@mui/material';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 import Sidebar from '../Features/CatalogManagement/components/sideBar/SideBar';
@@ -132,7 +132,7 @@ const ProductsList = () => {
             uuid: part.uuid,
             name: part.name,
             class: part.class,
-            status: part.status as StatusVariants,
+            status: part.status,
           }))}
         />
           </Main>

@@ -1,5 +1,5 @@
 npm/npmjs/-/acorn-jsx/5.3.2, MIT, approved, clearlydefined
-npm/npmjs/-/acorn/8.14.1, MIT AND BSD-2-Clause AND (Apache-2.0 AND BSD-3-Clause AND MIT) AND (BSD-3-Clause AND MIT), approved, #19983
+npm/npmjs/-/acorn/8.14.0, MIT AND BSD-2-Clause AND (Apache-2.0 AND BSD-3-Clause AND MIT) AND (BSD-3-Clause AND MIT), approved, #19983
 npm/npmjs/-/ajv/6.12.6, MIT, approved, #15286
 npm/npmjs/-/ansi-styles/4.3.0, MIT, approved, clearlydefined
 npm/npmjs/-/argparse/2.0.1, Python-2.0, approved, CQ22954
@@ -30,14 +30,14 @@ npm/npmjs/-/detect-libc/1.0.3, Apache-2.0, approved, clearlydefined
 npm/npmjs/-/dom-helpers/5.2.1, MIT, approved, clearlydefined
 npm/npmjs/-/enquire.js/2.1.6, MIT, approved, clearlydefined
 npm/npmjs/-/error-ex/1.3.2, MIT, approved, clearlydefined
-npm/npmjs/-/esbuild/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19954
+npm/npmjs/-/esbuild/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19954
 npm/npmjs/-/escape-string-regexp/4.0.0, MIT, approved, clearlydefined
-npm/npmjs/-/eslint-plugin-react-hooks/5.2.0, MIT AND (ISC AND MIT), approved, #20628
+npm/npmjs/-/eslint-plugin-react-hooks/5.1.0, MIT, approved, clearlydefined
 npm/npmjs/-/eslint-plugin-react-refresh/0.4.19, MIT, approved, #16852
-npm/npmjs/-/eslint-scope/8.3.0, BSD-2-Clause, approved, clearlydefined
+npm/npmjs/-/eslint-scope/8.2.0, BSD-2-Clause, approved, clearlydefined
 npm/npmjs/-/eslint-visitor-keys/3.4.3, Apache-2.0, approved, #18264
 npm/npmjs/-/eslint-visitor-keys/4.2.0, BSD-2-Clause AND MIT AND Apache-2.0 AND (BSD-2-Clause AND BSD-3-Clause AND MIT) AND BSD-3-Clause AND (BSD-2-Clause AND MIT) AND (BSD-3-Clause AND LGPL-2.0-or-later AND MIT) AND LGPL-2.1-or-later, approved, #17084
-npm/npmjs/-/eslint/9.24.0, MIT AND BSD-3-Clause, approved, #20501
+npm/npmjs/-/eslint/9.20.0, BSD-3-Clause AND MIT AND ISC AND OFL-1.1 AND CC-BY-SA-2.0-UK, approved, #19367
 npm/npmjs/-/espree/10.3.0, BSD-2-Clause AND MIT AND Apache-2.0 AND (BSD-2-Clause AND BSD-3-Clause AND MIT) AND BSD-3-Clause AND (BSD-2-Clause AND MIT) AND (BSD-3-Clause AND LGPL-2.0-or-later AND MIT) AND LGPL-2.1-or-later, approved, #17087
 npm/npmjs/-/esquery/1.6.0, BSD-3-Clause, approved, #15713
 npm/npmjs/-/esrecurse/4.3.0, BSD-2-Clause, approved, clearlydefined
@@ -47,20 +47,20 @@ npm/npmjs/-/fast-deep-equal/3.1.3, MIT, approved, clearlydefined
 npm/npmjs/-/fast-glob/3.3.3, MIT, approved, #9307
 npm/npmjs/-/fast-json-stable-stringify/2.1.0, MIT, approved, clearlydefined
 npm/npmjs/-/fast-levenshtein/2.0.6, MIT, approved, #15236
-npm/npmjs/-/fastq/1.19.1, ISC, approved, #19306
+npm/npmjs/-/fastq/1.19.0, ISC, approved, #19306
 npm/npmjs/-/file-entry-cache/8.0.0, MIT, approved, clearlydefined
 npm/npmjs/-/fill-range/7.1.1, MIT, approved, #14867
 npm/npmjs/-/find-root/1.1.0, MIT, approved, clearlydefined
 npm/npmjs/-/find-up/5.0.0, MIT, approved, clearlydefined
 npm/npmjs/-/flat-cache/4.0.1, MIT, approved, clearlydefined
-npm/npmjs/-/flatted/3.3.3, ISC AND (ISC AND MIT), approved, #13460
+npm/npmjs/-/flatted/3.3.2, ISC AND (ISC AND MIT), approved, #13460
 npm/npmjs/-/fsevents/2.3.3, MIT, approved, #15309
 npm/npmjs/-/function-bind/1.1.2, MIT, approved, #11063
 npm/npmjs/-/glob-parent/5.1.2, ISC, approved, clearlydefined
 npm/npmjs/-/glob-parent/6.0.2, ISC, approved, clearlydefined
 npm/npmjs/-/globals/11.12.0, MIT, approved, clearlydefined
 npm/npmjs/-/globals/14.0.0, MIT, approved, clearlydefined
-npm/npmjs/-/globals/15.15.0, MIT, approved, clearlydefined
+npm/npmjs/-/globals/15.14.0, MIT, approved, clearlydefined
 npm/npmjs/-/graphemer/1.4.0, MIT, approved, clearlydefined
 npm/npmjs/-/has-flag/4.0.0, MIT, approved, clearlydefined
 npm/npmjs/-/hasown/2.0.2, MIT, approved, #11097
@@ -68,7 +68,7 @@ npm/npmjs/-/hoist-non-react-statics/3.3.2, BSD-3-Clause, approved, clearlydefine
 npm/npmjs/-/html-parse-stringify/3.0.1, MIT, approved, clearlydefined
 npm/npmjs/-/i18next/23.16.8, MIT, approved, clearlydefined
 npm/npmjs/-/ignore/5.3.2, MIT, approved, #11665
-npm/npmjs/-/immutable/5.1.1, MIT, approved, #20384
+npm/npmjs/-/immutable/5.0.3, MIT, approved, #17262
 npm/npmjs/-/import-fresh/3.3.1, MIT, approved, #19299
 npm/npmjs/-/imurmurhash/0.1.4, MIT, approved, clearlydefined
 npm/npmjs/-/is-arrayish/0.2.1, MIT, approved, clearlydefined
@@ -100,7 +100,7 @@ npm/npmjs/-/micromatch/4.0.8, MIT, approved, clearlydefined
 npm/npmjs/-/minimatch/3.1.2, ISC, approved, clearlydefined
 npm/npmjs/-/minimatch/9.0.5, ISC, approved, #9190
 npm/npmjs/-/ms/2.1.3, MIT, approved, #5895
-npm/npmjs/-/nanoid/3.3.11, MIT, approved, #7571
+npm/npmjs/-/nanoid/3.3.9, MIT, approved, #7571
 npm/npmjs/-/natural-compare/1.4.0, MIT, approved, clearlydefined
 npm/npmjs/-/node-addon-api/7.1.1, MIT, approved, clearlydefined
 npm/npmjs/-/object-assign/4.1.1, MIT, approved, clearlydefined
@@ -124,10 +124,10 @@ npm/npmjs/-/react-dom/18.3.1, MIT, approved, clearlydefined
 npm/npmjs/-/react-fast-compare/3.2.2, MIT, approved, clearlydefined
 npm/npmjs/-/react-i18next/14.1.3, MIT AND Apache-2.0, approved, #13870
 npm/npmjs/-/react-is/16.13.1, MIT, approved, clearlydefined
-npm/npmjs/-/react-is/19.1.0, MIT, approved, #20637
+npm/npmjs/-/react-is/19.0.0, MIT AND CC-BY-SA-4.0, approved, #18545
 npm/npmjs/-/react-player/2.16.0, MIT, approved, #14388
-npm/npmjs/-/react-router-dom/7.5.0, MIT, approved, clearlydefined
-npm/npmjs/-/react-router/7.5.0, MIT, approved, clearlydefined
+npm/npmjs/-/react-router-dom/7.2.0, MIT, approved, clearlydefined
+npm/npmjs/-/react-router/7.2.0, MIT, approved, clearlydefined
 npm/npmjs/-/react-slick/0.30.3, MIT, approved, #14009
 npm/npmjs/-/react-transition-group/4.4.5, BSD-3-Clause, approved, CQ22955
 npm/npmjs/-/react/18.3.1, MIT, approved, clearlydefined
@@ -138,10 +138,10 @@ npm/npmjs/-/reselect/4.1.8, MIT, approved, clearlydefined
 npm/npmjs/-/resize-observer-polyfill/1.5.1, MIT, approved, clearlydefined
 npm/npmjs/-/resolve-from/4.0.0, MIT, approved, clearlydefined
 npm/npmjs/-/resolve/1.22.10, MIT AND ISC, approved, #15315
-npm/npmjs/-/reusify/1.1.0, MIT, approved, clearlydefined
-npm/npmjs/-/rollup/4.39.0, 0BSD AND ISC AND MIT AND MIT AND ISC, approved, #20627
+npm/npmjs/-/reusify/1.0.4, MIT, approved, clearlydefined
+npm/npmjs/-/rollup/4.34.6, MIT AND (0BSD AND ISC AND MIT), approved, #19307
 npm/npmjs/-/run-parallel/1.2.0, MIT, approved, clearlydefined
-npm/npmjs/-/sass/1.86.3, Apache-2.0 AND BSD-3-Clause AND MIT AND MIT, approved, #20241
+npm/npmjs/-/sass/1.85.1, Apache-2.0 AND BSD-3-Clause AND MIT, approved, clearlydefined
 npm/npmjs/-/scheduler/0.23.2, MIT, approved, #14588
 npm/npmjs/-/semver/7.7.1, ISC, approved, #19251
 npm/npmjs/-/set-cookie-parser/2.7.1, MIT, approved, clearlydefined
@@ -156,32 +156,32 @@ npm/npmjs/-/stylis/4.2.0, MIT, approved, #8409
 npm/npmjs/-/supports-color/7.2.0, MIT, approved, clearlydefined
 npm/npmjs/-/supports-preserve-symlinks-flag/1.0.0, MIT, approved, clearlydefined
 npm/npmjs/-/to-regex-range/5.0.1, MIT, approved, clearlydefined
-npm/npmjs/-/ts-api-utils/2.1.0, MIT, approved, #20614
+npm/npmjs/-/ts-api-utils/2.0.1, MIT, approved, #18339
 npm/npmjs/-/turbo-stream/2.4.0, ISC AND MIT, approved, clearlydefined
 npm/npmjs/-/type-check/0.4.0, MIT, approved, clearlydefined
-npm/npmjs/-/typescript-eslint/8.29.1, MIT, approved, clearlydefined
+npm/npmjs/-/typescript-eslint/8.24.0, MIT, approved, clearlydefined
 npm/npmjs/-/typescript/5.7.3, Apache-2.0 AND MIT, approved, #17432
 npm/npmjs/-/uri-js/4.4.1, BSD-2-Clause, approved, #1086
-npm/npmjs/-/vite/6.2.5, MIT AND ISC AND Apache-2.0 AND BSD-2-Clause AND CC0-1.0, approved, #19548
+npm/npmjs/-/vite/6.2.1, MIT AND ISC AND Apache-2.0 AND BSD-2-Clause AND CC0-1.0, approved, #19548
 npm/npmjs/-/void-elements/3.1.0, MIT, approved, clearlydefined
 npm/npmjs/-/which/2.0.2, ISC, approved, clearlydefined
 npm/npmjs/-/word-wrap/1.2.5, MIT, approved, clearlydefined
 npm/npmjs/-/yaml/1.10.2, ISC, approved, clearlydefined
-npm/npmjs/-/yaml/2.7.1, ISC, approved, #18396
+npm/npmjs/-/yaml/2.7.0, ISC, approved, #18396
 npm/npmjs/-/yocto-queue/0.1.0, MIT, approved, clearlydefined
 npm/npmjs/@babel/code-frame/7.26.2, MIT, approved, clearlydefined
-npm/npmjs/@babel/generator/7.27.0, MIT, approved, clearlydefined
+npm/npmjs/@babel/generator/7.26.8, MIT AND (BSD-2-Clause AND ISC AND MIT) AND BSD-2-Clause AND BSD-3-Clause, approved, #17039
 npm/npmjs/@babel/helper-module-imports/7.25.9, MIT, approved, clearlydefined
 npm/npmjs/@babel/helper-string-parser/7.25.9, MIT, approved, clearlydefined
 npm/npmjs/@babel/helper-validator-identifier/7.25.9, MIT, approved, clearlydefined
-npm/npmjs/@babel/parser/7.27.0, MIT, approved, clearlydefined
-npm/npmjs/@babel/runtime/7.27.0, MIT, approved, clearlydefined
-npm/npmjs/@babel/template/7.27.0, MIT, approved, clearlydefined
-npm/npmjs/@babel/traverse/7.27.0, MIT, approved, clearlydefined
-npm/npmjs/@babel/types/7.27.0, MIT, approved, clearlydefined
+npm/npmjs/@babel/parser/7.26.8, MIT AND (BSD-2-Clause AND ISC AND MIT) AND BSD-2-Clause AND BSD-3-Clause, approved, #16882
+npm/npmjs/@babel/runtime/7.26.7, MIT, approved, clearlydefined
+npm/npmjs/@babel/template/7.26.8, MIT, approved, clearlydefined
+npm/npmjs/@babel/traverse/7.26.8, MIT AND (BSD-2-Clause AND ISC AND MIT) AND BSD-2-Clause AND BSD-3-Clause, approved, #17721
+npm/npmjs/@babel/types/7.26.8, MIT AND (BSD-2-Clause AND ISC AND MIT) AND BSD-2-Clause AND BSD-3-Clause, approved, #17734
 npm/npmjs/@catena-x/portal-shared-components/3.7.6, Apache-2.0 AND CC-BY-4.0 AND OFL-1.1, approved, #17145
 npm/npmjs/@date-io/core/3.2.0, MIT, approved, #19449
-npm/npmjs/@date-io/date-fns/3.2.1, MIT, approved, #19440
+npm/npmjs/@date-io/date-fns/3.2.0, MIT, approved, #19440
 npm/npmjs/@emotion/babel-plugin/11.13.5, MIT AND (BSD-2-Clause AND MIT), approved, #17718
 npm/npmjs/@emotion/cache/11.14.0, MIT AND (BSD-2-Clause AND MIT), approved, #18546
 npm/npmjs/@emotion/hash/0.9.2, MIT, approved, #8394
@@ -195,41 +195,40 @@ npm/npmjs/@emotion/unitless/0.10.0, MIT, approved, clearlydefined
 npm/npmjs/@emotion/use-insertion-effect-with-fallbacks/1.2.0, MIT, approved, #18549
 npm/npmjs/@emotion/utils/1.4.2, MIT AND (BSD-2-Clause AND MIT), approved, #16344
 npm/npmjs/@emotion/weak-memoize/0.4.0, MIT, approved, clearlydefined
-npm/npmjs/@esbuild/aix-ppc64/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19970
-npm/npmjs/@esbuild/android-arm/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19547
-npm/npmjs/@esbuild/android-arm64/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19960
-npm/npmjs/@esbuild/android-x64/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19549
-npm/npmjs/@esbuild/darwin-arm64/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19973
-npm/npmjs/@esbuild/darwin-x64/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19947
-npm/npmjs/@esbuild/freebsd-arm64/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19964
-npm/npmjs/@esbuild/freebsd-x64/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19953
-npm/npmjs/@esbuild/linux-arm/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19956
-npm/npmjs/@esbuild/linux-arm64/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19974
-npm/npmjs/@esbuild/linux-ia32/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19968
-npm/npmjs/@esbuild/linux-loong64/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19951
-npm/npmjs/@esbuild/linux-mips64el/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19963
-npm/npmjs/@esbuild/linux-ppc64/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19961
-npm/npmjs/@esbuild/linux-riscv64/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19957
-npm/npmjs/@esbuild/linux-s390x/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19962
-npm/npmjs/@esbuild/linux-x64/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19972
-npm/npmjs/@esbuild/netbsd-arm64/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19965
-npm/npmjs/@esbuild/netbsd-x64/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19952
-npm/npmjs/@esbuild/openbsd-arm64/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19955
-npm/npmjs/@esbuild/openbsd-x64/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19958
-npm/npmjs/@esbuild/sunos-x64/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19971
-npm/npmjs/@esbuild/win32-arm64/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19948
-npm/npmjs/@esbuild/win32-ia32/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19969
-npm/npmjs/@esbuild/win32-x64/0.25.2, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19967
-npm/npmjs/@eslint-community/eslint-utils/4.5.1, MIT, approved, clearlydefined
+npm/npmjs/@esbuild/aix-ppc64/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19970
+npm/npmjs/@esbuild/android-arm/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19547
+npm/npmjs/@esbuild/android-arm64/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19960
+npm/npmjs/@esbuild/android-x64/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19549
+npm/npmjs/@esbuild/darwin-arm64/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19973
+npm/npmjs/@esbuild/darwin-x64/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19947
+npm/npmjs/@esbuild/freebsd-arm64/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19964
+npm/npmjs/@esbuild/freebsd-x64/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19953
+npm/npmjs/@esbuild/linux-arm/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19956
+npm/npmjs/@esbuild/linux-arm64/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19974
+npm/npmjs/@esbuild/linux-ia32/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19968
+npm/npmjs/@esbuild/linux-loong64/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19951
+npm/npmjs/@esbuild/linux-mips64el/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19963
+npm/npmjs/@esbuild/linux-ppc64/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19961
+npm/npmjs/@esbuild/linux-riscv64/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19957
+npm/npmjs/@esbuild/linux-s390x/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19962
+npm/npmjs/@esbuild/linux-x64/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19972
+npm/npmjs/@esbuild/netbsd-arm64/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19965
+npm/npmjs/@esbuild/netbsd-x64/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19952
+npm/npmjs/@esbuild/openbsd-arm64/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19955
+npm/npmjs/@esbuild/openbsd-x64/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19958
+npm/npmjs/@esbuild/sunos-x64/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19971
+npm/npmjs/@esbuild/win32-arm64/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19948
+npm/npmjs/@esbuild/win32-ia32/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19969
+npm/npmjs/@esbuild/win32-x64/0.25.1, Apache-2.0 AND MIT AND BSD-3-Clause AND (BSD-2-Clause AND BSD-3-Clause), approved, #19967
+npm/npmjs/@eslint-community/eslint-utils/4.4.1, MIT, approved, #15285
 npm/npmjs/@eslint-community/regexpp/4.12.1, MIT, approved, clearlydefined
-npm/npmjs/@eslint/config-array/0.20.0, Apache-2.0 AND MIT, approved, #20500
-npm/npmjs/@eslint/config-helpers/0.2.1, Apache-2.0, approved, #20294
-npm/npmjs/@eslint/core/0.12.0, Apache-2.0, approved, #19528
-npm/npmjs/@eslint/core/0.13.0, Apache-2.0, approved, clearlydefined
-npm/npmjs/@eslint/eslintrc/3.3.1, MIT, approved, clearlydefined
-npm/npmjs/@eslint/js/9.24.0, MIT, approved, clearlydefined
+npm/npmjs/@eslint/config-array/0.19.2, Apache-2.0 AND MIT, approved, #17422
+npm/npmjs/@eslint/core/0.10.0, Apache-2.0, approved, clearlydefined
+npm/npmjs/@eslint/core/0.11.0, Apache-2.0, approved, clearlydefined
+npm/npmjs/@eslint/eslintrc/3.2.0, MIT, approved, clearlydefined
+npm/npmjs/@eslint/js/9.20.0, MIT, approved, clearlydefined
 npm/npmjs/@eslint/object-schema/2.1.6, Apache-2.0, approved, clearlydefined
-npm/npmjs/@eslint/plugin-kit/0.2.8, Apache-2.0, approved, #19529
+npm/npmjs/@eslint/plugin-kit/0.2.5, Apache-2.0, approved, #19531
 npm/npmjs/@floating-ui/core/1.6.9, MIT, approved, clearlydefined
 npm/npmjs/@floating-ui/dom/1.6.13, MIT, approved, clearlydefined
 npm/npmjs/@floating-ui/react-dom/2.1.2, MIT, approved, clearlydefined
@@ -238,28 +237,28 @@ npm/npmjs/@humanfs/core/0.19.1, Apache-2.0, approved, clearlydefined
 npm/npmjs/@humanfs/node/0.16.6, Apache-2.0, approved, clearlydefined
 npm/npmjs/@humanwhocodes/module-importer/1.0.1, Apache-2.0, approved, clearlydefined
 npm/npmjs/@humanwhocodes/retry/0.3.1, Apache-2.0 AND ISC, approved, #15956
-npm/npmjs/@humanwhocodes/retry/0.4.2, Apache-2.0 AND ISC, approved, #17085
+npm/npmjs/@humanwhocodes/retry/0.4.1, Apache-2.0 AND ISC, approved, #17085
 npm/npmjs/@jridgewell/gen-mapping/0.3.8, MIT, approved, clearlydefined
 npm/npmjs/@jridgewell/resolve-uri/3.1.2, MIT, approved, clearlydefined
 npm/npmjs/@jridgewell/set-array/1.2.1, MIT, approved, clearlydefined
 npm/npmjs/@jridgewell/sourcemap-codec/1.5.0, MIT, approved, clearlydefined
 npm/npmjs/@jridgewell/trace-mapping/0.3.25, MIT, approved, #9904
 npm/npmjs/@mui/base/5.0.0-dev.20240529-082515-213b5e33ab, MIT, approved, #2992
-npm/npmjs/@mui/core-downloads-tracker/5.17.1, MIT, approved, #20322
-npm/npmjs/@mui/core-downloads-tracker/6.4.10, MIT, approved, #19950
-npm/npmjs/@mui/icons-material/5.17.1, MIT, approved, #20332
-npm/npmjs/@mui/icons-material/6.4.10, MIT, approved, #19959
-npm/npmjs/@mui/material/5.17.1, MIT AND (BSD-3-Clause AND MIT), approved, #20365
-npm/npmjs/@mui/material/6.4.10, MIT, approved, #19949
-npm/npmjs/@mui/private-theming/5.17.1, MIT, approved, #20345
-npm/npmjs/@mui/private-theming/6.4.9, MIT, approved, #20621
+npm/npmjs/@mui/core-downloads-tracker/5.16.14, MIT, approved, #17767
+npm/npmjs/@mui/core-downloads-tracker/6.4.7, MIT, approved, #19950
+npm/npmjs/@mui/icons-material/5.16.14, MIT, approved, #15711
+npm/npmjs/@mui/icons-material/6.4.7, MIT, approved, #19959
+npm/npmjs/@mui/material/5.16.14, MIT, approved, #15714
+npm/npmjs/@mui/material/6.4.7, MIT, approved, #19949
+npm/npmjs/@mui/private-theming/5.16.14, MIT, approved, #15717
+npm/npmjs/@mui/private-theming/6.4.6, MIT, approved, clearlydefined
 npm/npmjs/@mui/styled-engine/5.16.14, MIT, approved, #15718
-npm/npmjs/@mui/styled-engine/6.4.9, MIT, approved, #20630
-npm/npmjs/@mui/system/5.17.1, MIT, approved, #20329
-npm/npmjs/@mui/system/6.4.10, MIT, approved, #19966
-npm/npmjs/@mui/types/7.2.24, MIT, approved, #16017
-npm/npmjs/@mui/utils/5.17.1, MIT, approved, #20334
-npm/npmjs/@mui/utils/6.4.9, MIT, approved, #20540
+npm/npmjs/@mui/styled-engine/6.4.6, MIT, approved, clearlydefined
+npm/npmjs/@mui/system/5.16.14, MIT, approved, #15715
+npm/npmjs/@mui/system/6.4.7, MIT, approved, #19966
+npm/npmjs/@mui/types/7.2.21, MIT, approved, #16017
+npm/npmjs/@mui/utils/5.16.14, MIT, approved, #15716
+npm/npmjs/@mui/utils/6.4.6, MIT, approved, clearlydefined
 npm/npmjs/@mui/x-data-grid/6.20.4, MIT AND ISC, approved, #15720
 npm/npmjs/@mui/x-date-pickers/6.20.2, MIT, approved, clearlydefined
 npm/npmjs/@nodelib/fs.scandir/2.1.5, MIT, approved, clearlydefined
@@ -280,54 +279,53 @@ npm/npmjs/@parcel/watcher-win32-ia32/2.5.1, MIT, approved, #17023
 npm/npmjs/@parcel/watcher-win32-x64/2.5.1, MIT, approved, #17040
 npm/npmjs/@parcel/watcher/2.5.1, MIT, approved, #17028
 npm/npmjs/@popperjs/core/2.11.8, MIT, approved, clearlydefined
-npm/npmjs/@rollup/rollup-android-arm-eabi/4.39.0, MIT, approved, #20636
-npm/npmjs/@rollup/rollup-android-arm64/4.39.0, MIT, approved, #20618
-npm/npmjs/@rollup/rollup-darwin-arm64/4.39.0, MIT, approved, #20619
-npm/npmjs/@rollup/rollup-darwin-x64/4.39.0, MIT, approved, #20631
-npm/npmjs/@rollup/rollup-freebsd-arm64/4.39.0, MIT, approved, #20615
-npm/npmjs/@rollup/rollup-freebsd-x64/4.39.0, MIT, approved, #20634
-npm/npmjs/@rollup/rollup-linux-arm-gnueabihf/4.39.0, MIT, approved, #20617
-npm/npmjs/@rollup/rollup-linux-arm-musleabihf/4.39.0, MIT, approved, #20626
-npm/npmjs/@rollup/rollup-linux-arm64-gnu/4.39.0, MIT, approved, #20612
-npm/npmjs/@rollup/rollup-linux-arm64-musl/4.39.0, MIT, approved, #20613
-npm/npmjs/@rollup/rollup-linux-loongarch64-gnu/4.39.0, MIT, approved, #20625
-npm/npmjs/@rollup/rollup-linux-powerpc64le-gnu/4.39.0, MIT, approved, #20616
-npm/npmjs/@rollup/rollup-linux-riscv64-gnu/4.39.0, MIT, approved, #20629
-npm/npmjs/@rollup/rollup-linux-riscv64-musl/4.39.0, MIT, approved, #20635
-npm/npmjs/@rollup/rollup-linux-s390x-gnu/4.39.0, MIT, approved, #20622
-npm/npmjs/@rollup/rollup-linux-x64-gnu/4.39.0, MIT, approved, #20632
-npm/npmjs/@rollup/rollup-linux-x64-musl/4.39.0, MIT, approved, #20638
-npm/npmjs/@rollup/rollup-win32-arm64-msvc/4.39.0, MIT, approved, #20633
-npm/npmjs/@rollup/rollup-win32-ia32-msvc/4.39.0, MIT, approved, #20611
-npm/npmjs/@rollup/rollup-win32-x64-msvc/4.39.0, MIT, approved, #20623
-npm/npmjs/@swc/core-darwin-arm64/1.11.18, Apache-2.0 AND MIT, approved, clearlydefined
-npm/npmjs/@swc/core-darwin-x64/1.11.18, Apache-2.0 AND MIT, approved, clearlydefined
-npm/npmjs/@swc/core-linux-arm-gnueabihf/1.11.18, Apache-2.0, approved, clearlydefined
-npm/npmjs/@swc/core-linux-arm64-gnu/1.11.18, Apache-2.0 AND MIT, approved, clearlydefined
-npm/npmjs/@swc/core-linux-arm64-musl/1.11.18, Apache-2.0 AND MIT, approved, clearlydefined
-npm/npmjs/@swc/core-linux-x64-gnu/1.11.18, Apache-2.0 AND MIT, approved, clearlydefined
-npm/npmjs/@swc/core-linux-x64-musl/1.11.18, Apache-2.0 AND MIT, approved, clearlydefined
-npm/npmjs/@swc/core-win32-arm64-msvc/1.11.18, Apache-2.0 AND MIT, approved, clearlydefined
-npm/npmjs/@swc/core-win32-ia32-msvc/1.11.18, Apache-2.0 AND MIT, approved, clearlydefined
-npm/npmjs/@swc/core-win32-x64-msvc/1.11.18, Apache-2.0 AND MIT, approved, clearlydefined
-npm/npmjs/@swc/core/1.11.18, Apache-2.0, approved, clearlydefined
+npm/npmjs/@rollup/rollup-android-arm-eabi/4.34.6, MIT AND (0BSD AND ISC AND MIT), approved, #19437
+npm/npmjs/@rollup/rollup-android-arm64/4.34.6, MIT AND (0BSD AND ISC AND MIT), approved, #19447
+npm/npmjs/@rollup/rollup-darwin-arm64/4.34.6, MIT AND (0BSD AND ISC AND MIT), approved, #19451
+npm/npmjs/@rollup/rollup-darwin-x64/4.34.6, MIT AND (0BSD AND ISC AND MIT), approved, #19452
+npm/npmjs/@rollup/rollup-freebsd-arm64/4.34.6, MIT AND (0BSD AND ISC AND MIT), approved, #19441
+npm/npmjs/@rollup/rollup-freebsd-x64/4.34.6, MIT AND (0BSD AND ISC AND MIT), approved, #19435
+npm/npmjs/@rollup/rollup-linux-arm-gnueabihf/4.34.6, MIT AND (0BSD AND ISC AND MIT), approved, #19444
+npm/npmjs/@rollup/rollup-linux-arm-musleabihf/4.34.6, MIT AND (0BSD AND ISC AND MIT), approved, #19433
+npm/npmjs/@rollup/rollup-linux-arm64-gnu/4.34.6, MIT AND (0BSD AND ISC AND MIT), approved, #19446
+npm/npmjs/@rollup/rollup-linux-arm64-musl/4.34.6, MIT AND (0BSD AND ISC AND MIT), approved, #19450
+npm/npmjs/@rollup/rollup-linux-loongarch64-gnu/4.34.6, MIT AND (0BSD AND ISC AND MIT), approved, #19438
+npm/npmjs/@rollup/rollup-linux-powerpc64le-gnu/4.34.6, MIT AND (0BSD AND ISC AND MIT), approved, #19442
+npm/npmjs/@rollup/rollup-linux-riscv64-gnu/4.34.6, MIT AND (0BSD AND ISC AND MIT), approved, #19436
+npm/npmjs/@rollup/rollup-linux-s390x-gnu/4.34.6, MIT AND (0BSD AND ISC AND MIT), approved, #19453
+npm/npmjs/@rollup/rollup-linux-x64-gnu/4.34.6, MIT AND (0BSD AND ISC AND MIT), approved, #19448
+npm/npmjs/@rollup/rollup-linux-x64-musl/4.34.6, MIT AND (0BSD AND ISC AND MIT), approved, #19443
+npm/npmjs/@rollup/rollup-win32-arm64-msvc/4.34.6, MIT AND (0BSD AND ISC AND MIT), approved, #19439
+npm/npmjs/@rollup/rollup-win32-ia32-msvc/4.34.6, MIT AND (0BSD AND ISC AND MIT), approved, #19445
+npm/npmjs/@rollup/rollup-win32-x64-msvc/4.34.6, MIT AND (0BSD AND ISC AND MIT), approved, #19454
+npm/npmjs/@swc/core-darwin-arm64/1.10.15, Apache-2.0 AND MIT, approved, #19637
+npm/npmjs/@swc/core-darwin-x64/1.10.15, Apache-2.0 AND MIT, approved, #19645
+npm/npmjs/@swc/core-linux-arm-gnueabihf/1.10.15, Apache-2.0, approved, clearlydefined
+npm/npmjs/@swc/core-linux-arm64-gnu/1.10.15, Apache-2.0 AND MIT, approved, #19640
+npm/npmjs/@swc/core-linux-arm64-musl/1.10.15, Apache-2.0 AND MIT, approved, clearlydefined
+npm/npmjs/@swc/core-linux-x64-gnu/1.10.15, Apache-2.0 AND MIT, approved, #19644
+npm/npmjs/@swc/core-linux-x64-musl/1.10.15, Apache-2.0, approved, #19629
+npm/npmjs/@swc/core-win32-arm64-msvc/1.10.15, Apache-2.0 AND MIT, approved, clearlydefined
+npm/npmjs/@swc/core-win32-ia32-msvc/1.10.15, Apache-2.0 AND MIT, approved, #19632
+npm/npmjs/@swc/core-win32-x64-msvc/1.10.15, Apache-2.0 AND MIT, approved, #19628
+npm/npmjs/@swc/core/1.10.15, Apache-2.0, approved, #19638
 npm/npmjs/@swc/counter/0.1.3, Apache-2.0, approved, clearlydefined
-npm/npmjs/@swc/types/0.1.21, Apache-2.0, approved, clearlydefined
+npm/npmjs/@swc/types/0.1.17, Apache-2.0, approved, clearlydefined
 npm/npmjs/@types/cookie/0.6.0, MIT, approved, clearlydefined
-npm/npmjs/@types/estree/1.0.7, MIT, approved, #8266
+npm/npmjs/@types/estree/1.0.6, MIT, approved, #8266
 npm/npmjs/@types/json-schema/7.0.15, MIT, approved, clearlydefined
 npm/npmjs/@types/parse-json/4.0.2, MIT, approved, #19199
 npm/npmjs/@types/prop-types/15.7.14, MIT, approved, #16176
-npm/npmjs/@types/react-dom/19.1.2, MIT, approved, #20620
+npm/npmjs/@types/react-dom/19.0.3, MIT, approved, clearlydefined
 npm/npmjs/@types/react-transition-group/4.4.12, MIT, approved, #8416
-npm/npmjs/@types/react/18.3.20, MIT, approved, #16412
-npm/npmjs/@types/react/19.1.0, MIT, approved, #20624
-npm/npmjs/@typescript-eslint/eslint-plugin/8.29.1, MIT, approved, clearlydefined
-npm/npmjs/@typescript-eslint/parser/8.29.1, MIT, approved, clearlydefined
-npm/npmjs/@typescript-eslint/scope-manager/8.29.1, MIT, approved, clearlydefined
-npm/npmjs/@typescript-eslint/type-utils/8.29.1, MIT, approved, clearlydefined
-npm/npmjs/@typescript-eslint/types/8.29.1, MIT, approved, clearlydefined
-npm/npmjs/@typescript-eslint/typescript-estree/8.29.1, MIT, approved, clearlydefined
-npm/npmjs/@typescript-eslint/utils/8.29.1, MIT, approved, clearlydefined
-npm/npmjs/@typescript-eslint/visitor-keys/8.29.1, MIT, approved, clearlydefined
-npm/npmjs/@vitejs/plugin-react-swc/3.8.1, MIT, approved, clearlydefined
+npm/npmjs/@types/react/18.3.18, MIT, approved, #16412
+npm/npmjs/@types/react/19.0.8, MIT, approved, #19633
+npm/npmjs/@typescript-eslint/eslint-plugin/8.24.0, MIT, approved, clearlydefined
+npm/npmjs/@typescript-eslint/parser/8.24.0, MIT, approved, clearlydefined
+npm/npmjs/@typescript-eslint/scope-manager/8.24.0, MIT, approved, clearlydefined
+npm/npmjs/@typescript-eslint/type-utils/8.24.0, MIT, approved, clearlydefined
+npm/npmjs/@typescript-eslint/types/8.24.0, MIT, approved, clearlydefined
+npm/npmjs/@typescript-eslint/typescript-estree/8.24.0, MIT, approved, clearlydefined
+npm/npmjs/@typescript-eslint/utils/8.24.0, MIT AND (BSD-2-Clause AND ISC AND MIT) AND BSD-2-Clause, approved, #19479
+npm/npmjs/@typescript-eslint/visitor-keys/8.24.0, MIT, approved, clearlydefined
+npm/npmjs/@vitejs/plugin-react-swc/3.8.0, MIT, approved, clearlydefined
