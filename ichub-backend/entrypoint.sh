@@ -9,10 +9,10 @@ CONFIGMAP_FOLDER="/tmp/config"
 CONFIG_FILE="/tmp/configuration.yml"
 REFERENCE_FILE="/tmp/configuration.yml.reference"
 
-# Check if the config folder exists
+# Check if the config folder exists, this means that is a k8s deployment
 if [ -d "$CONFIGMAP_FOLDER" ]; then
-    cp "$CONFIGMAP_FOLDER/configuration.yml" tmp/configuration.yml.reference
-    cp "$CONFIGMAP_FOLDER/logging.yml" tmp/logging.yml
+    cp "$CONFIGMAP_FOLDER/configuration.yml" $REFERENCE_FILE
+    cp "$CONFIGMAP_FOLDER/logging.yml" /tmp/logging.yml
 fi
 
 # Render config using envsubst
