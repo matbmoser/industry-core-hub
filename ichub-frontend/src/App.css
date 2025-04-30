@@ -360,7 +360,6 @@ header.ichub-header button.user-button:hover {
 }
 
 .share-dropdown-btn:hover{
-  background-color: #7cb0ff91!important;
   background: linear-gradient(180deg, rgba(1,32,96,0.8323704481792717) 0%, rgba(5,107,153,0.5690651260504201) 100%);
 }
 
