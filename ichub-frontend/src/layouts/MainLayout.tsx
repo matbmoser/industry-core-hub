@@ -21,7 +21,7 @@
 ********************************************************************************/
 
 import { Outlet } from "react-router-dom";
-import { Grid2 } from '@mui/material';
+import Grid2 from '@mui/material/Grid2';
 import Header from '../components/general/Header';
 import Sidebar from '../components/general/Sidebar';
 
@@ -38,6 +38,7 @@ function MainLayout() {
         <Grid2 size={{md:11, xs: 12}} className="contentArea flex flex-content-center" >
           <Outlet />
         </Grid2>
+    </Grid2>
     </Grid2>
   );
 };

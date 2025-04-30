@@ -26,7 +26,7 @@ import carPartsData from "../tests/payloads/sample-data.json";
 import { StatusTag, Button, Icon } from '@catena-x/portal-shared-components';
 import { PRODUCT_STATUS } from "../types/common";
 import JsonViewerDialog from "../components/general/JsonViewerDialog";
-import { Grid2 } from '@mui/material';
+import Grid2 from '@mui/material/Grid2';
 import InstanceProductsTable from "../Features/CatalogManagement/components/product-detail/InstanceProductsTable";
 import PageNotification from "../components/general/PageNotification";
 import ShareDropdown from "../Features/CatalogManagement/components/product-detail/ShareDropdown";
