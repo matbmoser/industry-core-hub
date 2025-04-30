@@ -63,8 +63,11 @@
 .sidebarContainer {
   display: flex;
   flex-direction: row;
-  background: linear-gradient(180deg, rgba(1,32,96,0.8323704481792717) 0%, rgba(5,107,153,0.5690651260504201) 100%);
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  height: 100%;
+}
+
+ body, html, #root{
   height: 100%;
 }
 
@@ -146,14 +149,25 @@
 }
 
 .contentWrapper{
+  height: 100%;
   background: black;
   background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/stars-background.png') !important;
+    overflow-y: auto;
+}
+.pageWrapper {
+  height: 91%;
 }
 
 /* Content area styling */
-.contentArea {
+.padding-twenty {
   padding: 20px;
 }
+
+.padding-trb{
+  padding: 5px 0 0;
+}
+
+
 
 .productWrapper{
   width: 100%;
@@ -167,8 +181,7 @@
 .productDetail {
   padding: 20px;
   width: 100%;
-  margin-top: 20px;
-  margin-bottom: 30px;
+  margin: 20px 30px 30px;
 }
 
 .cx-card__decision--item {
@@ -179,6 +192,7 @@
   box-shadow: 0 0 10px rgb(1,32,96);
   border-radius: 8px!important;
   border: 2px solid var(--brand-border-color)!important;
+  padding-top: 10px;
 }
 .product-table-wrapper * {
   color: white!important;
@@ -374,6 +388,19 @@ header.ichub-header button.user-button:hover {
 .main-logo {
  height: 30px;
 }
+
+.contentArea > .MuiPaper-root , .MuiDrawer-paperAnchorLeft {
+  position:relative !important;
+  border-radius: 0px !important;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  height: 100%;
+
+}
+
+.list-item div span {
+  color: #ffffff!important;
+}
+
 @media (min-width: 626px) {
   .main-logo {
     height: 50px;

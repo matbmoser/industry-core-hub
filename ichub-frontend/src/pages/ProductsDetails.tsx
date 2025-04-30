@@ -27,11 +27,11 @@ import { StatusTag, Button, Icon } from '@catena-x/portal-shared-components';
 import { PRODUCT_STATUS } from "../types/common";
 import JsonViewerDialog from "../components/general/JsonViewerDialog";
 import { Grid2 } from '@mui/material';
-import InstanceProductsTable from "../components/product-detail/InstanceProductsTable";
+import InstanceProductsTable from "../Features/CatalogManagement/components/product-detail/InstanceProductsTable";
 import PageNotification from "../components/general/PageNotification";
-import ShareDropdown from "../components/product-detail/ShareDropdown";
-import ProductButton from "../components/product-detail/ProductButton";
-import ProductData from "../components/product-detail/ProductData";
+import ShareDropdown from "../Features/CatalogManagement/components/product-detail/ShareDropdown";
+import ProductButton from "../Features/CatalogManagement/components/product-detail/ProductButton";
+import ProductData from "../Features/CatalogManagement/components/product-detail/ProductData";
 
 const ProductsDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -117,10 +117,11 @@ const ProductsDetails = () => {
 
   return (
     <>      
-      <PageNotification notification={notification} />
       
       <Grid2 container direction="column" className="productDetail">
         <Grid2 container spacing={2} className="mb-5" justifyContent={{ md: "space-between", sm: "center" }} alignItems="center" direction={{ sm: "column", md: "row" }}>
+        <PageNotification notification={notification} />
+
           <Grid2 size={{md: 3, sm: 12}} display="flex" justifyContent="center">
             {getStatusTag(part.status)}
           </Grid2>
@@ -155,9 +156,10 @@ const ProductsDetails = () => {
         </Grid2>
 
         <JsonViewerDialog open={dialogOpen} onClose={handleCloseDialog} carJsonData={part}/>
+        <InstanceProductsTable />
+
       </Grid2>
 
-      <InstanceProductsTable />
     </>
   );
 }

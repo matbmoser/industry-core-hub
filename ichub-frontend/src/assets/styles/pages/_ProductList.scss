@@ -34,9 +34,6 @@
         color: $darkmode-text;
         padding:10px;
         text-align: center;
-        background: rgba($brand-primary, 0.3);
-        @include mixins.space-shadow-strong;
-        width: 74%;
     }
     .pagination-text .MuiTablePagination-displayedRows{
         margin: 20px 0px;

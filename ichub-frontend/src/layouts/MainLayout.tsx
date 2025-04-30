@@ -20,21 +20,27 @@
  * SPDX-License-Identifier: Apache-2.0
 ********************************************************************************/
 
+import { Outlet } from "react-router-dom";
+import { Grid2 } from '@mui/material';
+import Header from '../components/general/Header';
+import Sidebar from '../components/general/Sidebar';
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import MainLayout from "./layouts/MainLayout";
-import ProductsList from './pages/ProductsList';
-import ProductsDetails from './pages/ProductsDetails';
-
-export default function AppRoutes() {
+function MainLayout() {
   return (
-    <BrowserRouter>
-     <Routes>
-        <Route path="/" element={<MainLayout />} >
-          <Route index element={<ProductsList />} />
-          <Route path="/product/:id" element={<ProductsDetails />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  );    
-}
+    <Grid2 container direction="column" className="contentWrapper">
+      <Grid2 size={{md:12, xs: 12}}>
+        <Header/>
+      </Grid2>
+      <Grid2 container className="pageWrapper" spacing={0}>
+        <Grid2  className="sidebarArea">
+          <Sidebar />
+        </Grid2>
+        <Grid2 size={{md:11, xs: 12}} className="contentArea flex flex-content-center" >
+          <Outlet />
+        </Grid2>
+      </Grid2>
+    </Grid2>
+  );
+};
+
+export default MainLayout;
