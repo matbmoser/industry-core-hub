@@ -73,7 +73,7 @@ class TwinAspectRead(BaseModel):
     registrations: Optional[Dict[str, TwinAspectRegistration]] = Field(description="A map of registration information for the aspect in different enablement service stacks. The key is the name of the enablement service stack.", default={})
 
 class TwinAspectCreate(BaseModel):
-    catenax_id: UUID = Field(alias="catenaXId", description="The Catena-X ID / global ID of the digital twin to which the new aspect belongs.")
+    global_id: UUID = Field(alias="globalId", description="The Catena-X ID / global ID of the digital twin to which the new aspect belongs.")
     semantic_id: str = Field(alias="semanticId", description="The semantic ID of the new aspect determining the structure of the associated payload data.")
     submodel_id: Optional[UUID] = Field(alias="submodelId", description="The optional ID of the submodel descriptor within the DTR shell descriptor for the associated twin. If not specified, a new UUID will be created automatically.") 
     enablement_service_stack_name: str = Field(alias="enablementServiceStackName", description="The name of the enablement service stack where the twin aspect should be registered.")
@@ -82,7 +82,7 @@ class TwinAspectCreate(BaseModel):
 class TwinRead(BaseModel):
     """Represents a digital twin within the Digital Twin Registry."""
 
-    catenax_id: UUID = Field(alias="catenaXId", description="The Catena-X ID / global ID of the digital twin.")
+    global_id: UUID = Field(alias="globalId", description="The Catena-X ID / global ID of the digital twin.")
     dtr_aas_id: UUID = Field(alias="dtrAasId", description="The shell descriptor ID ('AAS ID') of the digital twin in the Digital Twin Registry.") 
     created_date: datetime = Field(alias="createdDate", description="The date when the digital twin was created.")
     modified_date: datetime = Field(alias="modifiedDate", description="The date when the digital twin was last modified.")
@@ -90,7 +90,7 @@ class TwinRead(BaseModel):
 class TwinCreateBase(BaseModel):
     """Represents a digital twin to be created within the Digital Twin Registry."""
 
-    catenax_id: Optional[UUID] = Field(alias="catenaXId", description="Optionally the Catena-X ID / global ID of the digital twin to create. If not specified, a new UUID will be created automatically.", default=None)
+    global_id: Optional[UUID] = Field(alias="globalId", description="Optionally the Catena-X ID / global ID of the digital twin to create. If not specified, a new UUID will be created automatically.", default=None)
     dtr_aas_id: Optional[UUID] = Field(alias="dtrAasId", description="Optionally the shell descriptor ID ('AAS ID') of the digital twin in the Digital Twin Registry. If not specified, a new UUID will be created automatically.", default=None)
 
 class TwinDetailsRead(TwinRead):

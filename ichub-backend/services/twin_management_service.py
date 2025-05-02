@@ -36,27 +36,51 @@ class TwinManagementService:
     def __init__(self, ):
         self.repositories = RepositoryManagerFactory.create()
 
-    def create_catalog_part_twin(self, twin_catalog_part_create: CatalogPartTwinCreate) -> TwinRead:
-        # Step 1: Retrieve the catalog part entity according to the catalog part data (manufacturer_id, manufacturer_part_id)
-        # (if not there => raise error)
+    def create_catalog_part_twin(self, create_input: CatalogPartTwinCreate) -> TwinRead:
+        with self.repositories as repo:
+            # Step 1: Retrieve the catalog part entity according to the catalog part data (manufacturer_id, manufacturer_part_id)
+            db_catalog_parts = repo.catalog_part_repository.find_by_manufacturer_id_manufacturer_part_id(
+                create_input.manufacturer_id,
+                create_input.manufacturer_part_id
+            )
+            if not db_catalog_parts:
+                raise ValueError("Catalog part not found.")
+            else:
+                db_catalog_part = db_catalog_parts[0]
 
-        # Step 2 (future): Retrieve the enablement service stack entity from the DB according to the given name
-        # (for the moment: we have a singleton entity for that - e.g. with id 1)
-        # (if not there => raise error)
+            # Step 2 (future): Retrieve the enablement service stack entity from the DB according to the given name
+            # (for the moment: we have a singleton entity for that - e.g. with id 1)
+            # (if not there => raise error)
+            db_enablement_service_stack = repo.enablement_service_stack_repository.find_all(limit=1)[0]
 
-        # Step 3: Check the twin_id field of that entity if a twin is already registered
+            # Step 3: Check the twin_id field of that entity if a twin is already registered
+            if db_catalog_part.twin_id:
+                raise ValueError("Twin already registered for this catalog part.")
 
-        # Step 4: If no twin was there, create it now in the DB (generating on demand a new global_id and dtr_aas_id)
+            # Step 4: If no twin was there, create it now in the DB (generating on demand a new global_id and dtr_aas_id)
+            db_twin = repo.twin_repository.create_new(
+                global_id=create_input.global_id,
+                dtr_aas_id=create_input.dtr_aas_id)
+            repo.commit()
+            repo.refresh(db_twin)
 
-        # Step 5: Try to find the twin registration for the twin id and enablement service stack id
-        # (if not there => create it now, setting the dtr_registered flag to False)
-    
-        # Step 6: Check the dtr_registered flag on the twin registration entity
-        # (if True => we can skip the operation from here on => nothing to do)
-        # (if False => we need to register the twin in the DTR using the industry core SDK, then
-        #  update the twin registration entity with the dtr_registered flag to True)
+            # Step 4a: Update the catalog part entity with the twin_id
+            db_catalog_part.twin_id = db_twin.id
+            repo.commit()
 
-        pass
+            # Step 5: Try to find the twin registration for the twin id and enablement service stack id
+            # (if not there => create it now, setting the dtr_registered flag to False)
+        
+            # Step 6: Check the dtr_registered flag on the twin registration entity
+            # (if True => we can skip the operation from here on => nothing to do)
+            # (if False => we need to register the twin in the DTR using the industry core SDK, then
+            #  update the twin registration entity with the dtr_registered flag to True)
+            return TwinRead(
+                globalId=db_twin.global_id,
+                dtrAasId=db_twin.aas_id,
+                createdDate=db_twin.created_date,
+                modifiedDate=db_twin.modified_date
+            )
 
     def create_catalog_part_twin_share(self, global_id: UUID, business_partner_name: str) -> TwinRead:
         # Step 1: Retrieve the twin entity according to the global_id

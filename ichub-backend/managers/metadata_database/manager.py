@@ -34,8 +34,10 @@ class RepositoryManager:
         self._business_partner_repository = None
         self._catalog_part_repository = None
         self._data_exchange_agreement_repository = None
+        self._enablement_service_stack_repository = None
         self._legal_entity_repository = None
         self._partner_catalog_part_repository = None
+        self._twin_repository = None
 
     # Context Manager Methods
     def __enter__(self):
@@ -95,6 +97,14 @@ class RepositoryManager:
         return self._data_exchange_agreement_repository
 
     @property
+    def enablement_service_stack_repository(self):
+        """Lazy initialization of the enablement service stack repository."""
+        if self._enablement_service_stack_repository is None:
+            from managers.metadata_database.repositories import EnablementServiceStackRepository
+            self._enablement_service_stack_repository = EnablementServiceStackRepository(self._session)
+        return self._enablement_service_stack_repository
+
+    @property
     def legal_entity_repository(self):
         """Lazy initialization of the legal entity repository."""
         if self._legal_entity_repository is None:
@@ -110,6 +120,13 @@ class RepositoryManager:
             self._partner_catalog_part_repository = PartnerCatalogPartRepository(self._session)
         return self._partner_catalog_part_repository
     
+    @property
+    def twin_repository(self):
+        """Lazy initialization of the twin repository."""
+        if self._twin_repository is None:
+            from managers.metadata_database.repositories import TwinRepository
+            self._twin_repository = TwinRepository(self._session)
+        return self._twin_repository
 
 class RepositoryManagerFactory:
     """Factory class for creating repository managers with singleton behavior."""
@@ -119,7 +136,7 @@ class RepositoryManagerFactory:
     _lock: Lock = Lock()
 
     @staticmethod
-    def create(db_url: str = "postgresql://username:password@localhost/dbname") -> RepositoryManager:
+    def create(db_url: str = "postgresql://sm29105:sm29105@localhost/cx-next") -> RepositoryManager:
         """Create or return the singleton instance of RepositoryManager."""
         if RepositoryManagerFactory._repository_manager_instance is None:
             with RepositoryManagerFactory._lock:

@@ -24,8 +24,10 @@
 
 from sqlmodel import SQLModel, Session, select
 from typing import TypeVar, Type, List, Optional, Generic
+from uuid import UUID, uuid4
+from datetime import datetime, timezone
 
-from models.metadata_database.models import BusinessPartner, CatalogPart, DataExchangeAgreement, LegalEntity, PartnerCatalogPart
+from models.metadata_database.models import BusinessPartner, CatalogPart, DataExchangeAgreement, EnablementServiceStack, LegalEntity, PartnerCatalogPart, Twin
 
 ModelType = TypeVar("ModelType", bound=SQLModel)
 
@@ -80,14 +82,15 @@ class BaseRepository(Generic[ModelType]):
             self._session.refresh(obj)
         return obj
     
-    def delete(self, obj_id: int, *, commit: bool = False) -> None:
+    def delete(self, obj_id: int) -> None:
         obj = self._session.get(self.get_type(), obj_id)
         if obj is None:
-            err_msg = f'Object not found with id {obj_id}'
+            err_msg = f'{self.get_type()} with id {obj_id} not found!'
             raise ValueError(err_msg)
+        self.delete_obj(obj)
+
+    def delete_obj(self, obj: ModelType) -> None:
         self._session.delete(obj)
-        if commit:
-            self._session.commit()
 
 class BusinessPartnerRepository(BaseRepository[BusinessPartner]):
 
@@ -125,7 +128,11 @@ class CatalogPartRepository(BaseRepository[CatalogPart]):
         return self._session.exec(stmt).all()
 
 class DataExchangeAgreementRepository(BaseRepository[DataExchangeAgreement]):
-    pass
+    def get_by_business_partner_id(self, business_partner_id: int) -> List[DataExchangeAgreement]:
+        stmt = select(DataExchangeAgreement).where(
+            DataExchangeAgreement.business_partner_id == business_partner_id  # type: ignore
+        )
+        return self._session.scalars(stmt).all()
 
 class LegalEntityRepository(BaseRepository[LegalEntity]):
 
@@ -137,3 +144,25 @@ class LegalEntityRepository(BaseRepository[LegalEntity]):
 class PartnerCatalogPartRepository(BaseRepository[PartnerCatalogPart]):
     pass
 
+class EnablementServiceStackRepository(BaseRepository[EnablementServiceStack]):
+    pass
+
+class TwinRepository(BaseRepository[Twin]):
+    def create_new(self, global_id: UUID = None, dtr_aas_id: UUID = None):
+        """Create a new Twin instance with the given global_id and dtr_aas_id."""
+        
+        if global_id is None:
+            global_id = uuid4()
+
+        if dtr_aas_id is None:
+            dtr_aas_id = uuid4()
+        
+        twin = Twin(
+            global_id=global_id,
+            dtr_aas_id=dtr_aas_id,
+            created_at=datetime.now(timezone.utc),
+            updated_at=datetime.now(timezone.utc)
+        )
+        self.create(twin)
+        
+        return twin

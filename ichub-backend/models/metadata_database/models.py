@@ -23,7 +23,7 @@
 #################################################################################
 
 from typing import Any, Dict, List, Optional
-from uuid import UUID
+from uuid import UUID, uuid4
 from datetime import datetime
 from sqlmodel import Field, SQLModel, Relationship
 from sqlalchemy import Column, JSON, UniqueConstraint
@@ -53,8 +53,8 @@ class BusinessPartner(SQLModel, table=True):
 
 class Twin(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    global_id: UUID = Field(default_factory=UUID, unique=True, description="The global ID (aka. Catena-X ID) of the twin.")
-    aas_id: UUID = Field(default_factory=UUID, unique=True, description="The AAS ID of the twin.")
+    global_id: UUID = Field(default_factory=uuid4, unique=True, description="The global ID (aka. Catena-X ID) of the twin.")
+    aas_id: UUID = Field(default_factory=uuid4, unique=True, description="The AAS ID of the twin.")
     created_date: datetime = Field(default_factory=datetime.utcnow, description="The creation date of the twin.")
     modified_date: datetime = Field(default_factory=datetime.utcnow, description="The last modification date of the twin.")
     asset_class: Optional[str] = Field(default=None, description="The asset class of the twin.")
