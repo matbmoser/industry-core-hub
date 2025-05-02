@@ -53,7 +53,7 @@ async def partner_management_get_business_partners() -> List[BusinessPartnerRead
     return partner_management_service.list_business_partners()
 
 @app.get("/partner-management/business-partner/{business_partner_name}", response_model=Optional[BusinessPartnerRead])
-async def partner_management_get_business_partners(business_partner_name: str) -> Optional[BusinessPartnerRead]:
+async def partner_management_get_business_partner(business_partner_name: str) -> Optional[BusinessPartnerRead]:
     return partner_management_service.get_business_partner(business_partner_name)
 
 @app.post("/partner-management/business-partner/{business_partner_name}", response_model=BusinessPartnerRead)
