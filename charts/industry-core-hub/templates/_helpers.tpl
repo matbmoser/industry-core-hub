@@ -230,15 +230,6 @@ Get the database secret key
 {{- end -}}
 
 {{/*
-Return true if a secret object should be created for external database
-*/}}
-{{- define "industry-core-hub.externalDatabase.createSecret" -}}
-{{- if and (not .Values.postgresql.enabled) (not .Values.externalDatabase.existingSecret) }}
-    {{- true -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
 Return the postgresql URL
 */}}
 {{- define "industry-core-hub.postgresql.url" -}}
@@ -264,5 +255,5 @@ Return the postgresql DSN URL
 {{- $name := include "industry-core-hub.postgresql.databaseName" . -}}
 {{- $user := include "industry-core-hub.postgresql.ichubUser" . -}}
 {{- $sslMode := include "industry-core-hub.postgresql.sslMode" . -}}
-{{- printf "postgresql://%s:$(DATABASE_PASSWORD)@%s:%s/%s?sslmode=%s" $user $host $port $name $sslMode -}}
+{{- printf "postgresql://%s:$DATABASE_PASSWORD@%s:%s/%s?sslmode=%s" $user $host $port $name $sslMode -}}
 {{- end -}}
