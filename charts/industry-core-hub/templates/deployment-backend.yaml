@@ -67,8 +67,6 @@ spec:
                 secretKeyRef:
                   name: {{ include "industry-core-hub.postgresql.secretName" . }}
                   key: {{ include "industry-core-hub.postgresql.ichub.secretKey" . }}
-            - name: DATABASE_CONNECTION_STRING
-              value: {{ include "industry-core-hub.postgresql.dsn" . | quote }}
           {{- if .Values.backend.healthChecks.startup.enabled }}
           startupProbe:
             httpGet:
@@ -110,13 +108,7 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           volumeMounts:
-            - name: data-volume
-              mountPath: /dataspace-sdk/data
-            - name: logs-volume
-              mountPath: /dataspace-sdk/logs
-            {{- if .Values.backend.additionalVolumeMounts }}
-            {{- toYaml .Values.backend.additionalVolumeMounts | nindent 12 }}
-            {{- end }}
+            {{- toYaml .Values.backend.volumeMounts | nindent 12 }}
       volumes:
         - name: data-volume
         {{- if and .Values.backend.persistence.enabled .Values.backend.persistence.data.enabled }}
@@ -132,6 +124,11 @@ spec:
         {{- else }}
           emptyDir: {}
         {{- end }}
+        - name: backend-config-configmap
+          configMap:
+            name: {{ include "industry-core-hub.fullname.backend" . }}-config
+        - name: tmp
+          emptyDir: {}
         {{- if .Values.backend.additionalVolumes }}
         {{- toYaml .Values.backend.additionalVolumes | nindent 8 }}
         {{- end }}

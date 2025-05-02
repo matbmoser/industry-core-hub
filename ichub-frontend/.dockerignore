@@ -4,3 +4,4 @@
 .gitignore
 .husky
 Dockerfile
+**/node_modules
