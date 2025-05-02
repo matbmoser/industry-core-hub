@@ -37,7 +37,7 @@ part_management_service = PartManagementService()
 partner_management_service = PartnerManagementService()
 
 @app.get("/part-management/catalog-part/{manufacturer_id}/{manufacturer_part_id}", response_model=CatalogPartRead)
-async def part_management_get_catalog_part(manufacturer_id: str, manufacturer_part_id: str) -> CatalogPartRead:
+async def part_management_get_catalog_part(manufacturer_id: str, manufacturer_part_id: str) -> Optional[CatalogPartRead]:
     return part_management_service.get_catalog_part(manufacturer_id, manufacturer_part_id)
 
 @app.get("/part-management/catalog-part", response_model=List[CatalogPartRead])
