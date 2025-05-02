@@ -20,11 +20,19 @@
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
 
-authorization:
-  enabled: true
-  apiKey: 
-    key: "X-Api-Key"
-    value: <<example>>
-database:
-  connection_string: "postgresql://user:$DATABASE_PASSWORD@localhost:5432/mydatabase"
-  echo: true
+
+# Package-level variables
+__author__ = 'Eclipse Tractus-X Contributors'
+__license__ = "Apache License, Version 2.0"
+
+
+from .manager import RepositoryManager, RepositoryManagerFactory
+
+from .repositories import (
+    BusinessPartnerRepository,
+    CatalogPartRepository,
+    DataExchangeAgreementRepository,
+    LegalEntityRepository,
+    PartnerCatalogPartRepository
+)
+

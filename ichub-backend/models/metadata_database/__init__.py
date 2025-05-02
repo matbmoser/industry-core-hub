@@ -1,6 +1,8 @@
 #################################################################################
 # Eclipse Tractus-X - Industry Core Hub Backend
 #
+# Copyright (c) 2025 DRÄXLMAIER Group
+# (represented by Lisa Dräxlmaier GmbH)
 # Copyright (c) 2025 Contributors to the Eclipse Foundation
 #
 # See the NOTICE file(s) distributed with this work for additional
@@ -20,11 +22,22 @@
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
 
-authorization:
-  enabled: true
-  apiKey: 
-    key: "X-Api-Key"
-    value: <<example>>
-database:
-  connection_string: "postgresql://user:$DATABASE_PASSWORD@localhost:5432/mydatabase"
-  echo: true
+from .models import (
+    LegalEntity,
+    BusinessPartner,
+    Twin,
+    CatalogPart,
+    PartnerCatalogPart,
+    SerializedPart,
+    JISPart,
+    Batch,
+    BatchBusinessPartner,
+    DataExchangeAgreement,
+    DataExchangeContract,
+    EnablementServiceStack,
+    TwinAspect,
+    TwinAspectRegistration,
+    TwinExchange,
+    TwinRegistration,
+)
+

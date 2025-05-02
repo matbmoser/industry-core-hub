@@ -34,7 +34,7 @@ WORKDIR /dataspace-sdk
 RUN ls -la
 
 ## Install Python
-RUN apk add python3 py3-pip libpq --no-cache
+RUN apk add python3 py3-pip libpq gettext --no-cache
 
 ## Install application requirements
 RUN pip3 install --break-system-packages --no-cache-dir -r ./requirements.txt
@@ -53,6 +53,19 @@ RUN mkdir -p ./data
 ## Update user permissions
 RUN chown -R 1000:3000 /dataspace-sdk && chmod -R 775 /dataspace-sdk/
 
+## Set entrypoint to executable
+RUN chmod +x /dataspace-sdk/entrypoint.sh
+
+# Rename configuration.yml to configuration.yml.reference, to be used by env variables inject script
+# Create symlink for tmp for configuration.yml to enable readOnlyRootFilesystem
+RUN mv /dataspace-sdk/config/configuration.yml /tmp/configuration.yml.reference \
+    && ln -s /tmp/configuration.yml /dataspace-sdk/config/configuration.yml
+
+# Same for logging.yml, but as we don't need to inject env variables, we can just copy it
+# and create the symlink
+RUN mv /dataspace-sdk/config/logging.yml /tmp/logging.yml \
+    && ln -s /tmp/logging.yml /dataspace-sdk/config/logging.yml
+
 ## If necessary to inject documentation do it here:
 # COPY ./resources/docs/* ./resources/docs
 
@@ -63,4 +76,4 @@ USER 1000:3000
 EXPOSE 8000
 
 ## Execute the application
-CMD ["python3","-m", "main", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["/dataspace-sdk/entrypoint.sh"]
