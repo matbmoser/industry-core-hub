@@ -64,6 +64,9 @@ class BaseRepository(Generic[ModelType]):
         return list(result)
 
     def update(self, id: int, obj_in: dict) -> Optional[ModelType]:
+        '''
+        TODO
+        '''
         pass
 
     def commit(self) -> None:
@@ -113,7 +116,7 @@ class CatalogPartRepository(BaseRepository[CatalogPart]):
             stmt = stmt.join(PartnerCatalogPart, CatalogPart.id == PartnerCatalogPart.catalog_part_id).join(BusinessPartner, BusinessPartner.id == PartnerCatalogPart.business_partner_id)
 
         if manufacturer_id:
-            stmt = stmt.join(LegalEntity).where(LegalEntity.bpnl == manufacturer_id)
+            stmt = stmt.join(LegalEntity, LegalEntity.id == CatalogPart.legal_entity_id).where(LegalEntity.bpnl == manufacturer_id)
 
         if manufacturer_part_id:
             stmt = stmt.where(CatalogPart.manufacturer_part_id == manufacturer_part_id)
