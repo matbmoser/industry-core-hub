@@ -115,15 +115,21 @@ class RepositoryManagerFactory:
     """Factory class for creating repository managers with singleton behavior."""
 
     _engine_instance = None
+    _repository_manager_instance = None
     _lock: Lock = Lock()
 
     @staticmethod
-    def create() -> RepositoryManager:
+    def create(db_url: str = "postgresql://username:password@localhost/dbname") -> RepositoryManager:
         """Create or return the singleton instance of RepositoryManager."""
-        if RepositoryManagerFactory._engine_instance is None:
+        if RepositoryManagerFactory._repository_manager_instance is None:
             with RepositoryManagerFactory._lock:
-                if RepositoryManagerFactory._engine_instance is None:
-                    # Create a SQLModel engine for PostgreSQL
-                    RepositoryManagerFactory._engine_instance = create_engine("postgresql://username:password@localhost/dbname")
+                if RepositoryManagerFactory._repository_manager_instance is None:
+                    # Create a SQLModel engine for PostgreSQL if not already created
+                    if RepositoryManagerFactory._engine_instance is None:
+                        RepositoryManagerFactory._engine_instance = create_engine(db_url)
 
-        return RepositoryManager(Session(RepositoryManagerFactory._engine_instance))
+                    # Create the singleton instance of RepositoryManager
+                    session = Session(RepositoryManagerFactory._engine_instance)
+                    RepositoryManagerFactory._repository_manager_instance = RepositoryManager(session)
+
+        return RepositoryManagerFactory._repository_manager_instance
