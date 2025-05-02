@@ -40,7 +40,7 @@ partner_management_service = PartnerManagementService()
 twin_management_service = TwinManagementService()
 
 @app.get("/part-management/catalog-part/{manufacturer_id}/{manufacturer_part_id}", response_model=CatalogPartRead)
-async def part_management_get_catalog_part(manufacturer_id: str, manufacturer_part_id: str) -> CatalogPartRead:
+async def part_management_get_catalog_part(manufacturer_id: str, manufacturer_part_id: str) -> Optional[CatalogPartRead]:
     return part_management_service.get_catalog_part(manufacturer_id, manufacturer_part_id)
 
 @app.get("/part-management/catalog-part", response_model=List[CatalogPartRead])
@@ -56,7 +56,7 @@ async def partner_management_get_business_partners() -> List[BusinessPartnerRead
     return partner_management_service.list_business_partners()
 
 @app.get("/partner-management/business-partner/{business_partner_name}", response_model=Optional[BusinessPartnerRead])
-async def partner_management_get_business_partners(business_partner_name: str) -> Optional[BusinessPartnerRead]:
+async def partner_management_get_business_partner(business_partner_name: str) -> Optional[BusinessPartnerRead]:
     return partner_management_service.get_business_partner(business_partner_name)
 
 @app.post("/partner-management/business-partner/{business_partner_name}", response_model=BusinessPartnerRead)
