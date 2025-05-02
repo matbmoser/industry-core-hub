@@ -22,7 +22,7 @@
 import uvicorn
 from controllers.fastapi import app as api
 
-app = api.app
+app = api
 
 if __name__ == "__main__":
     uvicorn.run("runtimes.fastapi.main:api", reload=True)
