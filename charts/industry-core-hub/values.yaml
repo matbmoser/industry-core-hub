@@ -32,7 +32,7 @@ backend:
   enabled: true
   name: "industry-core-hub-backend"
   image:
-    repository: "ichub-backend"
+    repository: "tractusx/industry-core-hub-backend"
     pullPolicy: IfNotPresent
     # -- Overrides the image tag whose default is the chart appVersion
     tag: ""
@@ -162,7 +162,7 @@ frontend:
   enabled: true
   name: "industry-core-hub-frontend"
   image:
-    repository: "ichub-frontend"
+    repository: "tractusx/industry-core-hub-frontend"
     pullPolicy: IfNotPresent
     # -- Overrides the image tag whose default is the chart appVersion
     tag: ""
