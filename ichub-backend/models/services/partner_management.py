@@ -64,7 +64,7 @@ class DataExchangeAgreementRead(BaseModel):
 
     business_partner: BusinessPartnerRead = Field(alias="businessPartner", description="The business partner to whom the data exchange agreement applies.")
     name: str = Field(description="The unique name of the data exchange agreement with the given business partner.")
-    contracts: List[DataExchangeContractRead] = Field(description="The list of data exchange contracts that are part of the agreement.")
+    contracts: List[DataExchangeContractRead] = Field(description="The list of data exchange contracts that are part of the agreement.", default=[])
 
 class DataExchangeAgreementCreate(BaseModel):
     business_partner_name: str = Field(alias="businessPartnerName", description="The unique name of the business partner to whom the data exchange contract applies.")

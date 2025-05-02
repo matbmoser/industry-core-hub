@@ -29,7 +29,7 @@ from fastapi import FastAPI
 from services.part_management_service import PartManagementService
 from services.partner_management_service import PartnerManagementService
 from models.services.part_management import CatalogPartRead, PartnerCatalogPartBase
-from models.services.partner_management import BusinessPartnerRead, BusinessPartnerCreate, BusinessPartnerCreateInput
+from models.services.partner_management import BusinessPartnerRead, BusinessPartnerCreate, BusinessPartnerCreateInput, DataExchangeAgreementRead
 
 app = FastAPI(title="Industry Core Hub Backend API", version="0.0.1")
 
@@ -56,11 +56,13 @@ async def partner_management_get_business_partners() -> List[BusinessPartnerRead
 async def partner_management_get_business_partners(business_partner_name: str) -> Optional[BusinessPartnerRead]:
     return partner_management_service.get_business_partner(business_partner_name)
 
-@app.post("/partner-management/business-partner{business_partner_name}", response_model=BusinessPartnerRead)
+@app.post("/partner-management/business-partner/{business_partner_name}", response_model=BusinessPartnerRead)
 async def partner_management_create_business_partner(business_partner_name: str, create_input: BusinessPartnerCreateInput) -> BusinessPartnerRead:
     return partner_management_service.create_business_partner(BusinessPartnerCreate(
         name=business_partner_name,
         bpnl=create_input.bpnl
     ))
 
-
+@app.get("/partner-management/business-partner/{business_partner_name}/data-exchange-agreement", response_model=List[DataExchangeAgreementRead])
+async def partner_management_get_data_exchange_agreements(business_partner_name: str) -> List[DataExchangeAgreementRead]:
+    return partner_management_service.get_data_exchange_agreements(business_partner_name)

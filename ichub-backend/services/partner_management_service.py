@@ -24,7 +24,7 @@
 
 from typing import List, Optional
 
-from models.services.partner_management import BusinessPartnerCreate, BusinessPartnerRead
+from models.services.partner_management import BusinessPartnerCreate, BusinessPartnerRead, DataExchangeAgreementRead
 from models.metadata_database.models import BusinessPartner, DataExchangeAgreement
 from managers.metadata_database.manager import RepositoryManagerFactory
 
@@ -86,3 +86,17 @@ class PartnerManagementService():
         with self.repositories as repo:
             db_partners = repo.business_partner_repository.find_all()
             return [BusinessPartnerRead(name=bp.name, bpnl=bp.bpnl) for bp in db_partners]
+        
+    def get_data_exchange_agreements(self, partner_name: str) -> List[DataExchangeAgreementRead]:
+        """
+        List all data exchange agreements for a given partner.
+        """
+        with self.repositories as repo:
+            db_partner = repo.business_partner_repository.get_by_name(partner_name)
+            if not db_partner:
+                return []
+            
+            db_agreements = repo.data_exchange_agreement_repository.get_by_business_partner_id(db_partner.id)
+            return [DataExchangeAgreementRead(
+                businessPartner=BusinessPartnerRead(name=db_partner.name, bpnl=db_partner.bpnl),
+                name=agreement.name) for agreement in db_agreements]
