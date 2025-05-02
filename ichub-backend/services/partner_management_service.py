@@ -36,7 +36,7 @@ class PartnerManagementService():
     def __init__(self, ):
         self.repositories = RepositoryManagerFactory.create()
 
-    def create_partner(self, partner_create: BusinessPartnerCreate) -> BusinessPartnerRead:
+    def create_business_partner(self, partner_create: BusinessPartnerCreate) -> BusinessPartnerRead:
         """
         Create a new partner in the system.
         """
@@ -44,7 +44,7 @@ class PartnerManagementService():
             
             # First create the business partner entity
             db_partner = repo.business_partner_repository.create(BusinessPartner(
-                name=partner_create,
+                name=partner_create.name,
                 bpnl=partner_create.bpnl
             ))
 
@@ -56,11 +56,13 @@ class PartnerManagementService():
             # (TODO: to be replaced by an explicit API call in a later version)
             repo.data_exchange_agreement_repository.create(
                 DataExchangeAgreement(
-                    business_partner=db_partner,
+                    business_partner_id=db_partner.id,
                     name='Default'
                 ))
+            
+            return BusinessPartnerRead(name=db_partner.name, bpnl=db_partner.bpnl)
 
-    def get_partner(self, partner_name: str) -> BusinessPartnerRead:
+    def get_business_partner(self, partner_name: str) -> Optional[BusinessPartnerRead]:
         """
         Retrieve a partner by its ID.
         """
@@ -70,14 +72,14 @@ class PartnerManagementService():
             return BusinessPartnerRead(name=db_partner.name, bpnl=db_partner.bpnl) if db_partner else None
 
 
-    def delete_partner(self, partner_name: str) -> bool:
+    def delete_business_partner(self, partner_name: str) -> bool:
         """
         Delete a partner from the system.
         """
         # Logic to delete a partner
         pass
 
-    def list_partners(self) -> List[BusinessPartnerRead]:
+    def list_business_partners(self) -> List[BusinessPartnerRead]:
         """
         List all partners in the system.
         """

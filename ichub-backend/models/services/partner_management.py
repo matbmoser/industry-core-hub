@@ -29,7 +29,7 @@ def validate_bpnl(bpnl: str, field_name: str) -> str:
     """Validates the BPNL format."""
     if len(bpnl) != 16 or not bpnl.isalnum():
         raise ValueError(f"{field_name} must be exactly 16 alphanumeric characters.")
-    if bpnl[0:3] != "BPNL":
+    if bpnl[0:4] != "BPNL":
         raise ValueError(f"{field_name} must start with 'BPNL'.")
     
     return bpnl
@@ -40,13 +40,18 @@ class BusinessPartnerRead(BaseModel):
     name: str = Field(description="The unique name of the business partner.")
     bpnl: str = Field(description="The Catena-X Business Partner Number (BPNL) of the business partner.")
 
-class BusinessPartnerCreate(BusinessPartnerRead):
+class BusinessPartnerCreateInput(BaseModel):
+    bpnl: str = Field(description="The Catena-X Business Partner Number (BPNL) of the business partner.")
+
     @field_validator("bpnl")
     @staticmethod
     def validate_bpnl(bpnl: str) -> str:
         """Validates the BPNL format."""
         return validate_bpnl(bpnl, "bpnl")
 
+
+class BusinessPartnerCreate(BusinessPartnerRead, BusinessPartnerCreateInput):
+    pass
 
 class DataExchangeContractRead(BaseModel):
     """Represents document type specific contract terms belonging to a data exchange agreement."""
