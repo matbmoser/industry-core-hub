@@ -123,7 +123,7 @@ class PartManagementService():
         # Logic to delete a catalog part
         pass
 
-    def get_catalog_parts(self, manufacturer_id: str = None, manufacturer_part_id: str = None) -> List[CatalogPartRead]:
+    def get_catalog_parts(self, manufacturer_id: Optional[str] = None, manufacturer_part_id: Optional[str] = None) -> List[CatalogPartRead]:
         with self.repositories as repos:
             result = []
             
@@ -144,9 +144,9 @@ class PartManagementService():
 
                     result.append(
                         CatalogPartRead(
-                            legal_entity_bpnl=db_catalog_part.legal_entity.bpnl,
-                            manufacturer_part_id=db_catalog_part.manufacturer_part_id,
-                            customer_part_ids=customer_parts
+                            manufacturerId=db_catalog_part.legal_entity.bpnl,
+                            manufacturerPartId=db_catalog_part.manufacturer_part_id,
+                            customerPartIds=customer_parts
                         )
                     )
             
