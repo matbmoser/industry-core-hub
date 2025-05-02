@@ -102,15 +102,15 @@ class PartManagementService():
         partner_catalog_parts = []
         for partner_catalog_part in customer_parts:
             partner_catalog_part = PartnerCatalogPartBase(
-                customer_part_id=partner_catalog_part.customer_part_id,
-                business_partner_name=partner_catalog_part.business_partner_name
+                customerPartId=partner_catalog_part.customer_part_id,
+                businessPartnerName=partner_catalog_part.business_partner_name
             )
             partner_catalog_parts.append(partner_catalog_part)
 
         catalog_part_create = CatalogPartCreate(
-            manufacturer_id=manufacturer_id,
-            manufacturer_part_id=manufacturer_part_id,
-            customer_part_ids=partner_catalog_parts
+            manufacturerId=manufacturer_id,
+            manufacturerPartId=manufacturer_part_id,
+            customerPartIds=partner_catalog_parts
         )
 
         return self.create_catalog_part(catalog_part_create)
