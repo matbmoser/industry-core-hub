@@ -11,6 +11,7 @@
  * https://www.apache.org/licenses/LICENSE-2.0.
  *
  * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the
  * License for the specific language govern in permissions and limitations
@@ -30,12 +31,26 @@
     }
     .text{
         @include mixins.space-title-h2-font;
-        color: $darkmode-text;
-        padding:10px;
+        color: $brand-text;
+        padding: 5px 80px;
         text-align: center;
+        background: rgba($brand-primary, 0.3);
+        @include mixins.space-shadow($brand-blue);
     }
-    .pagination-text .MuiTablePagination-displayedRows{
-        margin: 20px 0px;
-        color: $darkmode-text;
+}
+
+.product-cards {
+    .product-card {
+        background: $brand-dark !important;
+        @include mixins.space-shadow($brand-blue);
+        @include mixins.rounded-bordered;
+
+        &:hover {
+            border: 2px solid rgba($brand-light-blue, 0.85) !important;
+        }
+    }
+
+    .MuiChip-icon {
+        color: $brand-dark !important;
     }
 }
