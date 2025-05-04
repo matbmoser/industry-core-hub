@@ -211,4 +211,20 @@ Get the postgres configmap name
 */}}
 {{- define "industry-core-hub.postgresql.configmap" -}}
 {{- printf "%s-cm-postgres" .Release.Name -}}
+<<<<<<< HEAD
 {{- end -}}
+=======
+{{- end -}}
+
+{{/*
+Return the postgresql DSN URL
+*/}}
+{{- define "industry-core-hub.postgresql.dsn" -}}
+{{- $host := include "industry-core-hub.postgresql.host" . -}}
+{{- $port := include "industry-core-hub.postgresql.port" . -}}
+{{- $name := include "industry-core-hub.postgresql.databaseName" . -}}
+{{- $user := include "industry-core-hub.postgresql.ichubUser" . -}}
+{{- $sslMode := include "industry-core-hub.postgresql.sslMode" . -}}
+{{- printf "postgresql://%s:$DATABASE_PASSWORD@%s:%s/%s?sslmode=%s" $user $host $port $name $sslMode -}}
+{{- end -}}
+>>>>>>> ad86f690fbd5f302fdd0b35f9a548891524899af

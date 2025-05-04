@@ -47,6 +47,10 @@ sniffio==1.3.1
 sqlmodel==0.0.22
 starlette==0.40.0
 tomli==2.0.1
+<<<<<<< HEAD
+=======
+tractusx_sdk==0.0.3
+>>>>>>> ad86f690fbd5f302fdd0b35f9a548891524899af
 typer==0.15.1
 typing_extensions==4.12.2
 urllib3==2.3.0
