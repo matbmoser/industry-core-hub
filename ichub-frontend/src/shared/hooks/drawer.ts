@@ -20,26 +20,23 @@
  * SPDX-License-Identifier: Apache-2.0
 ********************************************************************************/
 
-import { Outlet } from "react-router-dom";
-import { Grid2 } from '@mui/material';
+import { useState } from 'react';
 
-import Header from '../components/general/Header';
-import Sidebar from '../components/general/Sidebar';
-
-function MainLayout() {
-  return (
-    <Grid2 container className="contentWrapper">
-      <Grid2 size={12} className="headerArea">
-        <Header/>
-      </Grid2>
-      <Grid2 size={{xl: 2, lg: 4, md: 5, sm: 12, xs: 12}} className="sidebarArea">
-          <Sidebar />
-        </Grid2>
-        <Grid2 size={{xl: 10, lg: 8, md: 7, sm: 12, xs: 12}} className="contentArea">
-          <Outlet />
-        </Grid2>
-    </Grid2>
-  );
+// Type for the hook's return value
+type Drawer = {
+  isOpen: boolean;
+  openDrawer: () => void;
+  closeDrawer: () => void;
+  toggleDrawer: () => void;
 };
 
-export default MainLayout;
+// The custom hook with TypeScript typing
+export function Drawer(initialState: boolean = false): Drawer {
+  const [isOpen, setIsOpen] = useState<boolean>(initialState);
+
+  const openDrawer = () => setIsOpen(true);
+  const closeDrawer = () => setIsOpen(false);
+  const toggleDrawer = () => setIsOpen(prev => !prev);
+
+  return { isOpen, openDrawer, closeDrawer, toggleDrawer };
+}
