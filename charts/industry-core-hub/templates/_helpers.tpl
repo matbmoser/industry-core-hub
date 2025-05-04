@@ -51,6 +51,14 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 {{- end }}
 
+{{- define "industry-core-hub.fullname.frontend" -}}
+{{- if .Values.frontend.name }}
+{{- .Values.frontend.name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-frontend" (include "industry-core-hub.fullname" .) | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+
 {{/*
 Create chart name and version as used by the chart label.
 */}}
@@ -63,11 +71,26 @@ Common labels
 */}}
 {{- define "industry-core-hub.labels" -}}
 helm.sh/chart: {{ include "industry-core-hub.chart" . }}
-{{ include "industry-core-hub.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Backend labels (includes backend selector labels)
+*/}}
+{{- define "industry-core-hub.backend.labels" -}}
+{{ include "industry-core-hub.backend.selectorLabels" . }}
+{{ include "industry-core-hub.labels" . }}
+{{- end }}
+
+{{/*
+Frontend labels (includes frontend selector labels)
+*/}}
+{{- define "industry-core-hub.frontend.labels" -}}
+{{ include "industry-core-hub.frontend.selectorLabels" . }}
+{{ include "industry-core-hub.labels" . }}
 {{- end }}
 
 {{/*
@@ -82,7 +105,15 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Backend Selector labels
 */}}
 {{- define "industry-core-hub.backend.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "industry-core-hub.name" . }}-backend
+app.kubernetes.io/name: {{ include "industry-core-hub.fullname.backend" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
+Backend Selector labels
+*/}}
+{{- define "industry-core-hub.frontend.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "industry-core-hub.fullname.frontend" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
@@ -102,7 +133,7 @@ Get the database host
 */}}
 {{- define "industry-core-hub.postgresql.host" -}}
 {{- if .Values.postgresql.enabled }}
-{{- (include "industry-core-hub.fullname" .) -}}
+{{- (include "industry-core-hub.postgresql.fullname" .) -}}
 {{- else -}}
 {{- .Values.externalDatabase.host -}}
 {{- end -}}
@@ -177,6 +208,17 @@ Get the database name
 {{- end -}}
 
 {{/*
+Get the sslMode
+*/}}
+{{- define "industry-core-hub.postgresql.sslMode" -}}
+{{- if .Values.postgresql.enabled }}
+{{- .Values.postgresql.auth.sslMode -}}
+{{- else -}}
+{{- .Values.externalDatabase.sslMode -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Get the database secret key
 */}}
 {{- define "industry-core-hub.postgresql.ichub.secretKey" -}}
@@ -184,15 +226,6 @@ Get the database secret key
 {{- print "ichub-password" -}}
 {{- else -}}
 {{- .Values.externalDatabase.existingIchubSecretKey -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Return true if a secret object should be created for external database
-*/}}
-{{- define "industry-core-hub.externalDatabase.createSecret" -}}
-{{- if and (not .Values.postgresql.enabled) (not .Values.externalDatabase.existingSecret) }}
-    {{- true -}}
 {{- end -}}
 {{- end -}}
 
@@ -211,9 +244,6 @@ Get the postgres configmap name
 */}}
 {{- define "industry-core-hub.postgresql.configmap" -}}
 {{- printf "%s-cm-postgres" .Release.Name -}}
-<<<<<<< HEAD
-{{- end -}}
-=======
 {{- end -}}
 
 {{/*
@@ -227,4 +257,3 @@ Return the postgresql DSN URL
 {{- $sslMode := include "industry-core-hub.postgresql.sslMode" . -}}
 {{- printf "postgresql://%s:$DATABASE_PASSWORD@%s:%s/%s?sslmode=%s" $user $host $port $name $sslMode -}}
 {{- end -}}
->>>>>>> ad86f690fbd5f302fdd0b35f9a548891524899af

@@ -29,6 +29,7 @@ replicaCount: 1
 
 # -- Backend configuration
 backend:
+  enabled: true
   name: "industry-core-hub-backend"
   image:
     repository: "ichub-backend"
@@ -37,15 +38,10 @@ backend:
     tag: ""
     # -- Existing image pull secret to use to [obtain the container image from private registries](https://kubernetes.io/docs/concepts/containers/images/#using-a-private-registry)
     pullSecrets: []
-  
+
   service:
     # -- [Service type](https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) to expose the running application on a set of Pods as a network service
     type: ClusterIP
-<<<<<<< HEAD
-    port: 80
-    targetPort: 8000
-  
-=======
     portService: 8000
     portContainer: 8000
 
@@ -60,7 +56,6 @@ backend:
     database:
       echo: true
 
->>>>>>> ad86f690fbd5f302fdd0b35f9a548891524899af
   podAnnotations: {}
 
   podLabels: {}
@@ -75,7 +70,7 @@ backend:
     readiness:
       enabled: false
       path: "/"
-  
+
   # -- ingress declaration to expose the industry-core-hub-backend service
   ingress:
     enabled: false
@@ -102,7 +97,7 @@ backend:
             backend:
               service: "backend"
               port: 8000
-  
+
   # -- The [pod security context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod) defines privilege and access control settings for a Pod within the deployment
   podSecurityContext:
     seccompProfile:
@@ -133,11 +128,6 @@ backend:
     runAsUser: 10000
     # -- The owner for volumes and any files created within volumes will belong to this guid
     runAsGroup: 10001
-<<<<<<< HEAD
-  
-  # -- specifies additional volume mounts for the backend deployment
-  additionalVolumeMounts: []
-=======
 
   # -- specifies volume mounts for the backend deployment
   volumeMounts:
@@ -149,7 +139,6 @@ backend:
       mountPath: /tmp/config/
     - name: tmp
       mountPath: /tmp
->>>>>>> ad86f690fbd5f302fdd0b35f9a548891524899af
 
   # -- additional volume claims for the containers
   additionalVolumes: []
@@ -172,7 +161,7 @@ backend:
       enabled: true
       # -- Storage size for logs
       size: 1Gi
-      # -- Access mode for logs volume  
+      # -- Access mode for logs volume
       accessMode: ReadWriteOnce
       # -- Storage class for logs volume
       storageClass: "standard"
@@ -188,8 +177,6 @@ backend:
       memory: 512Mi
       ephemeral-storage: "2Gi"
 
-<<<<<<< HEAD
-=======
 frontend:
   enabled: true
   name: "industry-core-hub-frontend"
@@ -303,7 +290,6 @@ frontend:
       memory: 256Mi
       ephemeral-storage: "1Gi"
 
->>>>>>> ad86f690fbd5f302fdd0b35f9a548891524899af
 # -- PostgreSQL chart configuration
 postgresql:
   # -- Switch to enable or disable the PostgreSQL helm chart
@@ -323,6 +309,8 @@ postgresql:
     ichubUser: "ichub"
     # -- Password for the non-root username 'ichub'. Secret-key 'ichub-password'.
     ichubPassword: ""
+    # -- Determines whether or with what priority a secure SSL TCP/IP connection will be negotiated with the server. There are [six modes](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNECT-SSLMODE)
+    sslMode: "prefer"
   audit:
     pgAuditLog: "write, ddl"
     logLinePrefix: "%m %u %d "
@@ -373,6 +361,8 @@ externalDatabase:
   existingSecret: ""
   # -- Key in the existing secret that contains database password for ichub user
   existingIchubSecretKey: "ichub-password"
+  # -- Determines whether or with what priority a secure SSL TCP/IP connection will be negotiated with the server. There are [six modes](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNECT-SSLMODE)
+  sslMode: "prefer"
 
 # [node selector](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector) to constrain pods to nodes
 nodeSelector: {}
