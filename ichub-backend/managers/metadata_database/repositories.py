@@ -27,7 +27,7 @@ from typing import TypeVar, Type, List, Optional, Generic
 from uuid import UUID, uuid4
 from datetime import datetime, timezone
 
-from models.metadata_database.models import BusinessPartner, CatalogPart, DataExchangeAgreement, EnablementServiceStack, LegalEntity, PartnerCatalogPart, Twin
+from models.metadata_database.models import BusinessPartner, CatalogPart, DataExchangeAgreement, EnablementServiceStack, LegalEntity, PartnerCatalogPart, Twin, TwinRegistration
 
 ModelType = TypeVar("ModelType", bound=SQLModel)
 
@@ -166,3 +166,10 @@ class TwinRepository(BaseRepository[Twin]):
         self.create(twin)
         
         return twin
+    
+class TwinRegistrationRepository(BaseRepository[TwinRegistration]):
+    def find_by_twin_id_enablement_service_stack_id(self, twin_id: int, enablement_service_stack_id: int) -> Optional[TwinRegistration]:
+        stmt = select(TwinRegistration).where(
+            TwinRegistration.twin_id == twin_id).where(
+            TwinRegistration.enablement_service_stack_id == enablement_service_stack_id)
+        return self._session.scalars(stmt).first()

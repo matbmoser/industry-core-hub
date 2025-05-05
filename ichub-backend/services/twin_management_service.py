@@ -24,9 +24,12 @@
 
 from uuid import UUID
 
-from managers.metadata_database.manager import RepositoryManagerFactory
+from managers.metadata_database.manager import RepositoryManagerFactory, RepositoryManager
+from managers.enablement_services.dtr_manager import DTRManager
+from managers.enablement_services.edc_manager import EDCManager
+from managers.enablement_services.submodel_service_manager import SubmodelServiceManager
 from models.services.twin_management import CatalogPartTwinCreate, TwinRead, TwinDetailsRead, TwinAspectCreate, TwinAspectRead
-
+from models.metadata_database import TwinRegistration
 
 class TwinManagementService:
     """
@@ -34,14 +37,18 @@ class TwinManagementService:
     """
 
     def __init__(self, ):
-        self.repositories = RepositoryManagerFactory.create()
+        self._repositories: RepositoryManager = RepositoryManagerFactory.create()
+        self._dtr_manager: DTRManager = DTRManager()
+        self._edc_manager: EDCManager = EDCManager()
+        self._submodel_service_manager: SubmodelServiceManager = SubmodelServiceManager()
 
     def create_catalog_part_twin(self, create_input: CatalogPartTwinCreate) -> TwinRead:
-        with self.repositories as repo:
+        with self._repositories as repo:
             # Step 1: Retrieve the catalog part entity according to the catalog part data (manufacturer_id, manufacturer_part_id)
             db_catalog_parts = repo.catalog_part_repository.find_by_manufacturer_id_manufacturer_part_id(
                 create_input.manufacturer_id,
-                create_input.manufacturer_part_id
+                create_input.manufacturer_part_id,
+                join_partner_catalog_parts=True
             )
             if not db_catalog_parts:
                 raise ValueError("Catalog part not found.")
@@ -70,11 +77,39 @@ class TwinManagementService:
 
             # Step 5: Try to find the twin registration for the twin id and enablement service stack id
             # (if not there => create it now, setting the dtr_registered flag to False)
-        
+            db_twin_registration = repo.twin_registration_repository.find_by_twin_id_enablement_service_stack_id(
+                db_twin.id,
+                db_enablement_service_stack.id
+            )
+            if not db_twin_registration:
+                db_twin_registration = TwinRegistration(
+                    twin_id=db_twin.id,
+                    enablement_service_stack_id=db_enablement_service_stack.id,
+                    dtr_registered=False
+                )
+
+                repo.twin_registration_repository.create(db_twin_registration)
+                repo.commit()
+
             # Step 6: Check the dtr_registered flag on the twin registration entity
             # (if True => we can skip the operation from here on => nothing to do)
             # (if False => we need to register the twin in the DTR using the industry core SDK, then
             #  update the twin registration entity with the dtr_registered flag to True)
+            if not db_twin_registration.dtr_registered:
+                customer_part_ids = {partner_catalog_part.customer_part_id: partner_catalog_part.business_partner.bpnl 
+                                      for partner_catalog_part in db_catalog_part.partner_catalog_parts}
+                
+                self._dtr_manager.register_twin(
+                    global_id=db_twin.global_id,
+                    aas_id=db_twin.aas_id,
+                    manufacturer_id=create_input.manufacturer_id,
+                    manufacturer_part_id=create_input.manufacturer_part_id,
+                    customer_part_ids=customer_part_ids,
+                    part_category=db_catalog_part.category
+                )
+
+                db_twin_registration.dtr_registered = True
+
             return TwinRead(
                 globalId=db_twin.global_id,
                 dtrAasId=db_twin.aas_id,
