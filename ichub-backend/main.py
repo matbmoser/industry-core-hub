@@ -64,7 +64,6 @@ logging.captureWarnings(True)
 
 # Load the logging config
 LoggingManager.init_logging()
-logger = LoggingManager.get_logger(__name__)
 
 # Load the configuation for the application
 ConfigManager.load_config()
@@ -110,9 +109,9 @@ def start():
     args = get_arguments()
 
     # Configure the logging confiuration depending on the configuration stated
-    logger = logging.getLogger('staging')
+    logger = LoggingManager.get_logger('staging')
     if(args.debug):
-        logger = logging.getLogger('development')
+        logger = LoggingManager.get_logger('development')
     
     ## Start storage and edc communication service
     edc_service = EdcService()
@@ -133,7 +132,7 @@ def get_arguments():
 
     parser.add_argument('--test-mode', action='store_true', help="Run in test mode (skips uvicorn.run())", required=False)
     
-    parser.add_argument("--debug", default=False, action="store_false", help="Enable and disable the debug", required=False)
+    parser.add_argument("--debug", default=False, action="store_true", help="Enable and disable the debug", required=False)
     
     parser.add_argument("--port", default=8080, help="The server port where it will be available", type=int, required=False,)
     
