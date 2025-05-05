@@ -70,7 +70,10 @@ logger = LoggingManager.get_logger(__name__)
 ConfigManager.load_config()
 
 # Test database connection
-connect_and_test()
+# If uncommented, it will test the database connection at startup
+# if it the database connection is invalid or databse is not available
+# it will raise an exception and the application will not start
+# connect_and_test()
     
 # Add the previous folder structure to the system path to import the utilities
 app = FastAPI(title="main")
