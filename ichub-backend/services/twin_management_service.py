@@ -179,12 +179,17 @@ class TwinManagementService:
         """
         Create a new twin aspect for a give twin.
         """
-        # Step 1: Retrieve the twin entity according to the global_id
-        # (if not there => raise error)
 
-        # Step 2: Retrieve a potentially existing twin aspect entity for the given twin_id and semantic_id
-        # (if there => for the moment we could raise an error; but in the future I recommend
-        #  the API to be "repeatable" - e.g. to update the payload in the submodel service)
+        with self._repositories as repo:
+            
+            # Step 1: Retrieve the twin entity according to the global_id
+            db_twin = repo.twin_repository.find_by_global_id(twin_aspect_create.global_id)
+            if not db_twin:
+                raise ValueError(f"Twin for global ID '{twin_aspect_create.global_id}' not found.")
+
+            # Step 2: Retrieve a potentially existing twin aspect entity for the given twin_id and semantic_id
+            # (if there => for the moment we could raise an error; but in the future I recommend
+            #  the API to be "repeatable" - e.g. to update the payload in the submodel service)
 
         # Step 3: Create the twin aspect entity in the database
         # (generate a new submodel_id for it if not given)

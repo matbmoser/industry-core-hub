@@ -24,6 +24,8 @@
 
 from typing import List, Optional
 
+from pydantic import BaseModel, Field
+
 from fastapi import FastAPI, HTTPException
 
 from services.part_management_service import PartManagementService
@@ -38,6 +40,9 @@ app = FastAPI(title="Industry Core Hub Backend API", version="0.0.1")
 part_management_service = PartManagementService()
 partner_management_service = PartnerManagementService()
 twin_management_service = TwinManagementService()
+
+class BusinessPartnerNameWrapper(BaseModel):
+    business_partner_name: str = Field(alias="businessPartnerName", description="Name of the business partner") 
 
 @app.get("/part-management/catalog-part/{manufacturer_id}/{manufacturer_part_id}", response_model=CatalogPartRead)
 async def part_management_get_catalog_part(manufacturer_id: str, manufacturer_part_id: str) -> Optional[CatalogPartRead]:
@@ -84,10 +89,10 @@ async def twin_management_create_catalog_part_twin(manufacturer_id: str, manufac
     201: {"description": "Catalog part twin shared successfully"},
     204: {"description": "Catalog part twin already shared"}
 })
-async def twin_management_share_catalog_part_twin(manufacturer_id: str, manufacturer_part_id: str, business_partner_name: str):
+async def twin_management_share_catalog_part_twin(manufacturer_id: str, manufacturer_part_id: str, business_partner_name: BusinessPartnerNameWrapper):
     catalog_part_input = CatalogPartBase(manufacturerId=manufacturer_id, manufacturerPartId=manufacturer_part_id)
     
-    if twin_management_service.create_catalog_part_twin_share(catalog_part_input, business_partner_name):
+    if twin_management_service.create_catalog_part_twin_share(catalog_part_input, business_partner_name.business_partner_name):
         raise HTTPException(status_code=201, detail="Catalog part twin shared successfully")    
     else:
         raise HTTPException(status_code=204, detail="Catalog part twin already shared")
