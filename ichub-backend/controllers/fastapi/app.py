@@ -33,7 +33,7 @@ from services.partner_management_service import PartnerManagementService
 from services.twin_management_service import TwinManagementService
 from models.services.part_management import CatalogPartBase, CatalogPartRead, CatalogPartCreate
 from models.services.partner_management import BusinessPartnerRead, BusinessPartnerCreate, DataExchangeAgreementRead
-from models.services.twin_management import TwinRead, TwinCreateBase, CatalogPartTwinCreate
+from models.services.twin_management import TwinRead, TwinAspectRead, TwinAspectCreate, CatalogPartTwinCreate, CatalogPartTwinShare
 
 tags_metadata = [
     {
@@ -87,24 +87,20 @@ async def partner_management_create_business_partner(business_partner_create: Bu
 async def partner_management_get_data_exchange_agreements(business_partner_number: str) -> List[DataExchangeAgreementRead]:
     return partner_management_service.get_data_exchange_agreements(business_partner_number)
 
-@app.post("/twin-management/catalog-part-twin/{manufacturer_id}/{manufacturer_part_id}", response_model=TwinRead, tags=["Twin Management"])
-async def twin_management_create_catalog_part_twin(manufacturer_id: str, manufacturer_part_id: str, twin_create: TwinCreateBase) -> TwinRead:
-    catalog_part_twin_create = CatalogPartTwinCreate(
-        manufacturerId=manufacturer_id,
-        manufacturerPartId=manufacturer_part_id,
-        globalId=twin_create.global_id,
-        dtrAasId=twin_create.dtr_aas_id
-    )
+@app.post("/twin-management/catalog-part-twin", response_model=TwinRead, tags=["Twin Management"])
+async def twin_management_create_catalog_part_twin(catalog_part_twin_create: CatalogPartTwinCreate) -> TwinRead:
     return twin_management_service.create_catalog_part_twin(catalog_part_twin_create)
 
-@app.post("/twin-management/catalog-part-twin/{manufacturer_id}/{manufacturer_part_id}/share", responses={
+@app.post("/twin-management/catalog-part-twin/share", responses={
     201: {"description": "Catalog part twin shared successfully"},
     204: {"description": "Catalog part twin already shared"}
 }, tags=["Twin Management"])
-async def twin_management_share_catalog_part_twin(manufacturer_id: str, manufacturer_part_id: str, business_partner_name: BusinessPartnerNameWrapper):
-    catalog_part_input = CatalogPartBase(manufacturerId=manufacturer_id, manufacturerPartId=manufacturer_part_id)
-    
-    if twin_management_service.create_catalog_part_twin_share(catalog_part_input, business_partner_name.business_partner_name):
+async def twin_management_share_catalog_part_twin(catalog_part_twin_share: CatalogPartTwinShare):
+    if twin_management_service.create_catalog_part_twin_share(catalog_part_twin_share):
         raise HTTPException(status_code=201, detail="Catalog part twin shared successfully")    
     else:
         raise HTTPException(status_code=204, detail="Catalog part twin already shared")
+
+@app.post("/twin-management/twin-aspect", response_model=TwinAspectRead, tags=["Twin Management"])
+async def twin_management_create_twin_aspect(twin_aspect_create: TwinAspectCreate) -> TwinAspectRead:
+    return twin_management_service.create_twin_aspect(twin_aspect_create)

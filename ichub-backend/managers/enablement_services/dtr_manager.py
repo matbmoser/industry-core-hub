@@ -37,7 +37,7 @@ class DTRManager:
         self.dtr_client = None
 
 
-    def register_twin(self, global_id: UUID, aas_id: UUID, manufacturer_id: str, manufacturer_part_id: str,
+    def create_shell_descriptor(self, aas_id: UUID, global_id: UUID, manufacturer_id: str, manufacturer_part_id: str,
                       customer_part_ids: Dict[str, str], part_category: str):
         """
         Registers a twin in the DTR.
@@ -45,5 +45,12 @@ class DTRManager:
         print(f"Registering twin with global_id={global_id}, aas_id={aas_id}, "
               f"manufacturer_id={manufacturer_id}, manufacturer_part_id={manufacturer_part_id}, "
               f"customer_part_ids={customer_part_ids}, part_category={part_category}")
+        print()
 
-        pass
+    def create_submodel_descriptor(self, aas_id: UUID, submodel_id: UUID, semantic_id: str):
+        """
+        Creates a submodel descriptor in the DTR.
+        """
+        print(f"Creating submodel descriptor with aas_id={aas_id}, submodel_id={submodel_id}, "
+              f"semantic_id={semantic_id}")
+        print()

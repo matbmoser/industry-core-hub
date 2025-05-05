@@ -25,5 +25,39 @@
 __author__ = 'Eclipse Tractus-X Contributors'
 __license__ = "Apache License, Version 2.0"
 
+from typing import Dict, Any
+from uuid import UUID
+import json
+
 class SubmodelServiceManager:
-    pass
+    """Manager for handling submodel service."""
+
+    def __init__(self):
+        # TODO: add needed params here
+        pass
+
+    def upload_twin_aspect_document(self, global_id : UUID, semantic_id: str, payload: Dict[str, Any]):
+        """Upload a submodel to the service."""
+        # Implementation for uploading a submodel
+        print(f"Uploading submodel with Global ID: {global_id}")
+        print(f"Semantic ID: {semantic_id}")
+        print(f"==== Start of Payload ====")
+        print(json.dumps(payload, indent=4))
+        print(f"==== End of Payload ====")
+        print("Submodel uploaded successfully (dummy implementation).")
+        print()
+
+    def get_twin_aspect_document(self, global_id: UUID, semantic_id: str) -> Dict[str, Any]:
+        """Get a submodel from the service."""
+        # Implementation for retrieving a submodel
+        print(f"Retrieving submodel with Global ID: {global_id}")
+        print(f"Semantic ID: {semantic_id}")
+        # Dummy data for demonstration purposes
+        dummy_data = {
+            "global_id": str(global_id),
+            "semantic_id": semantic_id,
+            "data": {
+                "example_key": "example_value"
+            }
+        }
+        return dummy_data

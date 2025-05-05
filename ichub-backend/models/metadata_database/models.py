@@ -229,12 +229,19 @@ class TwinAspect(SQLModel, table=True):
 
     __tablename__ = "twin_aspect"
 
+    def find_registration_by_stack_id(self, enablement_service_stack_id: int) -> Optional["TwinAspectRegistration"]:
+        """Find the registration for a given enablement service stack."""
+        for registration in self.twin_aspect_registrations:
+            if registration.enablement_service_stack_id == enablement_service_stack_id:
+                return registration
+        return None
+
 
 class TwinAspectRegistration(SQLModel, table=True):
     twin_aspect_id: int = Field(foreign_key="twin_aspect.id", primary_key=True, description="The ID of the associated twin aspect.")
     enablement_service_stack_id: int = Field(foreign_key="enablement_service_stack.id", primary_key=True, description="The ID of the associated enablement service stack.")
-    status: int = Field(default=0, description="The status of the registration.")
-    registration_mode: int = Field(default=0, description="The registration mode.")
+    status: int = Field(default=0, description="The status of the registration.") # TODO: Use Enum for status
+    registration_mode: int = Field(default=0, description="The registration mode.") # TODO: Use Enum for registration mode
     created_date: datetime = Field(default_factory=datetime.utcnow, description="The creation date of the registration.")
     modified_date: datetime = Field(default_factory=datetime.utcnow, description="The last modification date of the registration.")
 

@@ -25,5 +25,28 @@
 __author__ = 'Eclipse Tractus-X Contributors'
 __license__ = "Apache License, Version 2.0"
 
+from uuid import UUID
+
 class EDCManager:
-    pass
+    """Manager for handling EDC (Eclipse Data Space Connector) related operations."""
+
+    def __init__(self):
+        # TODO: Initialize any required parameters or configurations here
+        pass
+
+    def register_submodel_asset(self, global_id: str, semantic_id: str, aas_id: UUID, submodel_id: UUID):
+        """Register a submodel asset in the EDC."""
+        # Implementation for registering a submodel asset
+        print(f"Registering submodel asset with Global ID: {global_id}")
+        print(f"Semantic ID: {semantic_id}")
+        print(f"AAS ID: {aas_id}")
+        print(f"Submodel ID: {submodel_id}")
+        print("Submodel asset registered successfully (dummy implementation).")
+        print()
+
+    def register_submodel_bundle_asset(self, semantic_id: str):
+        """Register a submodel bundle asset in the EDC."""
+        # Implementation for registering a submodel bundle asset
+        print(f"Registering submodel bundle asset with Semantic ID: {semantic_id}")
+        print("Submodel bundle asset registered successfully (dummy implementation).")
+        print()

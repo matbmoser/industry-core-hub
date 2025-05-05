@@ -27,7 +27,19 @@ from typing import TypeVar, Type, List, Optional, Generic
 from uuid import UUID, uuid4
 from datetime import datetime, timezone
 
-from models.metadata_database.models import BusinessPartner, CatalogPart, DataExchangeAgreement, EnablementServiceStack, LegalEntity, PartnerCatalogPart, Twin, TwinExchange, TwinRegistration
+from models.metadata_database.models import (
+    BusinessPartner,
+    CatalogPart,
+    DataExchangeAgreement,
+    EnablementServiceStack,
+    LegalEntity,
+    PartnerCatalogPart,
+    Twin,
+    TwinAspect,
+    TwinAspectRegistration,
+    TwinExchange,
+    TwinRegistration,
+)
 
 ModelType = TypeVar("ModelType", bound=SQLModel)
 
@@ -123,7 +135,7 @@ class CatalogPartRepository(BaseRepository[CatalogPart]):
 
         if join_partner_catalog_parts:
             subquery = select(PartnerCatalogPart).join(BusinessPartner, BusinessPartner.id == PartnerCatalogPart.business_partner_id).where(PartnerCatalogPart.catalog_part_id == CatalogPart.id).subquery()
-            stmt = stmt.join(subquery, subquery.c.catalog_part_id == CatalogPart.id)
+            stmt = stmt.join(subquery, subquery.c.catalog_part_id == CatalogPart.id, isouter=True)
 
         return self._session.exec(stmt).all()
 
@@ -174,7 +186,66 @@ class TwinRepository(BaseRepository[Twin]):
         stmt = select(Twin).where(
             Twin.global_id == global_id)
         return self._session.scalars(stmt).first()
-    
+
+class TwinAspectRepository(BaseRepository[TwinAspect]):
+    def get_by_twin_id_semantic_id(self, twin_id: int, semantic_id: str, include_registrations: bool = False) -> Optional[TwinAspect]:
+        """Retrieve a TwinAspect by its submodel_id."""
+        stmt = select(TwinAspect).where(TwinAspect.twin_id == twin_id).where(TwinAspect.semantic_id == semantic_id)
+
+        if include_registrations:
+            stmt = stmt.join(
+                TwinAspectRegistration, TwinAspectRegistration.twin_aspect_id == TwinAspect.id, isouter=True
+            )
+
+        return self._session.scalars(stmt).first()
+
+    def create_new(self, twin_id: int, semantic_id: str, submodel_id: UUID = None) -> TwinAspect:
+        """Create a new TwinAspect instance."""
+        if not submodel_id:
+            submodel_id = uuid4()
+        
+        twin_aspect = TwinAspect(
+            submodel_id=submodel_id,
+            semantic_id=semantic_id,
+            twin_id=twin_id,
+            created_at=datetime.now(timezone.utc),
+            updated_at=datetime.now(timezone.utc),
+        )
+        self.create(twin_aspect)
+        return twin_aspect
+
+
+class TwinAspectRegistrationRepository(BaseRepository[TwinAspectRegistration]):
+    def get_by_twin_aspect_id_enablement_service_stack_id(
+        self, twin_aspect_id: int, enablement_service_stack_id: int
+    ) -> Optional[TwinAspectRegistration]:
+        """Retrieve a TwinAspectRegistration by twin_aspect_id and enablement_service_stack_id."""
+        stmt = select(TwinAspectRegistration).where(
+            TwinAspectRegistration.twin_aspect_id == twin_aspect_id
+        ).where(
+            TwinAspectRegistration.enablement_service_stack_id == enablement_service_stack_id
+        )
+        return self._session.scalars(stmt).first()
+
+    def create_new(
+        self,
+        twin_aspect_id: int,
+        enablement_service_stack_id: int,
+        status: int = 0,
+        registration_mode: int = 0,
+    ) -> TwinAspectRegistration:
+        """Create a new TwinAspectRegistration instance."""
+        twin_aspect_registration = TwinAspectRegistration(
+            twin_aspect_id=twin_aspect_id,
+            enablement_service_stack_id=enablement_service_stack_id,
+            status=status,
+            registration_mode=registration_mode,
+            created_at=datetime.now(timezone.utc),
+            modified_date=datetime.now(timezone.utc),
+        )
+        self.create(twin_aspect_registration)
+        return twin_aspect_registration
+
 class TwinExchangeRepository(BaseRepository[TwinExchange]):
     def get_by_twin_id_data_exchange_agreement_id(self, twin_id: int, data_exchange_agreement_id: int) -> Optional[Twin]:
         stmt = select(TwinExchange).where(

@@ -75,8 +75,8 @@ class TwinAspectRead(BaseModel):
 class TwinAspectCreate(BaseModel):
     global_id: UUID = Field(alias="globalId", description="The Catena-X ID / global ID of the digital twin to which the new aspect belongs.")
     semantic_id: str = Field(alias="semanticId", description="The semantic ID of the new aspect determining the structure of the associated payload data.")
-    submodel_id: Optional[UUID] = Field(alias="submodelId", description="The optional ID of the submodel descriptor within the DTR shell descriptor for the associated twin. If not specified, a new UUID will be created automatically.") 
-    enablement_service_stack_name: str = Field(alias="enablementServiceStackName", description="The name of the enablement service stack where the twin aspect should be registered.")
+    submodel_id: Optional[UUID] = Field(alias="submodelId", description="The optional ID of the submodel descriptor within the DTR shell descriptor for the associated twin. If not specified, a new UUID will be created automatically.", default=None) 
+    #enablement_service_stack_name: str = Field(alias="enablementServiceStackName", description="The name of the enablement service stack where the twin aspect should be registered.")
     payload: Dict[str, Any] = Field(description="The payload data of the new aspect. This is a JSON object that contains the actual data of the aspect. The structure of this object is determined by the semantic ID of the aspect.")
 
 class TwinRead(BaseModel):
@@ -99,6 +99,9 @@ class TwinDetailsRead(TwinRead):
 
 class CatalogPartTwinCreate(CatalogPartBase, TwinCreateBase):
     pass
+
+class CatalogPartTwinShare(CatalogPartBase):
+    business_partner_number: str = Field(alias="businessPartnerNumber", description="The business partner number of the business partner with which the catalog part is shared.")
 
 class BatchTwinCreate(BatchCreate, TwinCreateBase):
     pass

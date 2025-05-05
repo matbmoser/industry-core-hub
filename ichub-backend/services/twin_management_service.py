@@ -29,8 +29,17 @@ from managers.metadata_database.manager import RepositoryManagerFactory, Reposit
 from managers.enablement_services.dtr_manager import DTRManager
 from managers.enablement_services.edc_manager import EDCManager
 from managers.enablement_services.submodel_service_manager import SubmodelServiceManager
-from models.services.twin_management import CatalogPartTwinCreate, TwinRead, TwinDetailsRead, TwinAspectCreate, TwinAspectRead
-from models.services.part_management import CatalogPartBase
+from models.services.twin_management import (
+    CatalogPartTwinCreate,
+    CatalogPartTwinShare,
+    TwinRead,
+    TwinDetailsRead,
+    TwinAspectCreate,
+    TwinAspectRead,
+    TwinAspectRegistration,
+    TwinAspectRegistrationStatus,
+    TwinsAspectRegistrationMode,
+)
 
 class TwinManagementService:
     """
@@ -102,7 +111,7 @@ class TwinManagementService:
                 customer_part_ids = {partner_catalog_part.customer_part_id: partner_catalog_part.business_partner.bpnl 
                                       for partner_catalog_part in db_catalog_part.partner_catalog_parts}
                 
-                dtr_manager.register_twin(
+                dtr_manager.create_shell_descriptor(
                     global_id=db_twin.global_id,
                     aas_id=db_twin.aas_id,
                     manufacturer_id=create_input.manufacturer_id,
@@ -120,13 +129,13 @@ class TwinManagementService:
                 modifiedDate=db_twin.modified_date
             )
 
-    def create_catalog_part_twin_share(self, catalog_part_input: CatalogPartBase, business_partner_name: str) -> bool:
+    def create_catalog_part_twin_share(self, catalog_part_share_input: CatalogPartTwinShare) -> bool:
         
         with self._repositories as repo:
             # Step 1: Retrieve the catalog part entity according to the catalog part data (manufacturer_id, manufacturer_part_id)
             db_catalog_parts = repo.catalog_part_repository.find_by_manufacturer_id_manufacturer_part_id(
-                catalog_part_input.manufacturer_id,
-                catalog_part_input.manufacturer_part_id,
+                catalog_part_share_input.manufacturer_id,
+                catalog_part_share_input.manufacturer_part_id,
                 join_partner_catalog_parts=True
             )
             if not db_catalog_parts:
@@ -135,16 +144,16 @@ class TwinManagementService:
 
             # Step 2: Retrieve the business partner entity according to the business_partner_name
             # (if not there => raise error)
-            db_business_partner = repo.business_partner_repository.get_by_name(business_partner_name)
+            db_business_partner = repo.business_partner_repository.get_by_bpnl(catalog_part_share_input.business_partner_number)
             if not db_business_partner:
-                raise ValueError(f"Business partner '{business_partner_name}' not found.")
+                raise ValueError(f"Business partner with number '{catalog_part_share_input.business_partner_number}' not found.")
 
             # Step 3a: Consistency check if there is a twin associated with the catalog part
             if not db_catalog_part.twin_id:
                 raise ValueError("Catalog part has not yet a twin associated.")
             # Step 3b: Consistency check if there exists a partner catalog part entity for the given catalog part and business partner
-            if not db_catalog_part.find_partner_catalog_part_by_business_partner_name(business_partner_name):
-                raise ValueError(f"Not customer part ID existing for given business partner '{business_partner_name}'.")
+            if not db_catalog_part.find_partner_catalog_part_by_bpnl(catalog_part_share_input.business_partner_number):
+                raise ValueError(f"Not customer part ID existing for given business partner '{catalog_part_share_input.business_partner_number}'.")
 
             # Step 4: Retrieve the twin entity for the catalog part entity
             db_twin = repo.twin_repository.find_by_id(db_catalog_part.twin_id)
@@ -175,7 +184,7 @@ class TwinManagementService:
             else:
                 return False
 
-    def create_twin_aspect(self, twin_aspect_create: TwinAspectCreate) -> TwinAspectRead:
+    def create_twin_aspect(self, twin_aspect_create: TwinAspectCreate, enablement_service_stack_name: str = 'EDC/DTR Default') -> TwinAspectRead:
         """
         Create a new twin aspect for a give twin.
         """
@@ -187,29 +196,105 @@ class TwinManagementService:
             if not db_twin:
                 raise ValueError(f"Twin for global ID '{twin_aspect_create.global_id}' not found.")
 
-            # Step 2: Retrieve a potentially existing twin aspect entity for the given twin_id and semantic_id
-            # (if there => for the moment we could raise an error; but in the future I recommend
-            #  the API to be "repeatable" - e.g. to update the payload in the submodel service)
+            # Step 2: Retrieve the enablement service stack entity from the DB according to the given name
+            # (if not there => raise error)
+            db_enablement_service_stack = repo.enablement_service_stack_repository.get_by_name(
+                enablement_service_stack_name
+            )
+            if not db_enablement_service_stack:
+                raise ValueError(f"Enablement service stack '{enablement_service_stack_name}' not found.")
 
-        # Step 3: Create the twin aspect entity in the database
-        # (generate a new submodel_id for it if not given)
-        # Step 3a: Create a twin aspect registration entry pointing to the singleton enablement service stack
-        # (set the status to PLANNED and the mode to SINGLE)
+            # Step 3: Retrieve a potentially existing twin aspect entity for the given twin_id and semantic_id
+            db_twin_aspect = repo.twin_aspect_repository.get_by_twin_id_semantic_id(
+                db_twin.id,
+                twin_aspect_create.semantic_id,
+                include_registrations=True
+            )
+            if not db_twin_aspect:
+                # Step 3a: Create a new twin aspect entity in the database
+                db_twin_aspect = repo.twin_aspect_repository.create_new(
+                    twin_id=db_twin.id,
+                    semantic_id=twin_aspect_create.semantic_id,
+                    submodel_id=twin_aspect_create.submodel_id
+                )
+                repo.commit()
+                repo.refresh(db_twin_aspect)
 
-        # Step 4: Upload the payload to the submodel service
-        # (use industry core SDK or it's wrapper for that)
-        # Step 4a: Update the twin aspect registration entry with the status to STORED
+            # Step 4: Check if there is already a registration for the given enablement service stack and create it if not
+            db_twin_aspect_registration = db_twin_aspect.find_registration_by_stack_id(
+                db_enablement_service_stack.id
+            )
+            if not db_twin_aspect_registration:
+                db_twin_aspect_registration = repo.twin_aspect_registration_repository.create_new(
+                    twin_aspect_id=db_twin_aspect.id,
+                    enablement_service_stack_id=db_enablement_service_stack.id,
+                    registration_mode=TwinsAspectRegistrationMode.SINGLE.value, # TODO: for the moment no asset bundling; later tbd.
+                )
+                repo.commit()
+                repo.refresh(db_twin_aspect_registration)
+                repo.refresh(db_twin_aspect)
 
-        # Step 5: (later to be implemented): Register the aspect as asset in the EDC (if necessary)
-        # (use industry core SDK or it's wrapper for that)
-        # Step 5a: Update the twin aspect registration entry with the status to EDC_REGISTERED
+            # Step 5: Handle the submodel service
+            if db_twin_aspect_registration.status < TwinAspectRegistrationStatus.STORED.value:
+                submodel_service_manager = _create_submodel_service_manager(db_enablement_service_stack.connection_settings)
+                
+                # Step 5a: Upload the payload to the submodel service
+                submodel_service_manager.upload_twin_aspect_document(
+                    db_twin.global_id,
+                    db_twin_aspect.semantic_id,
+                    twin_aspect_create.payload
+                )
 
-        # Step 6: Attach a submodel descriptor to the shell descriptor in the DTR
-        # (use industry core SDK or it's wrapper for that)
-        # Step 6a: Update the twin aspect registration entry with the status to DTR_REGISTERED
-        # (tricky: use the right asset ID for the EDC and the right URLs for data plane and control plane)
+                # Step 5b: Update the registration status to STORED
+                db_twin_aspect_registration.status = TwinAspectRegistrationStatus.STORED.value
+                repo.commit()
 
-        pass
+            # Step 6: Handle the EDC registration
+            if db_twin_aspect_registration.status < TwinAspectRegistrationStatus.EDC_REGISTERED.value:
+                edc_manager = _create_edc_manager(db_enablement_service_stack.connection_settings)
+                
+                # Step 6a: Register the aspect as asset in the EDC (if necessary)
+                if db_twin_aspect_registration.registration_mode == TwinsAspectRegistrationMode.SINGLE.value:
+                    edc_manager.register_submodel_asset(
+                        db_twin.global_id,
+                        db_twin_aspect.semantic_id,
+                        db_twin.aas_id,
+                        db_twin_aspect.submodel_id,
+                    )
+
+                # Step 6b: Update the registration status to EDC_REGISTERED
+                db_twin_aspect_registration.status = TwinAspectRegistrationStatus.EDC_REGISTERED.value
+                repo.commit()
+
+            # Step 7: Handle the DTR registration
+            if db_twin_aspect_registration.status < TwinAspectRegistrationStatus.DTR_REGISTERED.value:
+                dtr_manager = _create_dtr_manager(db_enablement_service_stack.connection_settings)
+                
+                # Step 7a: Register the submodel in the DTR (if necessary)
+                dtr_manager.create_submodel_descriptor(
+                    db_twin.aas_id,
+                    db_twin_aspect.submodel_id,
+                    db_twin_aspect.semantic_id,
+                )
+
+                # Step 7b: Update the registration status to DTR_REGISTERED
+                db_twin_aspect_registration.status = TwinAspectRegistrationStatus.DTR_REGISTERED.value
+                repo.commit()
+
+            return TwinAspectRead(
+                semanticId=db_twin_aspect.semantic_id,
+                submodelId=db_twin_aspect.submodel_id,
+
+                registrations={
+                    db_enablement_service_stack.name: TwinAspectRegistration(
+                        enablementServiceStackName=db_enablement_service_stack.name,
+                        status=TwinAspectRegistrationStatus(db_twin_aspect_registration.status),
+                        mode=TwinsAspectRegistrationMode(db_twin_aspect_registration.registration_mode),
+                        createdDate=db_twin_aspect_registration.created_date,
+                        modifiedDate=db_twin_aspect_registration.modified_date
+                    )
+                }
+            )
 
     def get_twin_details(self, global_id: UUID) -> TwinDetailsRead:
         pass
@@ -223,3 +308,16 @@ def _create_dtr_manager(connection_settings: Optional[Dict[str, Any]]) -> DTRMan
 
     return DTRManager()
 
+def _create_edc_manager(connection_settings: Optional[Dict[str, Any]]) -> EDCManager:
+    """
+    Create a new instance of the EDCManager class.
+    """
+    # TODO: later we can configure the manager via the connection settings from the DB here
+    return EDCManager()
+
+def _create_submodel_service_manager(connection_settings: Optional[Dict[str, Any]]) -> SubmodelServiceManager:
+    """
+    Create a new instance of the SubmodelServiceManager class.
+    """
+    # TODO: later we can configure the manager via the connection settings from the DB here
+    return SubmodelServiceManager()

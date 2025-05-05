@@ -38,6 +38,8 @@ class RepositoryManager:
         self._legal_entity_repository = None
         self._partner_catalog_part_repository = None
         self._twin_repository = None
+        self._twin_aspect_repository = None
+        self._twin_aspect_registration_repository = None
         self._twin_exchange_repository = None
         self._twin_registration_repository = None
 
@@ -129,6 +131,22 @@ class RepositoryManager:
             from managers.metadata_database.repositories import TwinRepository
             self._twin_repository = TwinRepository(self._session)
         return self._twin_repository
+
+    @property
+    def twin_aspect_repository(self):
+        """Lazy initialization of the twin aspect repository."""
+        if self._twin_aspect_repository is None:
+            from managers.metadata_database.repositories import TwinAspectRepository
+            self._twin_aspect_repository = TwinAspectRepository(self._session)
+        return self._twin_aspect_repository
+    
+    @property
+    def twin_aspect_registration_repository(self):
+        """Lazy initialization of the twin aspect registration repository."""
+        if self._twin_aspect_registration_repository is None:
+            from managers.metadata_database.repositories import TwinAspectRegistrationRepository
+            self._twin_aspect_registration_repository = TwinAspectRegistrationRepository(self._session)
+        return self._twin_aspect_registration_repository
 
     @property
     def twin_exchange_repository(self):
