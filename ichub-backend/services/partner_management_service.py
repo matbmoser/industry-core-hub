@@ -62,13 +62,13 @@ class PartnerManagementService():
             
             return BusinessPartnerRead(name=db_partner.name, bpnl=db_partner.bpnl)
 
-    def get_business_partner(self, partner_name: str) -> Optional[BusinessPartnerRead]:
+    def get_business_partner(self, partner_number: str) -> Optional[BusinessPartnerRead]:
         """
         Retrieve a partner by its ID.
         """
         
         with self.repositories as repo:
-            db_partner = repo.business_partner_repository.get_by_name(partner_name)
+            db_partner = repo.business_partner_repository.get_by_bpnl(partner_number)
             return BusinessPartnerRead(name=db_partner.name, bpnl=db_partner.bpnl) if db_partner else None
 
 
@@ -87,12 +87,12 @@ class PartnerManagementService():
             db_partners = repo.business_partner_repository.find_all()
             return [BusinessPartnerRead(name=bp.name, bpnl=bp.bpnl) for bp in db_partners]
         
-    def get_data_exchange_agreements(self, partner_name: str) -> List[DataExchangeAgreementRead]:
+    def get_data_exchange_agreements(self, partner_number: str) -> List[DataExchangeAgreementRead]:
         """
         List all data exchange agreements for a given partner.
         """
         with self.repositories as repo:
-            db_partner = repo.business_partner_repository.get_by_name(partner_name)
+            db_partner = repo.business_partner_repository.get_by_bpnl(partner_number)
             if not db_partner:
                 return []
             

@@ -28,7 +28,7 @@ from fastapi import FastAPI
 
 from services.part_management_service import PartManagementService
 from services.partner_management_service import PartnerManagementService
-from models.services.part_management import CatalogPartRead, PartnerCatalogPartBase
+from models.services.part_management import CatalogPartRead, PartnerCatalogPartBase, CatalogPartCreate
 from models.services.partner_management import BusinessPartnerRead, BusinessPartnerCreate, BusinessPartnerCreateInput, DataExchangeAgreementRead
 
 app = FastAPI(title="Industry Core Hub Backend API", version="0.0.1")
@@ -44,25 +44,22 @@ async def part_management_get_catalog_part(manufacturer_id: str, manufacturer_pa
 async def part_management_get_catalog_parts() -> List[CatalogPartRead]:
     return part_management_service.get_catalog_parts()
 
-@app.post("/part-management/catalog-part/{manufacturer_id}/{manufacturer_part_id}", response_model=CatalogPartRead)
-async def part_management_create_catalog_part(manufacturer_id: str, manufacturer_part_id: str, customer_parts: Optional[List[PartnerCatalogPartBase]]) -> CatalogPartRead:
-    return part_management_service.create_catalog_part_by_ids(manufacturer_id, manufacturer_part_id, customer_parts)
+@app.post("/part-management/catalog-part", response_model=CatalogPartRead)
+async def part_management_create_catalog_part(catalog_part_create: CatalogPartCreate) -> CatalogPartRead:
+    return part_management_service.create_catalog_part(catalog_part_create)
 
 @app.get("/partner-management/business-partner", response_model=List[BusinessPartnerRead])
 async def partner_management_get_business_partners() -> List[BusinessPartnerRead]:
     return partner_management_service.list_business_partners()
 
-@app.get("/partner-management/business-partner/{business_partner_name}", response_model=Optional[BusinessPartnerRead])
-async def partner_management_get_business_partner(business_partner_name: str) -> Optional[BusinessPartnerRead]:
-    return partner_management_service.get_business_partner(business_partner_name)
+@app.get("/partner-management/business-partner/{business_partner_number}", response_model=Optional[BusinessPartnerRead])
+async def partner_management_get_business_partner(business_partner_number: str) -> Optional[BusinessPartnerRead]:
+    return partner_management_service.get_business_partner(business_partner_number)
 
-@app.post("/partner-management/business-partner/{business_partner_name}", response_model=BusinessPartnerRead)
-async def partner_management_create_business_partner(business_partner_name: str, create_input: BusinessPartnerCreateInput) -> BusinessPartnerRead:
-    return partner_management_service.create_business_partner(BusinessPartnerCreate(
-        name=business_partner_name,
-        bpnl=create_input.bpnl
-    ))
+@app.post("/partner-management/business-partner", response_model=BusinessPartnerRead)
+async def partner_management_create_business_partner(business_partner_create: BusinessPartnerCreate) -> BusinessPartnerRead:
+    return partner_management_service.create_business_partner(business_partner_create)
 
-@app.get("/partner-management/business-partner/{business_partner_name}/data-exchange-agreement", response_model=List[DataExchangeAgreementRead])
-async def partner_management_get_data_exchange_agreements(business_partner_name: str) -> List[DataExchangeAgreementRead]:
-    return partner_management_service.get_data_exchange_agreements(business_partner_name)
+@app.get("/partner-management/business-partner/{business_partner_number}/data-exchange-agreement", response_model=List[DataExchangeAgreementRead])
+async def partner_management_get_data_exchange_agreements(business_partner_number: str) -> List[DataExchangeAgreementRead]:
+    return partner_management_service.get_data_exchange_agreements(business_partner_number)
