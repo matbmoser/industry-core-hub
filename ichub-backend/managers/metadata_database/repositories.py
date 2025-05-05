@@ -110,17 +110,18 @@ class CatalogPartRepository(BaseRepository[CatalogPart]):
         return self._session.scalars(stmt).first()
 
     def find_by_manufacturer_id_manufacturer_part_id(self, manufacturer_id: Optional[str], manufacturer_part_id: Optional[str], join_partner_catalog_parts : bool = False) -> List[CatalogPart]:
-        stmt = select(CatalogPart)
-
-        if join_partner_catalog_parts:
-            stmt = stmt.join(PartnerCatalogPart, CatalogPart.id == PartnerCatalogPart.catalog_part_id).join(BusinessPartner, BusinessPartner.id == PartnerCatalogPart.business_partner_id)
+        stmt = select(CatalogPart).distinct()
 
         if manufacturer_id:
             stmt = stmt.join(LegalEntity, LegalEntity.id == CatalogPart.legal_entity_id).where(LegalEntity.bpnl == manufacturer_id)
 
         if manufacturer_part_id:
             stmt = stmt.where(CatalogPart.manufacturer_part_id == manufacturer_part_id)
-        
+
+        if join_partner_catalog_parts:
+            subquery = select(PartnerCatalogPart).join(BusinessPartner, BusinessPartner.id == PartnerCatalogPart.business_partner_id).where(PartnerCatalogPart.catalog_part_id == CatalogPart.id).subquery()
+            stmt = stmt.join(subquery, subquery.c.catalog_part_id == CatalogPart.id)
+
         return self._session.exec(stmt).all()
 
 class DataExchangeAgreementRepository(BaseRepository[DataExchangeAgreement]):
