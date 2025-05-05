@@ -136,7 +136,7 @@ class RepositoryManagerFactory:
     _lock: Lock = Lock()
 
     @staticmethod
-    def create(db_url: str = "postgresql://sm29105:sm29105@localhost/cx-next") -> RepositoryManager:
+    def create(db_url: str = "postgresql://username:password@localhost/dbname") -> RepositoryManager:
         """Create or return the singleton instance of RepositoryManager."""
         if RepositoryManagerFactory._repository_manager_instance is None:
             with RepositoryManagerFactory._lock:
