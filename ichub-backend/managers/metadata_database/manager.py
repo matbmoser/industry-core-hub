@@ -38,6 +38,7 @@ class RepositoryManager:
         self._legal_entity_repository = None
         self._partner_catalog_part_repository = None
         self._twin_repository = None
+        self._twin_exchange_repository = None
         self._twin_registration_repository = None
 
     # Context Manager Methods
@@ -128,6 +129,14 @@ class RepositoryManager:
             from managers.metadata_database.repositories import TwinRepository
             self._twin_repository = TwinRepository(self._session)
         return self._twin_repository
+
+    @property
+    def twin_exchange_repository(self):
+        """Lazy initialization of the twin exchange repository."""
+        if self._twin_exchange_repository is None:
+            from managers.metadata_database.repositories import TwinExchangeRepository
+            self._twin_exchange_repository = TwinExchangeRepository(self._session)
+        return self._twin_exchange_repository
 
     @property
     def twin_registration_repository(self):

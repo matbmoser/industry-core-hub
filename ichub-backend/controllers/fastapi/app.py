@@ -24,12 +24,12 @@
 
 from typing import List, Optional
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 
 from services.part_management_service import PartManagementService
 from services.partner_management_service import PartnerManagementService
 from services.twin_management_service import TwinManagementService
-from models.services.part_management import CatalogPartRead, PartnerCatalogPartBase
+from models.services.part_management import CatalogPartBase, CatalogPartRead, PartnerCatalogPartBase
 from models.services.partner_management import BusinessPartnerRead, BusinessPartnerCreate, BusinessPartnerCreateInput, DataExchangeAgreementRead
 from models.services.twin_management import TwinCreateBase, CatalogPartTwinCreate, TwinRead
 
@@ -79,3 +79,15 @@ async def twin_management_create_catalog_part_twin(manufacturer_id: str, manufac
         dtrAasId=twin_create.dtr_aas_id
     )
     return twin_management_service.create_catalog_part_twin(catalog_part_twin_create)
+
+@app.post("/twin-management/catalog-part-twin/{manufacturer_id}/{manufacturer_part_id}/share", responses={
+    201: {"description": "Catalog part twin shared successfully"},
+    204: {"description": "Catalog part twin already shared"}
+})
+async def twin_management_share_catalog_part_twin(manufacturer_id: str, manufacturer_part_id: str, business_partner_name: str):
+    catalog_part_input = CatalogPartBase(manufacturerId=manufacturer_id, manufacturerPartId=manufacturer_part_id)
+    
+    if twin_management_service.create_catalog_part_twin_share(catalog_part_input, business_partner_name):
+        raise HTTPException(status_code=201, detail="Catalog part twin shared successfully")    
+    else:
+        raise HTTPException(status_code=204, detail="Catalog part twin already shared")

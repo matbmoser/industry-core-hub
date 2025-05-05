@@ -27,7 +27,7 @@ from typing import TypeVar, Type, List, Optional, Generic
 from uuid import UUID, uuid4
 from datetime import datetime, timezone
 
-from models.metadata_database.models import BusinessPartner, CatalogPart, DataExchangeAgreement, EnablementServiceStack, LegalEntity, PartnerCatalogPart, Twin, TwinRegistration
+from models.metadata_database.models import BusinessPartner, CatalogPart, DataExchangeAgreement, EnablementServiceStack, LegalEntity, PartnerCatalogPart, Twin, TwinExchange, TwinRegistration
 
 ModelType = TypeVar("ModelType", bound=SQLModel)
 
@@ -145,7 +145,10 @@ class PartnerCatalogPartRepository(BaseRepository[PartnerCatalogPart]):
     pass
 
 class EnablementServiceStackRepository(BaseRepository[EnablementServiceStack]):
-    pass
+    def get_by_name(self, name: str) -> Optional[EnablementServiceStack]:
+        stmt = select(EnablementServiceStack).where(
+            EnablementServiceStack.name == name)  # type: ignore
+        return self._session.scalars(stmt).first()
 
 class TwinRepository(BaseRepository[Twin]):
     def create_new(self, global_id: UUID = None, dtr_aas_id: UUID = None):
@@ -167,9 +170,39 @@ class TwinRepository(BaseRepository[Twin]):
         
         return twin
     
+    def find_by_global_id(self, global_id: UUID) -> Optional[Twin]:
+        stmt = select(Twin).where(
+            Twin.global_id == global_id)
+        return self._session.scalars(stmt).first()
+    
+class TwinExchangeRepository(BaseRepository[TwinExchange]):
+    def get_by_twin_id_data_exchange_agreement_id(self, twin_id: int, data_exchange_agreement_id: int) -> Optional[Twin]:
+        stmt = select(TwinExchange).where(
+            TwinExchange.twin_id == twin_id).where(
+            TwinExchange.data_exchange_agreement_id == data_exchange_agreement_id
+            )
+        return self._session.scalars(stmt).first()
+    
+    def create_new(self, twin_id: int, data_exchange_agreement_id: int) -> TwinExchange:
+        twin_exchange = TwinExchange(
+            twin_id=twin_id,
+            data_exchange_agreement_id=data_exchange_agreement_id
+        )
+        self.create(twin_exchange)
+        return twin_exchange
+
 class TwinRegistrationRepository(BaseRepository[TwinRegistration]):
-    def find_by_twin_id_enablement_service_stack_id(self, twin_id: int, enablement_service_stack_id: int) -> Optional[TwinRegistration]:
+    def get_by_twin_id_enablement_service_stack_id(self, twin_id: int, enablement_service_stack_id: int) -> Optional[TwinRegistration]:
         stmt = select(TwinRegistration).where(
             TwinRegistration.twin_id == twin_id).where(
             TwinRegistration.enablement_service_stack_id == enablement_service_stack_id)
         return self._session.scalars(stmt).first()
+    
+    def create_new(self, twin_id: int, enablement_service_stack_id: int, dtr_registered: bool = False) -> TwinRegistration:
+        twin_registration = TwinRegistration(
+            twin_id=twin_id,
+            enablement_service_stack_id=enablement_service_stack_id,
+            dtr_registered=dtr_registered
+        )
+        self.create(twin_registration)
+        return twin_registration

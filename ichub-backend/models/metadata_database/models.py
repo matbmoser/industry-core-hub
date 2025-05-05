@@ -87,6 +87,20 @@ class CatalogPart(SQLModel, table=True):
 
     __tablename__ = "catalog_part"
 
+    def find_partner_catalog_part_by_business_partner_name(self, business_partner_name: str) -> Optional["PartnerCatalogPart"]:
+        """Find the partner catalog part for a given business partner."""
+        for partner_catalog_part in self.partner_catalog_parts:
+            if partner_catalog_part.business_partner.name == business_partner_name:
+                return partner_catalog_part
+        return None
+
+    def find_partner_catalog_part_by_bpnl(self, bpnl: str) -> Optional["PartnerCatalogPart"]:
+        """Find the partner catalog part for a given business partner."""
+        for partner_catalog_part in self.partner_catalog_parts:
+            if partner_catalog_part.business_partner.bpnl == bpnl:
+                return partner_catalog_part
+        return None
+
 
 class PartnerCatalogPart(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
