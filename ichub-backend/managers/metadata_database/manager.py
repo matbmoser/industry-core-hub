@@ -23,7 +23,7 @@
 #################################################################################
 
 from sqlmodel import Session
-from services.database import engine
+from database import engine
 
 class RepositoryManager:
     """Repository manager for managing repositories and handling the session."""
