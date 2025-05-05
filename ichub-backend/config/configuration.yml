@@ -26,5 +26,5 @@ authorization:
     key: "X-Api-Key"
     value: <<example>>
 database:
-  connection_string: "postgresql://user:$DATABASE_PASSWORD@localhost:5432/mydatabase"
+  connectionString: "postgresql://user:$DATABASE_PASSWORD@localhost:5432/mydatabase"
   echo: true
