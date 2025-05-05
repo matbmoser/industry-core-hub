@@ -31,11 +31,26 @@ from fastapi import FastAPI, HTTPException
 from services.part_management_service import PartManagementService
 from services.partner_management_service import PartnerManagementService
 from services.twin_management_service import TwinManagementService
-from models.services.part_management import CatalogPartBase, CatalogPartRead, PartnerCatalogPartBase
-from models.services.partner_management import BusinessPartnerRead, BusinessPartnerCreate, BusinessPartnerCreateInput, DataExchangeAgreementRead
-from models.services.twin_management import TwinCreateBase, CatalogPartTwinCreate, TwinRead
+from models.services.part_management import CatalogPartBase, CatalogPartRead, CatalogPartCreate
+from models.services.partner_management import BusinessPartnerRead, BusinessPartnerCreate, DataExchangeAgreementRead
+from models.services.twin_management import TwinRead, TwinCreateBase, CatalogPartTwinCreate
 
-app = FastAPI(title="Industry Core Hub Backend API", version="0.0.1")
+tags_metadata = [
+    {
+        "name": "Part Management",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed ..."
+    },
+    {
+        "name": "Partner Management",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed ..."
+    },
+    {
+        "name": "Twin Management",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed ..."
+    }
+]
+
+app = FastAPI(title="Industry Core Hub Backend API", version="0.0.1", openapi_tags=tags_metadata)
 
 part_management_service = PartManagementService()
 partner_management_service = PartnerManagementService()
@@ -44,38 +59,35 @@ twin_management_service = TwinManagementService()
 class BusinessPartnerNameWrapper(BaseModel):
     business_partner_name: str = Field(alias="businessPartnerName", description="Name of the business partner") 
 
-@app.get("/part-management/catalog-part/{manufacturer_id}/{manufacturer_part_id}", response_model=CatalogPartRead)
+@app.get("/part-management/catalog-part/{manufacturer_id}/{manufacturer_part_id}", response_model=CatalogPartRead, tags=["Part Management"])
 async def part_management_get_catalog_part(manufacturer_id: str, manufacturer_part_id: str) -> Optional[CatalogPartRead]:
     return part_management_service.get_catalog_part(manufacturer_id, manufacturer_part_id)
 
-@app.get("/part-management/catalog-part", response_model=List[CatalogPartRead])
+@app.get("/part-management/catalog-part", response_model=List[CatalogPartRead], tags=["Part Management"])
 async def part_management_get_catalog_parts() -> List[CatalogPartRead]:
     return part_management_service.get_catalog_parts()
 
-@app.post("/part-management/catalog-part/{manufacturer_id}/{manufacturer_part_id}", response_model=CatalogPartRead)
-async def part_management_create_catalog_part(manufacturer_id: str, manufacturer_part_id: str, customer_parts: Optional[List[PartnerCatalogPartBase]]) -> CatalogPartRead:
-    return part_management_service.create_catalog_part_by_ids(manufacturer_id, manufacturer_part_id, customer_parts)
+@app.post("/part-management/catalog-part", response_model=CatalogPartRead, tags=["Part Management"])
+async def part_management_create_catalog_part(catalog_part_create: CatalogPartCreate) -> CatalogPartRead:
+    return part_management_service.create_catalog_part(catalog_part_create)
 
-@app.get("/partner-management/business-partner", response_model=List[BusinessPartnerRead])
+@app.get("/partner-management/business-partner", response_model=List[BusinessPartnerRead], tags=["Partner Management"])
 async def partner_management_get_business_partners() -> List[BusinessPartnerRead]:
     return partner_management_service.list_business_partners()
 
-@app.get("/partner-management/business-partner/{business_partner_name}", response_model=Optional[BusinessPartnerRead])
-async def partner_management_get_business_partner(business_partner_name: str) -> Optional[BusinessPartnerRead]:
-    return partner_management_service.get_business_partner(business_partner_name)
+@app.get("/partner-management/business-partner/{business_partner_number}", response_model=Optional[BusinessPartnerRead], tags=["Partner Management"])
+async def partner_management_get_business_partner(business_partner_number: str) -> Optional[BusinessPartnerRead]:
+    return partner_management_service.get_business_partner(business_partner_number)
 
-@app.post("/partner-management/business-partner/{business_partner_name}", response_model=BusinessPartnerRead)
-async def partner_management_create_business_partner(business_partner_name: str, create_input: BusinessPartnerCreateInput) -> BusinessPartnerRead:
-    return partner_management_service.create_business_partner(BusinessPartnerCreate(
-        name=business_partner_name,
-        bpnl=create_input.bpnl
-    ))
+@app.post("/partner-management/business-partner", response_model=BusinessPartnerRead, tags=["Partner Management"])
+async def partner_management_create_business_partner(business_partner_create: BusinessPartnerCreate) -> BusinessPartnerRead:
+    return partner_management_service.create_business_partner(business_partner_create)
 
-@app.get("/partner-management/business-partner/{business_partner_name}/data-exchange-agreement", response_model=List[DataExchangeAgreementRead])
-async def partner_management_get_data_exchange_agreements(business_partner_name: str) -> List[DataExchangeAgreementRead]:
-    return partner_management_service.get_data_exchange_agreements(business_partner_name)
+@app.get("/partner-management/business-partner/{business_partner_number}/data-exchange-agreement", response_model=List[DataExchangeAgreementRead], tags=["Partner Management"])
+async def partner_management_get_data_exchange_agreements(business_partner_number: str) -> List[DataExchangeAgreementRead]:
+    return partner_management_service.get_data_exchange_agreements(business_partner_number)
 
-@app.post("/twin-management/catalog-part-twin/{manufacturer_id}/{manufacturer_part_id}", response_model=TwinRead)
+@app.post("/twin-management/catalog-part-twin/{manufacturer_id}/{manufacturer_part_id}", response_model=TwinRead, tags=["Twin Management"])
 async def twin_management_create_catalog_part_twin(manufacturer_id: str, manufacturer_part_id: str, twin_create: TwinCreateBase) -> TwinRead:
     catalog_part_twin_create = CatalogPartTwinCreate(
         manufacturerId=manufacturer_id,
@@ -88,7 +100,7 @@ async def twin_management_create_catalog_part_twin(manufacturer_id: str, manufac
 @app.post("/twin-management/catalog-part-twin/{manufacturer_id}/{manufacturer_part_id}/share", responses={
     201: {"description": "Catalog part twin shared successfully"},
     204: {"description": "Catalog part twin already shared"}
-})
+}, tags=["Twin Management"])
 async def twin_management_share_catalog_part_twin(manufacturer_id: str, manufacturer_part_id: str, business_partner_name: BusinessPartnerNameWrapper):
     catalog_part_input = CatalogPartBase(manufacturerId=manufacturer_id, manufacturerPartId=manufacturer_part_id)
     
