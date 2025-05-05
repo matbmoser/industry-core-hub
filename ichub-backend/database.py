@@ -22,7 +22,7 @@
 
 from config.config_manager import ConfigManager
 from config.log_manager import LoggingManager
-from sqlmodel import SQLModel, create_engine
+from sqlmodel import SQLModel, create_engine, text
 
 connection_string = ConfigManager.get_config("database.connection_string", default={})
 db_echo = ConfigManager.get_config("database.echo", default={False})
@@ -36,8 +36,9 @@ def create_db_and_tables() -> None:
 
 def connect_and_test():
     try:
-        with engine.connect() as _:
-            pass
+        with engine.connect() as conn:
+            # run a lightweight test query
+            conn.execute(text("SELECT 1"))
         logger.info("Database connection established successfully.")
     except Exception as e:
         logger.critical(f"Failed to establish database connection: {e}")
