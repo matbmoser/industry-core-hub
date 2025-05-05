@@ -51,7 +51,7 @@ SQLAlchemy==2.0.38
 sqlmodel==0.0.22
 starlette==0.40.0
 tomli==2.0.1
-tractusx_sdk==0.0.2
+tractusx_sdk==0.0.3
 typer==0.15.1
 typing_extensions==4.12.2
 urllib3==2.3.0

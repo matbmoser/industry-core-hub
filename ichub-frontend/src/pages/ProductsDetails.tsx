@@ -26,12 +26,12 @@ import carPartsData from "../tests/payloads/sample-data.json";
 import { StatusTag, Button, Icon } from '@catena-x/portal-shared-components';
 import { PRODUCT_STATUS } from "../types/common";
 import JsonViewerDialog from "../components/general/JsonViewerDialog";
-import { Grid2 } from '@mui/material';
-import InstanceProductsTable from "../components/product-detail/InstanceProductsTable";
+import Grid2 from '@mui/material/Grid2';
+import InstanceProductsTable from "../Features/CatalogManagement/components/product-detail/InstanceProductsTable";
 import PageNotification from "../components/general/PageNotification";
-import ShareDropdown from "../components/product-detail/ShareDropdown";
-import ProductButton from "../components/product-detail/ProductButton";
-import ProductData from "../components/product-detail/ProductData";
+import ShareDropdown from "../Features/CatalogManagement/components/product-detail/ShareDropdown";
+import ProductButton from "../Features/CatalogManagement/components/product-detail/ProductButton";
+import ProductData from "../Features/CatalogManagement/components/product-detail/ProductData";
 
 const ProductsDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -107,37 +107,33 @@ const ProductsDetails = () => {
       case PRODUCT_STATUS.REGISTERED:
         return <StatusTag color="confirmed" label="Registered" variant="outlined" />;
       case PRODUCT_STATUS.DRAFT:
-        return <StatusTag color="label" label="Draft" variant="outlined" />;
+        return <StatusTag color="info" label="Draft" variant="outline" />;
       case PRODUCT_STATUS.SHARED:
-        return <StatusTag color="pending" label="Shared" variant="filled" />;
+        return <StatusTag color="warning" label="Shared" variant="filled" />;
       default:
         return null;
     }
   };
 
   return (
-    <>      
-      <PageNotification notification={notification} />
-      
       <Grid2 container direction="column" className="productDetail">
-        <Grid2 container spacing={2} className="mb-5">
-          <Grid2 size={{lg: 4, md: 6, sm: 6}} display="flex" justifyContent="start">
+        <Grid2 container spacing={2} className="mb-5" justifyContent={{ md: "space-between", sm: "center" }} alignItems="center" direction={{ sm: "column", md: "row" }}>
+          <PageNotification notification={notification} />
+          <Grid2 size={{ md: 3, sm: 12 }} display="flex" justifyContent="center">
             {getStatusTag(part.status)}
           </Grid2>
-          <Grid2 size={{lg: 4, md: 6, sm: 6}} display="flex" justifyContent={{ lg: "center", md: "end", sm: "end" }}>
-            <Button size="small" onClick={() => console.log("DCM v2.0 button")} className="update-button" endIcon={<Icon fontSize="16" iconName="Edit" />}>            
-                <span className="update-button-content">UPDATE</span>            
+          <Grid2 size={{ md: 3, sm: 12 }} display="flex" justifyContent="center">
+            <Button size="small" onClick={() => console.log("DCM v2.0 button")} className="update-button" endIcon={<Icon fontSize="16" iconName="Edit" />}>
+              <span className="update-button-content">UPDATE</span>
             </Button>
           </Grid2>
-          <Grid2 size={{lg: 4, md: 12, sm: 12}} display="flex" justifyContent="end">
+          <Grid2 size={{ md: 3, sm: 12 }} display="flex" justifyContent="center">
             <ShareDropdown handleCopy={handleCopy} handleDownload={handleDownload} handleShare={handleShare} />
           </Grid2>
         </Grid2>
-
         <ProductData part={part} />
-
         <Grid2 container spacing={2} direction="column" className="add-on-buttons">
-          
+
           <ProductButton gridSize={{ sm: 12 }} buttonText="DIGITAL PRODUCT PASSPORT v5.0.0" onClick={handleOpenDialog} />
 
           <Grid2 container spacing={2} justifyContent="center">
@@ -153,14 +149,9 @@ const ProductsDetails = () => {
           </Grid2>
 
         </Grid2>
-
-        <Grid2 size={12} className='product-table-wrapper'>
-          <InstanceProductsTable />
-        </Grid2>
-
-        <JsonViewerDialog open={dialogOpen} onClose={handleCloseDialog} carJsonData={part}/>
+        <JsonViewerDialog open={dialogOpen} onClose={handleCloseDialog} carJsonData={part} />
+        <InstanceProductsTable />
       </Grid2>
-    </>
   );
 }
 

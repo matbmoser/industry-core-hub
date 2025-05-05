@@ -21,10 +21,8 @@
 ********************************************************************************/
 
 import { useState, JSX } from "react";
-import sidebarElements from '../../tests/payloads/sidebar-elements.json'
-
+import sidebarElements from '../../tests/payloads/sidebar-elements-extension.json'
 import { Box } from "@mui/material";
-
 import { Storefront as StorefrontIcon, Category as CategoryIcon, People as PeopleIcon, Assignment as AssignmentIcon } from '@mui/icons-material';
 
 const iconMap: { [key: string]: JSX.Element } = {
@@ -53,16 +51,6 @@ const Sidebar = () => {
       </Box>
 
       {/* Contenido del Sidebar */}
-      <Box className="sidebarContent">
-        <h2>{sidebarElements[activeIndex].title}</h2>
-        <ul>
-          {sidebarElements[activeIndex].subitems.map((subitem, idx) => (
-            <li key={idx}>
-              <a href={subitem.link}>{subitem.name}</a>
-            </li>
-          ))}
-        </ul>
-      </Box>
     </Box>
   );
 };

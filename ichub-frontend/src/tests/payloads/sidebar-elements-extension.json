@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Brands",
+    "icon": "Storefront",
+    "route":""
+  },
+  {
+    "title": "Categories",
+    "icon": "Category",
+    "route":""
+  },
+  {
+    "title": "Shared with",
+    "icon": "Shared",
+    "route":""
+  },
+  {
+    "title": "Status",
+    "icon": "Status",
+    "route":""
+  }
+]

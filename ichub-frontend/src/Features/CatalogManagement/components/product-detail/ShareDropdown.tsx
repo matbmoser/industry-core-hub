@@ -21,8 +21,8 @@
 ********************************************************************************/
 
 import { DropdownMenu, Button, Icon } from '@catena-x/portal-shared-components';
-import { PRODUCT_OPTIONS } from "../../types/common";
-import { Grid2 } from '@mui/material';
+import { PRODUCT_OPTIONS } from "../../../../types/common";
+import Grid2 from '@mui/material/Grid2';
 
 interface ShareDropdownProps {
     handleCopy: () => void;
@@ -39,16 +39,17 @@ const ShareDropdown = ({ handleCopy, handleDownload, handleShare }: ShareDropdow
         'font-size': '14px',
         }}
         buttonText="Share"
+        startIcon={<Icon fontSize="16" iconName="IosShare" />}
     >
         <Grid2 container direction="column">
         <Button className="dropdown-button share-dropdown-btn" color="secondary" size="small" onClick={handleCopy} startIcon={<Icon fontSize="16" iconName="ContentCopy" />}>
-            <span>{PRODUCT_OPTIONS.COPY}</span>
+            <span className="dropdown-button-content">{PRODUCT_OPTIONS.COPY}</span>
         </Button>
         <Button className="dropdown-button share-dropdown-btn" color="secondary" size="small" onClick={handleDownload} startIcon={<Icon fontSize="16" iconName="FileDownload" />}>
-            <span>{PRODUCT_OPTIONS.DOWNLOAD}</span>
+            <span className="dropdown-button-content">{PRODUCT_OPTIONS.DOWNLOAD}</span>
         </Button>
         <Button className="dropdown-button share-dropdown-btn" color="secondary" size="small" onClick={handleShare} startIcon={<Icon fontSize="16" iconName="IosShare" />}>
-            <span>{PRODUCT_OPTIONS.SHARE}</span>
+            <span className="dropdown-button-content">{PRODUCT_OPTIONS.SHARE}</span>
         </Button>
         </Grid2>
     </DropdownMenu>
