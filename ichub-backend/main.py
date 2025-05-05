@@ -22,7 +22,7 @@
 
 from config.log_manager import LoggingManager
 from config.config_manager import ConfigManager
-from services.database import connect_and_test
+from database import connect_and_test
 
 from fastapi import FastAPI, HTTPException, Request
 
