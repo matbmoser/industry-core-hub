@@ -40,8 +40,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 
-import instanceData from "../../tests/payloads/instance-data.json";
-import { InstanceProduct } from '../../types/instanceProduct';
+import instanceData from "../../../../tests/payloads/instance-data.json";
+import { InstanceProduct } from '../../../../types/instanceProduct';
 
 const rows = instanceData;
 
@@ -136,7 +136,7 @@ interface EnhancedTableProps {
   rowCount: number;
 }
 
-function EnhancedTableHead(props: EnhancedTableProps) {
+function EnhancedTableHead(props: Readonly<EnhancedTableProps>) {
   const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
     props;
   const createSortHandler =
@@ -152,9 +152,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all instances',
-            }}
           />
         </TableCell>
         {headCells.map((headCell) => (
@@ -233,7 +230,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     </Toolbar>
   );
 }
-export default function InstanceProductsTable() {
+export default function EnhancedTable() {
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<keyof InstanceProduct>('uuid');
   const [selected, setSelected] = useState<readonly number[]>([]);
@@ -241,7 +238,7 @@ export default function InstanceProductsTable() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleRequestSort = (
-    _event: React.MouseEvent<unknown>,
+    event: React.MouseEvent<unknown>,
     property: keyof InstanceProduct,
   ) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -258,7 +255,7 @@ export default function InstanceProductsTable() {
     setSelected([]);
   };
 
-  const handleClick = (_event: React.MouseEvent<unknown>, id: number) => {
+  const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
     const selectedIndex = selected.indexOf(id);
     let newSelected: readonly number[] = [];
 
@@ -277,7 +274,7 @@ export default function InstanceProductsTable() {
     setSelected(newSelected);
   };
 
-  const handleChangePage = (_event: unknown, newPage: number) => {
+  const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
@@ -299,84 +296,83 @@ export default function InstanceProductsTable() {
   );
 
   return (
-    <Paper sx={{ width: '100%', mb: 2 }}>
-      <EnhancedTableToolbar numSelected={selected.length} />
-      <TableContainer>
-        <Table
-          aria-labelledby="tableTitle"
-          size='small'
-        >
-          <EnhancedTableHead
-            numSelected={selected.length}
-            order={order}
-            orderBy={orderBy}
-            onSelectAllClick={handleSelectAllClick}
-            onRequestSort={handleRequestSort}
-            rowCount={rows.length}
-          />
-          <TableBody>
-            {visibleRows.map((row, index) => {
-              const isItemSelected = selected.includes(row.id);
-              const labelId = `enhanced-table-checkbox-${index}`;
+    <Box sx={{ width: '100%' }} className='product-table-wrapper'>
+      <Paper sx={{ width: '100%', mb: 2 }}>
+        <EnhancedTableToolbar numSelected={selected.length} />
+        <TableContainer>
+          <Table
+            aria-labelledby="tableTitle"
+            size='small'
+          >
+            <EnhancedTableHead
+              numSelected={selected.length}
+              order={order}
+              orderBy={orderBy}
+              onSelectAllClick={handleSelectAllClick}
+              onRequestSort={handleRequestSort}
+              rowCount={rows.length}
+            />
+            <TableBody>
+              {visibleRows.map((row, index) => {
+                const isItemSelected = selected.includes(row.id);
+                const labelId = `enhanced-table-checkbox-${index}`;
+                
 
-              return (
-                <TableRow
-                  hover
-                  onClick={(event) => handleClick(event, row.id)}
-                  role="checkbox"
-                  aria-checked={isItemSelected}
-                  tabIndex={-1}
-                  key={row.id}
-                  selected={isItemSelected}
-                  sx={{ cursor: 'pointer' }}
-                >
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={isItemSelected}
-                      inputProps={{
-                        'aria-labelledby': labelId,
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell
-                    component="th"
-                    id={labelId}
-                    scope="row"
-                    padding="none"
+                return (
+                  <TableRow
+                    hover
+                    onClick={(event) => handleClick(event, row.id)}
+                    aria-checked={isItemSelected}
+                    tabIndex={-1}
+                    key={row.id}
+                    selected={isItemSelected}
+                    sx={{ cursor: 'pointer' }}
                   >
-                    {row.uuid}
-                  </TableCell>
-                  <TableCell align="right">{row.partInstanceId}</TableCell>
-                  <TableCell align="right">{row.submodels}</TableCell>
-                  <TableCell align="right">{row.status}</TableCell>
-                  <TableCell align="right">{row.type}</TableCell>
-                  <TableCell align="right">{row.created}</TableCell>
-                  <TableCell align="right">{row.updated}</TableCell>
-                  <TableCell align="right">{row.manufacturer}</TableCell>
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        checked={isItemSelected}
+                      />
+                    </TableCell>
+                    <TableCell
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                      padding="none"
+                    >
+                      {row.uuid}
+                    </TableCell>
+                    <TableCell align="right">{row.partInstanceId}</TableCell>
+                    <TableCell align="right">{row.submodels}</TableCell>
+                    <TableCell align="right">{row.status}</TableCell>
+                    <TableCell align="right">{row.type}</TableCell>
+                    <TableCell align="right">{row.created}</TableCell>
+                    <TableCell align="right">{row.updated}</TableCell>
+                    <TableCell align="right">{row.manufacturer}</TableCell>
+                  </TableRow>
+                );
+              })}
+              {emptyRows > 0 && (
+                <TableRow
+                  style={{
+                    height: 33 * emptyRows,
+                  }}
+                >
+                  <TableCell colSpan={6} />
                 </TableRow>
-              );
-            })}
-            {emptyRows > 0 && (
-              <TableRow
-                style={{
-                  height: 33 * emptyRows,
-                }}
-              >
-                <TableCell colSpan={6} />
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Paper>
+    </Box>
   );
 }
