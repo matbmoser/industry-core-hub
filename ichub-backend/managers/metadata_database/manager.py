@@ -22,9 +22,8 @@
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
 
-from threading import Lock
-
-from sqlmodel import create_engine, Session
+from sqlmodel import Session
+from services.database import engine
 
 class RepositoryManager:
     """Repository manager for managing repositories and handling the session."""
@@ -112,24 +111,10 @@ class RepositoryManager:
     
 
 class RepositoryManagerFactory:
-    """Factory class for creating repository managers with singleton behavior."""
-
-    _engine_instance = None
-    _repository_manager_instance = None
-    _lock: Lock = Lock()
+    """Factory class for creating repository managers."""
 
     @staticmethod
-    def create(db_url: str = "postgresql://username:password@localhost/dbname") -> RepositoryManager:
+    def create() -> RepositoryManager:
         """Create or return the singleton instance of RepositoryManager."""
-        if RepositoryManagerFactory._repository_manager_instance is None:
-            with RepositoryManagerFactory._lock:
-                if RepositoryManagerFactory._repository_manager_instance is None:
-                    # Create a SQLModel engine for PostgreSQL if not already created
-                    if RepositoryManagerFactory._engine_instance is None:
-                        RepositoryManagerFactory._engine_instance = create_engine(db_url)
-
-                    # Create the singleton instance of RepositoryManager
-                    session = Session(RepositoryManagerFactory._engine_instance)
-                    RepositoryManagerFactory._repository_manager_instance = RepositoryManager(session)
-
-        return RepositoryManagerFactory._repository_manager_instance
+        session = Session(engine)
+        return RepositoryManager(session)

@@ -22,10 +22,9 @@
 
 from config.log_manager import LoggingManager
 from config.config_manager import ConfigManager
-from services.database import get_session, connect_and_test
+from services.database import connect_and_test
 
-from fastapi import Depends, FastAPI, HTTPException, Request
-from sqlmodel import Session
+from fastapi import FastAPI, HTTPException, Request
 
 ## FAST API example for keycloak
 from fastapi_keycloak_middleware import CheckPermissions
@@ -77,7 +76,7 @@ connect_and_test()
 app = FastAPI(title="main")
 
 @app.get("/example")
-async def api_call(request: Request, session: Session = Depends(get_session)):
+async def api_call(request: Request):
     """
     Example documentation
 

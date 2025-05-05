@@ -33,14 +33,11 @@ class PartnerManagementService():
     Service class for managing partners and exchange agreements.
     """
 
-    def __init__(self, ):
-        self.repositories = RepositoryManagerFactory.create()
-
     def create_business_partner(self, partner_create: BusinessPartnerCreate) -> BusinessPartnerRead:
         """
         Create a new partner in the system.
         """
-        with self.repositories as repo:
+        with RepositoryManagerFactory.create() as repo:
             
             # First create the business partner entity
             db_partner = repo.business_partner_repository.create(BusinessPartner(
@@ -67,7 +64,7 @@ class PartnerManagementService():
         Retrieve a partner by its ID.
         """
         
-        with self.repositories as repo:
+        with RepositoryManagerFactory.create() as repo:
             db_partner = repo.business_partner_repository.get_by_name(partner_name)
             return BusinessPartnerRead(name=db_partner.name, bpnl=db_partner.bpnl) if db_partner else None
 
@@ -83,7 +80,7 @@ class PartnerManagementService():
         """
         List all partners in the system.
         """
-        with self.repositories as repo:
+        with RepositoryManagerFactory.create() as repo:
             db_partners = repo.business_partner_repository.find_all()
             return [BusinessPartnerRead(name=bp.name, bpnl=bp.bpnl) for bp in db_partners]
         
@@ -91,7 +88,7 @@ class PartnerManagementService():
         """
         List all data exchange agreements for a given partner.
         """
-        with self.repositories as repo:
+        with RepositoryManagerFactory.create() as repo:
             db_partner = repo.business_partner_repository.get_by_name(partner_name)
             if not db_partner:
                 return []

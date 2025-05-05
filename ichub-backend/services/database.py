@@ -22,8 +22,7 @@
 
 from config.config_manager import ConfigManager
 from config.log_manager import LoggingManager
-from typing import Generator
-from sqlmodel import Session, SQLModel, create_engine
+from sqlmodel import SQLModel, create_engine
 
 connection_string = ConfigManager.get_config("database.connection_string", default={})
 db_echo = ConfigManager.get_config("database.echo", default={False})
@@ -43,7 +42,3 @@ def connect_and_test():
     except Exception as e:
         logger.critical(f"Failed to establish database connection: {e}")
         raise
-
-def get_session() -> Generator[Session, None, None]:
-    with Session(engine) as session:
-        yield session
