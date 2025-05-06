@@ -59,8 +59,8 @@ from .twin_management import (
     TwinAspectCreate,
     TwinRead,
     TwinCreateBase,
-    TwinDetailsRead,
     CatalogPartTwinCreate,
+    CatalogPartTwinDetailsRead,
     BatchTwinCreate,
     JISPartTwinCreate,
     SerializedPartTwinCreate

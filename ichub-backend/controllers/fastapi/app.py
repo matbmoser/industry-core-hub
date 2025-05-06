@@ -23,6 +23,7 @@
 #################################################################################
 
 from typing import List, Optional
+from uuid import UUID
 
 from pydantic import BaseModel, Field
 
@@ -33,7 +34,7 @@ from services.partner_management_service import PartnerManagementService
 from services.twin_management_service import TwinManagementService
 from models.services.part_management import CatalogPartBase, CatalogPartRead, CatalogPartCreate
 from models.services.partner_management import BusinessPartnerRead, BusinessPartnerCreate, DataExchangeAgreementRead
-from models.services.twin_management import TwinRead, TwinAspectRead, TwinAspectCreate, CatalogPartTwinRead, CatalogPartTwinCreate, CatalogPartTwinShare
+from models.services.twin_management import TwinRead, TwinAspectRead, TwinAspectCreate, CatalogPartTwinRead, CatalogPartTwinDetailsRead, CatalogPartTwinCreate, CatalogPartTwinShare
 
 tags_metadata = [
     {
@@ -91,6 +92,10 @@ async def partner_management_get_data_exchange_agreements(business_partner_numbe
 @app.get("/twin-management/catalog-part-twin", response_model=List[CatalogPartTwinRead], tags=["Twin Management"])
 async def twin_management_get_catalog_part_twins(include_data_exchange_agreements: bool = False) -> List[CatalogPartTwinRead]:
     return twin_management_service.get_catalog_part_twins(include_data_exchange_agreements=include_data_exchange_agreements)
+
+@app.get("/twin-management/catalog-part-twin/{global_id}", response_model=List[CatalogPartTwinDetailsRead], tags=["Twin Management"])
+async def twin_management_get_catalog_part_twin(global_id: UUID) -> List[CatalogPartTwinDetailsRead]:
+    return twin_management_service.get_catalog_part_twin_details(global_id)
 
 @app.post("/twin-management/catalog-part-twin", response_model=TwinRead, tags=["Twin Management"])
 async def twin_management_create_catalog_part_twin(catalog_part_twin_create: CatalogPartTwinCreate) -> TwinRead:

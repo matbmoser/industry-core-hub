@@ -23,6 +23,7 @@
 #################################################################################
 
 from sqlmodel import SQLModel, Session, select
+from sqlalchemy.orm import selectinload
 from typing import TypeVar, Type, List, Optional, Generic
 from uuid import UUID, uuid4
 from datetime import datetime, timezone
@@ -190,13 +191,30 @@ class TwinRepository(BaseRepository[Twin]):
     def find_catalog_part_twins(self,
             manufacturer_id: Optional[str] = None,
             manufacturer_part_id: Optional[str] = None,
-            include_data_exchange_agreements: bool = False) -> List[Twin]:
+            global_id: Optional[UUID] = None,
+            include_data_exchange_agreements: bool = False,
+            include_aspects: bool = False) -> List[Twin]:
         
         stmt = select(Twin).join(
             CatalogPart, CatalogPart.twin_id == Twin.id).join(
             LegalEntity, LegalEntity.id == CatalogPart.legal_entity_id
         ).distinct()
 
+        stmt = self._apply_subquery_filters(stmt, include_data_exchange_agreements, include_aspects)
+
+        if manufacturer_id:
+            stmt = stmt.where(LegalEntity.bpnl == manufacturer_id)
+
+        if manufacturer_part_id:
+            stmt = stmt.where(CatalogPart.manufacturer_part_id == manufacturer_part_id)
+
+        if global_id:
+            stmt = stmt.where(Twin.global_id == global_id)
+
+        return self._session.scalars(stmt).all()
+    
+    @staticmethod
+    def _apply_subquery_filters(stmt, include_data_exchange_agreements: bool, include_aspects: bool):
         if include_data_exchange_agreements:
             subquery = select(TwinExchange).join(
                 DataExchangeAgreement, TwinExchange.data_exchange_agreement_id == DataExchangeAgreement.id
@@ -205,13 +223,12 @@ class TwinRepository(BaseRepository[Twin]):
             ).subquery()
             stmt = stmt.join(subquery, subquery.c.twin_id == Twin.id, isouter=True)
 
-        if manufacturer_id:
-            stmt = stmt.where(LegalEntity.bpnl == manufacturer_id)
+        if include_aspects:
+            print("Include aspects")
+            stmt = stmt.options(selectinload(Twin.twin_aspects).selectinload(TwinAspect.twin_aspect_registrations))
 
-        if manufacturer_part_id:
-            stmt = stmt.where(CatalogPart.manufacturer_part_id == manufacturer_part_id)
+        return stmt
 
-        return self._session.scalars(stmt).all()
 
 class TwinAspectRepository(BaseRepository[TwinAspect]):
     def get_by_twin_id_semantic_id(self, twin_id: int, semantic_id: str, include_registrations: bool = False) -> Optional[TwinAspect]:

@@ -95,15 +95,18 @@ class TwinCreateBase(BaseModel):
     global_id: Optional[UUID] = Field(alias="globalId", description="Optionally the Catena-X ID / global ID of the digital twin to create. If not specified, a new UUID will be created automatically.", default=None)
     dtr_aas_id: Optional[UUID] = Field(alias="dtrAasId", description="Optionally the shell descriptor ID ('AAS ID') of the digital twin in the Digital Twin Registry. If not specified, a new UUID will be created automatically.", default=None)
 
-class TwinDetailsRead(TwinRead):
-    additional_context: Optional[Dict[str, Any]] = Field(alias="additionalContext", description="Additional context information about the digital twin. This can include various metadata or properties associated with the twin. Intended for handling twins by third party apps.")
-    aspects: Optional[Dict[str, TwinAspectRead]] = Field(description="A map of aspect information for the digital twin. The key is the semantic ID of the aspect. The value is a TwinAspectRead object containing details about the aspect.", default={})
+class TwinDetailsReadBase(BaseModel):
+    additional_context: Optional[Dict[str, Any]] = Field(alias="additionalContext", description="Additional context information about the digital twin. This can include various metadata or properties associated with the twin. Intended for handling twins by third party apps.", default=None)
+    aspects: Optional[Dict[str, TwinAspectRead]] = Field(description="A map of aspect information for the digital twin. The key is the semantic ID of the aspect. The value is a TwinAspectRead object containing details about the aspect.", default=None)
 
 class CatalogPartTwinRead(CatalogPartRead, TwinRead):
     """Represents a catalog part twin within the Digital Twin Registry."""
 
 class CatalogPartTwinCreate(CatalogPartBase, TwinCreateBase):
     pass
+
+class CatalogPartTwinDetailsRead(CatalogPartTwinRead, TwinDetailsReadBase):
+    """Represents the details of a catalog part twin within the Digital Twin Registry."""
 
 class CatalogPartTwinShare(CatalogPartBase):
     business_partner_number: str = Field(alias="businessPartnerNumber", description="The business partner number of the business partner with which the catalog part is shared.")

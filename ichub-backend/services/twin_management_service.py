@@ -34,8 +34,8 @@ from models.services.twin_management import (
     CatalogPartTwinRead,
     CatalogPartTwinCreate,
     CatalogPartTwinShare,
+    CatalogPartTwinDetailsRead,
     TwinRead,
-    TwinDetailsRead,
     TwinAspectCreate,
     TwinAspectRead,
     TwinAspectRegistration,
@@ -337,8 +337,62 @@ class TwinManagementService:
                 }
             )
 
-    def get_twin_details(self, global_id: UUID) -> TwinDetailsRead:
-        pass
+    def get_catalog_part_twin_details(self, global_id: UUID) -> CatalogPartTwinDetailsRead:
+        with RepositoryManagerFactory.create() as repo:
+            db_twins = repo.twin_repository.find_catalog_part_twins(
+                global_id=global_id,
+                include_data_exchange_agreements=True,
+                include_aspects=True
+            )
+            
+            result = []
+            for db_twin in db_twins:
+                db_catalog_part = db_twin.catalog_part
+                twin_result = CatalogPartTwinDetailsRead(
+                    globalId=db_twin.global_id,
+                    dtrAasId=db_twin.aas_id,
+                    createdDate=db_twin.created_date,
+                    modifiedDate=db_twin.modified_date,
+                    manufacturerId=db_catalog_part.legal_entity.bpnl,
+                    manufacturerPartId=db_catalog_part.manufacturer_part_id,
+                    category=db_catalog_part.category,
+                    additionalContext=db_twin.additional_context,
+                    customerPartIds={partner_catalog_part.customer_part_id: BusinessPartnerRead(
+                        name=partner_catalog_part.business_partner.name,
+                        bpnl=partner_catalog_part.business_partner.bpnl
+                    ) for partner_catalog_part in db_catalog_part.partner_catalog_parts}
+                )
+
+                twin_result.shares = [
+                    DataExchangeAgreementRead(
+                        name=db_twin_exchange.data_exchange_agreement.name,
+                        businessPartner=BusinessPartnerRead(
+                            name=db_twin_exchange.data_exchange_agreement.business_partner.name,
+                            bpnl=db_twin_exchange.data_exchange_agreement.business_partner.bpnl
+                        )
+                    ) for db_twin_exchange in db_twin.twin_exchanges
+                ]
+
+                twin_result.aspects = {
+                    db_twin_aspect.semantic_id: TwinAspectRead(
+                        semanticId=db_twin_aspect.semantic_id,
+                        submodelId=db_twin_aspect.submodel_id,
+                        registrations={
+                            db_twin_aspect_registration.enablement_service_stack.name: TwinAspectRegistration(
+                                enablementServiceStackName=db_twin_aspect_registration.enablement_service_stack.name,
+                                status=TwinAspectRegistrationStatus(db_twin_aspect_registration.status),
+                                mode=TwinsAspectRegistrationMode(db_twin_aspect_registration.registration_mode),
+                                createdDate=db_twin_aspect_registration.created_date,
+                                modifiedDate=db_twin_aspect_registration.modified_date
+                            ) for db_twin_aspect_registration in db_twin_aspect.twin_aspect_registrations
+                        } 
+                    ) for db_twin_aspect in db_twin.twin_aspects
+                }
+
+
+                result.append(twin_result)
+            
+            return result
 
 
 def _create_dtr_manager(connection_settings: Optional[Dict[str, Any]]) -> DTRManager:
