@@ -21,14 +21,20 @@
 ********************************************************************************/
 
 import { useState } from 'react';
-import { Button, Dialog, DialogHeader, DialogContent, Icon } from '@catena-x/portal-shared-components';
+import { Button, Icon } from '@catena-x/portal-shared-components';
+
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 import { JsonViewerDialogProps } from '../../types/jsonViewer';
 
 const JsonViewerDialog = ({ open, onClose, carJsonData }: JsonViewerDialogProps) => {
     const [copied, setCopied] = useState(false);
-    const title = carJsonData?.Name ? `${carJsonData.Name} JSON data` : "DCM JSON Data";
-    const description = carJsonData?.Description ? `${carJsonData.Description}` : "";
+    const title = carJsonData?.name ? `${carJsonData.name} JSON data` : "DCM JSON Data";
 
     const handleCopy = () => {
         const json_string = JSON.stringify(carJsonData, null, 2);
@@ -43,12 +49,26 @@ const JsonViewerDialog = ({ open, onClose, carJsonData }: JsonViewerDialogProps)
       };
 
     return (
-        <Dialog open={open} maxWidth="xl">
-            <DialogHeader intro={description} title={title} />
-            <DialogContent>
+        <Dialog open={open} maxWidth="xl" className='custom-dialog'>
+            <DialogTitle sx={{ m: 0, p: 2 }}>
+                {title}
+            </DialogTitle>
+            <IconButton
+                aria-label="close"
+                onClick={onClose}
+                sx={(theme) => ({
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: theme.palette.grey[500],
+                })}
+                >
+                <CloseIcon />
+            </IconButton>
+            <DialogContent dividers>
                 <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', background: '#f4f4f4', padding: '0 10px', borderRadius: '5px', textAlign: 'right' }}>
                     <span className='mr-3'>{copied ? "JSON copied ✅" : ""}</span>
-                    <Button variant="text" onClick={handleCopy} size='small'>
+                    <Button variant="text" onClick={handleCopy} size='small' className='copy-button'>
                         <Icon fontSize="16" iconName="ContentCopy" />
                     </Button>
                 </pre>
@@ -56,12 +76,12 @@ const JsonViewerDialog = ({ open, onClose, carJsonData }: JsonViewerDialogProps)
                     {JSON.stringify(carJsonData, null, 2)}
                 </pre>
             </DialogContent>
-            <div className="mx-auto my-4 text-center">
-                <Button variant="outlined" onClick={onClose} size='small'>
-                    <Icon fontSize="16" iconName="Close" />
-                    Close
+            <DialogActions>
+                <Button className="close-button" variant="outlined" size="small" onClick={onClose}>
+                <Icon fontSize="16" iconName="Close" />
+                    <span className="close-button-content">CLOSE</span>
                 </Button>
-            </div>
+            </DialogActions>
         </Dialog>
     )
 }
