@@ -39,6 +39,9 @@ class SubmodelServiceManager:
     def upload_twin_aspect_document(self, global_id : UUID, semantic_id: str, payload: Dict[str, Any]):
         """Upload a submodel to the service."""
         # Implementation for uploading a submodel
+        print("==========================")
+        print("==== Submodel Service ====")
+        print("==========================")
         print(f"Uploading submodel with Global ID: {global_id}")
         print(f"Semantic ID: {semantic_id}")
         print(f"==== Start of Payload ====")

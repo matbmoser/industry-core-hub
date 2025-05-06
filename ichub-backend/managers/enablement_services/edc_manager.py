@@ -37,6 +37,9 @@ class EDCManager:
     def register_submodel_asset(self, global_id: str, semantic_id: str, aas_id: UUID, submodel_id: UUID):
         """Register a submodel asset in the EDC."""
         # Implementation for registering a submodel asset
+        print("=====================================")
+        print("==== Eclipse Dataspace Connector ====")
+        print("=====================================")
         print(f"Registering submodel asset with Global ID: {global_id}")
         print(f"Semantic ID: {semantic_id}")
         print(f"AAS ID: {aas_id}")
@@ -47,6 +50,9 @@ class EDCManager:
     def register_submodel_bundle_asset(self, semantic_id: str):
         """Register a submodel bundle asset in the EDC."""
         # Implementation for registering a submodel bundle asset
+        print("=====================================")
+        print("==== Eclipse Dataspace Connector ====")
+        print("=====================================")
         print(f"Registering submodel bundle asset with Semantic ID: {semantic_id}")
         print("Submodel bundle asset registered successfully (dummy implementation).")
         print()
