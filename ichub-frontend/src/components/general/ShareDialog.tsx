@@ -110,23 +110,11 @@ const ShareDialog = ({ open, onClose, partData }: ProductDetailDialogProps) => {
         )}
       </DialogContent>
       <DialogActions>
-        <Button
-          className="action-button"
-          variant="contained"
-          size="small"
-          onClick={handleShare}
-          startIcon={<SendIcon />}
-        >
-          Share
-        </Button>
-        <Button
-          className="close-button"
-          variant="outlined"
-          size="small"
-          onClick={onClose}
-          startIcon={<CloseIcon />}
-        >
+        <Button className="close-button" variant="outlined" size="small" onClick={onClose} startIcon={<CloseIcon />} >
           <span className="close-button-content">CLOSE</span>
+        </Button>
+        <Button className="action-button" variant="contained" size="small" onClick={handleShare} startIcon={<SendIcon />} >
+          Share
         </Button>
       </DialogActions>
     </Dialog>
