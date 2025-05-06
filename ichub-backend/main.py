@@ -20,6 +20,9 @@
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
 
+from config.log_manager import LoggingManager
+from config.config_manager import ConfigManager
+from database import connect_and_test
 
 from fastapi import FastAPI, HTTPException, Request
 
@@ -59,21 +62,17 @@ auth_manager: AuthManager
 urllib3.disable_warnings()
 logging.captureWarnings(True)
 
-## Create Logging Folder
-op.make_dir("logs")
-
-# Load the logging config file
-with open('./config/logging.yml', 'rt') as f:
-    log_config = yaml.safe_load(f.read())
-    date = op.get_filedate()
-    op.make_dir(dir_name="logs/"+date)
-    log_config["handlers"]["file"]["filename"] = f'logs/{date}/{op.get_filedatetime()}-ic-backend-sdk.log'
-    config.dictConfig(log_config)
+# Load the logging config
+LoggingManager.init_logging()
 
 # Load the configuation for the application
-with open('./config/configuration.yml', 'rt') as f:
-    # Read the yaml configuration
-    app_configuration = yaml.safe_load(f.read())
+ConfigManager.load_config()
+
+# Test database connection
+# If uncommented, it will test the database connection at startup
+# if it the database connection is invalid or databse is not available
+# it will raise an exception and the application will not start
+# connect_and_test()
     
 # Add the previous folder structure to the system path to import the utilities
 app = FastAPI(title="main")
@@ -110,9 +109,9 @@ def start():
     args = get_arguments()
 
     # Configure the logging confiuration depending on the configuration stated
-    logger = logging.getLogger('staging')
+    logger = LoggingManager.get_logger('staging')
     if(args.debug):
-        logger = logging.getLogger('development')
+        logger = LoggingManager.get_logger('development')
     
     ## Start storage and edc communication service
     edc_service = EdcService()
@@ -133,7 +132,7 @@ def get_arguments():
 
     parser.add_argument('--test-mode', action='store_true', help="Run in test mode (skips uvicorn.run())", required=False)
     
-    parser.add_argument("--debug", default=False, action="store_false", help="Enable and disable the debug", required=False)
+    parser.add_argument("--debug", default=False, action="store_true", help="Enable and disable the debug", required=False)
     
     parser.add_argument("--port", default=8080, help="The server port where it will be available", type=int, required=False,)
     

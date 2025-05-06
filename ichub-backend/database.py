@@ -20,11 +20,26 @@
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
 
-authorization:
-  enabled: true
-  apiKey: 
-    key: "X-Api-Key"
-    value: <<example>>
-database:
-  connectionString: "postgresql://user:$DATABASE_PASSWORD@localhost:5432/mydatabase"
-  echo: true
+from config.config_manager import ConfigManager
+from config.log_manager import LoggingManager
+from sqlmodel import SQLModel, create_engine, text
+
+connection_string = ConfigManager.get_config("database.connectionString", default={})
+db_echo = ConfigManager.get_config("database.echo", default={False})
+
+engine = create_engine(str(connection_string), echo=db_echo)
+
+logger = LoggingManager.get_logger(__name__)
+
+def create_db_and_tables() -> None:
+    SQLModel.metadata.create_all(engine)
+
+def connect_and_test():
+    try:
+        with engine.connect() as conn:
+            # run a lightweight test query
+            conn.execute(text("SELECT 1"))
+        logger.info("Database connection established successfully.")
+    except Exception as e:
+        logger.critical(f"Failed to establish database connection: {e}")
+        raise

@@ -34,15 +34,12 @@ class PartManagementService():
     Service class for managing parts and their relationships in the system.
     """
 
-    def __init__(self, ):
-        self.repositories = RepositoryManagerFactory.create()
-
     def create_catalog_part(self, catalog_part_create: CatalogPartCreate) -> CatalogPartRead:
         """
         Create a new catalog part in the system.
         Optionally also create attached partner catalog parts - i.e. partner specific mappings of the catalog part.
         """
-        with self.repositories as repos:
+        with RepositoryManagerFactory.create() as repos:
             
             # First check if the legal entity exists for the given manufacturer ID
             db_legal_entity = repos.legal_entity_repository.get_by_bpnl(catalog_part_create.manufacturer_id)
@@ -124,7 +121,7 @@ class PartManagementService():
         pass
 
     def get_catalog_parts(self, manufacturer_id: Optional[str] = None, manufacturer_part_id: Optional[str] = None) -> List[CatalogPartRead]:
-        with self.repositories as repos:
+        with RepositoryManagerFactory.create() as repos:
             result = []
             
             db_catalog_parts: List[CatalogPart] = repos.catalog_part_repository.find_by_manufacturer_id_manufacturer_part_id(
