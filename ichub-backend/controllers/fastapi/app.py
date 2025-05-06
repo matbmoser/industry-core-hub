@@ -38,15 +38,19 @@ from models.services.twin_management import TwinRead, TwinAspectRead, TwinAspect
 tags_metadata = [
     {
         "name": "Part Management",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed ..."
+        "description": "Management of part metadata (independent of any Catena-X services) - including catalog parts, serialized parts, JIS parts and batches"
     },
     {
         "name": "Partner Management",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed ..."
+        "description": "Management of master data around business partners - including business partners, data exchange agreements and contracts"
     },
     {
         "name": "Twin Management",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed ..."
+        "description": "Management of how product information can be managed and shared within Catena-X systems"
+    },
+    {
+        "name": "Submodel Dispatcher",
+        "description": "Internal API called by EDC Data Planes in order the deliver data of of the internall used Submodel Service"
     }
 ]
 
@@ -55,9 +59,6 @@ app = FastAPI(title="Industry Core Hub Backend API", version="0.0.1", openapi_ta
 part_management_service = PartManagementService()
 partner_management_service = PartnerManagementService()
 twin_management_service = TwinManagementService()
-
-class BusinessPartnerNameWrapper(BaseModel):
-    business_partner_name: str = Field(alias="businessPartnerName", description="Name of the business partner") 
 
 @app.get("/part-management/catalog-part/{manufacturer_id}/{manufacturer_part_id}", response_model=CatalogPartRead, tags=["Part Management"])
 async def part_management_get_catalog_part(manufacturer_id: str, manufacturer_part_id: str) -> Optional[CatalogPartRead]:
