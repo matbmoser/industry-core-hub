@@ -25,11 +25,12 @@
 from typing import Optional, Dict, Any, List
 from uuid import UUID
 
-from managers.metadata_database.manager import RepositoryManagerFactory, RepositoryManager
+from managers.metadata_database.manager import RepositoryManagerFactory
 from managers.enablement_services.dtr_manager import DTRManager
 from managers.enablement_services.edc_manager import EDCManager
 from managers.enablement_services.submodel_service_manager import SubmodelServiceManager
 from models.services.twin_management import (
+    CatalogPartTwinRead,
     CatalogPartTwinCreate,
     CatalogPartTwinShare,
     TwinRead,
@@ -46,13 +47,8 @@ class TwinManagementService:
     Service class for managing twin-related operations (CRUD and Twin sharing).
     """
 
-    def __init__(self, ):
-        self._repositories: RepositoryManager = RepositoryManagerFactory.create()
-        self._edc_manager: EDCManager = EDCManager()
-        self._submodel_service_manager: SubmodelServiceManager = SubmodelServiceManager()
-
     def create_catalog_part_twin(self, create_input: CatalogPartTwinCreate, enablement_service_stack_name: str = 'EDC/DTR Default') -> TwinRead:
-        with self._repositories as repo:
+        with RepositoryManagerFactory.create() as repo:
             # Step 1: Retrieve the catalog part entity according to the catalog part data (manufacturer_id, manufacturer_part_id)
             db_catalog_parts = repo.catalog_part_repository.find_by_manufacturer_id_manufacturer_part_id(
                 create_input.manufacturer_id,
@@ -129,12 +125,12 @@ class TwinManagementService:
                 modifiedDate=db_twin.modified_date
             )
 
-    def get_catalog_part_twins(self, manufacturer_id: Optional[str] = None, manufacturer_part_id: Optional[str] = None) -> List[CatalogPartRead]:
+    def get_catalog_part_twins(self, manufacturer_id: Optional[str] = None, manufacturer_part_id: Optional[str] = None) -> List[CatalogPartTwinRead]:
         pass
 
     def create_catalog_part_twin_share(self, catalog_part_share_input: CatalogPartTwinShare) -> bool:
         
-        with self._repositories as repo:
+        with RepositoryManagerFactory.create() as repo:
             # Step 1: Retrieve the catalog part entity according to the catalog part data (manufacturer_id, manufacturer_part_id)
             db_catalog_parts = repo.catalog_part_repository.find_by_manufacturer_id_manufacturer_part_id(
                 catalog_part_share_input.manufacturer_id,
@@ -169,7 +165,7 @@ class TwinManagementService:
                 db_business_partner.id
             )
             if not db_data_exchange_agreements:
-                raise ValueError(f"No data exchange agreement found for business partner '{business_partner_name}'.")
+                raise ValueError(f"No data exchange agreement found for business partner '{db_business_partner.name}'.")
             db_data_exchange_agreement = db_data_exchange_agreements[0] # Get the first one for now
             
             # Step 6: Check if there is already a twin exchange entity for the twin and data exchange agreement and create it if not
@@ -192,7 +188,7 @@ class TwinManagementService:
         Create a new twin aspect for a give twin.
         """
 
-        with self._repositories as repo:
+        with RepositoryManagerFactory.create() as repo:
             
             # Step 1: Retrieve the twin entity according to the global_id
             db_twin = repo.twin_repository.find_by_global_id(twin_aspect_create.global_id)
