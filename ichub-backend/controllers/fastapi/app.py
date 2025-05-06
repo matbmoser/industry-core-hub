@@ -33,7 +33,7 @@ from services.partner_management_service import PartnerManagementService
 from services.twin_management_service import TwinManagementService
 from models.services.part_management import CatalogPartBase, CatalogPartRead, CatalogPartCreate
 from models.services.partner_management import BusinessPartnerRead, BusinessPartnerCreate, DataExchangeAgreementRead
-from models.services.twin_management import TwinRead, TwinAspectRead, TwinAspectCreate, CatalogPartTwinCreate, CatalogPartTwinShare
+from models.services.twin_management import TwinRead, TwinAspectRead, TwinAspectCreate, CatalogPartTwinRead, CatalogPartTwinCreate, CatalogPartTwinShare
 
 tags_metadata = [
     {
@@ -87,6 +87,10 @@ async def partner_management_create_business_partner(business_partner_create: Bu
 @app.get("/partner-management/business-partner/{business_partner_number}/data-exchange-agreement", response_model=List[DataExchangeAgreementRead], tags=["Partner Management"])
 async def partner_management_get_data_exchange_agreements(business_partner_number: str) -> List[DataExchangeAgreementRead]:
     return partner_management_service.get_data_exchange_agreements(business_partner_number)
+
+@app.get("/twin-management/catalog-part-twin", response_model=List[CatalogPartTwinRead], tags=["Twin Management"])
+async def twin_management_get_catalog_part_twins() -> List[CatalogPartTwinRead]:
+    return twin_management_service.get_catalog_part_twins()
 
 @app.post("/twin-management/catalog-part-twin", response_model=TwinRead, tags=["Twin Management"])
 async def twin_management_create_catalog_part_twin(catalog_part_twin_create: CatalogPartTwinCreate) -> TwinRead:

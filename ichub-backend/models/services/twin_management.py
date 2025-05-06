@@ -28,7 +28,7 @@ from uuid import UUID
 from typing import Dict, Optional, Any
 from pydantic import BaseModel, Field
 
-from models.services.part_management import CatalogPartBase, BatchCreate, SerializedPartCreate, JISPartCreate
+from models.services.part_management import CatalogPartBase, CatalogPartRead, BatchCreate, SerializedPartCreate, JISPartCreate
 
 class TwinAspectRegistrationStatus(enum.Enum):
     """An enumeration of potential status values when a twin aspect is registered within the system"""
@@ -96,6 +96,10 @@ class TwinCreateBase(BaseModel):
 class TwinDetailsRead(TwinRead):
     additional_context: Optional[Dict[str, Any]] = Field(alias="additionalContext", description="Additional context information about the digital twin. This can include various metadata or properties associated with the twin. Intended for handling twins by third party apps.")
     aspects: Optional[Dict[str, TwinAspectRead]] = Field(description="A map of aspect information for the digital twin. The key is the semantic ID of the aspect. The value is a TwinAspectRead object containing details about the aspect.", default={})
+
+class CatalogPartTwinRead(CatalogPartRead, TwinRead):
+    """Represents a catalog part twin within the Digital Twin Registry."""
+    pass
 
 class CatalogPartTwinCreate(CatalogPartBase, TwinCreateBase):
     pass

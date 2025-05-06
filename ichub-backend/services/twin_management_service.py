@@ -22,7 +22,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
 
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 from uuid import UUID
 
 from managers.metadata_database.manager import RepositoryManagerFactory, RepositoryManager
@@ -128,6 +128,9 @@ class TwinManagementService:
                 createdDate=db_twin.created_date,
                 modifiedDate=db_twin.modified_date
             )
+
+    def get_catalog_part_twins(self, manufacturer_id: Optional[str] = None, manufacturer_part_id: Optional[str] = None) -> List[CatalogPartRead]:
+        pass
 
     def create_catalog_part_twin_share(self, catalog_part_share_input: CatalogPartTwinShare) -> bool:
         
