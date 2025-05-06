@@ -66,14 +66,16 @@ const JsonViewerDialog = ({ open, onClose, carJsonData }: JsonViewerDialogProps)
                 <CloseIcon />
             </IconButton>
             <DialogContent dividers>
-                <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', background: '#f4f4f4', padding: '0 10px', borderRadius: '5px', textAlign: 'right' }}>
-                    <span className='mr-3'>{copied ? "JSON copied ✅" : ""}</span>
-                    <Button variant="text" onClick={handleCopy} size='small' className='copy-button'>
-                        <Icon fontSize="16" iconName="ContentCopy" />
-                    </Button>
-                </pre>
-                <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', background: '#f4f4f4', padding: '0 10px 5px 10px', borderRadius: '5px' }}>
-                    {JSON.stringify(carJsonData, null, 2)}
+                <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', background: '#f4f4f4', padding: '0 10px 5px 10px', borderRadius: '5px', textAlign: 'right' }}>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: '4px' }}>
+                        <span className='mr-3'>{copied ? 'JSON copied ✅' : ''}</span>
+                        <Button variant="text" onClick={handleCopy} size='small' className='copy-button'>
+                            <Icon fontSize="16" iconName="ContentCopy" />
+                        </Button>
+                    </div>
+                    <code style={{ textAlign: 'left', display: 'block' }}>
+                        {JSON.stringify(carJsonData, null, 2)}
+                    </code>
                 </pre>
             </DialogContent>
             <DialogActions>

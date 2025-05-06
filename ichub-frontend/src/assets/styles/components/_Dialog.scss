@@ -36,7 +36,11 @@
     .MuiDialogContent-root {
         border-color: $brand-text!important;
         pre{
-            background: $brand-shadow !important;
+            background: linear-gradient(
+                0deg,
+                rgba(200, 200, 200, 0.2) 0%,
+                rgba(236, 236, 236, 0.4) 100%
+            ) !important;
             color: $brand-text !important;
             border-radius: 0px!important;
         }
