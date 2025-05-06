@@ -29,7 +29,7 @@ import TablePagination from '@mui/material/TablePagination';
 import { AppBar, Typography, IconButton,Grid2 } from '@mui/material';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
-import Sidebar from '../Features/CatalogManagement/components/sideBar/SideBar';
+import Sidebar from '../features/CatalogManagement/components/sideBar/SideBar';
 import {Drawer} from '../shared/hooks/drawer';
 import ShareDialog from "../components/general/ShareDialog";
 
