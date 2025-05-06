@@ -31,10 +31,13 @@ import { Menu as MenuIcon } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 import Sidebar from '../Features/CatalogManagement/components/sideBar/SideBar';
 import {Drawer} from '../shared/hooks/drawer';
+import ShareDialog from "../components/general/ShareDialog";
 
 
 const ProductsList = () => {
   const [carParts, setCarParts] = useState<PartInstance[]>([]);
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
+  const [selectedPart, setSelectedPart] = useState<PartInstance | null>(null);
   const [initialCarParts, setInitialCarParts] = useState<PartInstance[]>([]);
   const [page, setPage] = useState(0);
   const rowsPerPage = 10;
@@ -94,6 +97,17 @@ const ProductsList = () => {
     navigate(`/product/${part}`);  // Navigate to the details page
   };
 
+  const handleShareDialog = (uuid: string) => {
+    const part = visibleRows.find(p => p.uuid === uuid);
+    if (part) {
+      console.log('Share dialog for part:', part);
+      setSelectedPart(part);
+      setShareDialogOpen(true);
+    } else {
+      console.warn('Part not found for UUID:', uuid);
+    }
+  };
+
   const visibleRows = useMemo(
     () => {
       return [...carParts].slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -128,6 +142,7 @@ const ProductsList = () => {
       <Main open={isOpen}>
         <ProductCard
           onClick={(itemId: any) => handleButtonClick(itemId)}
+          onShare={(itemId: any) => handleShareDialog(itemId)}
           items={visibleRows.map((part) => ({
             uuid: part.uuid,
             name: part.name,
@@ -147,7 +162,15 @@ const ProductsList = () => {
           onPageChange={handleChangePage}
         />
       </Grid2>
-    </Grid2></>
+    </Grid2>
+    {selectedPart && (
+      <ShareDialog
+        open={shareDialogOpen}
+        onClose={() => setShareDialogOpen(false)}
+        partData={selectedPart}
+      />
+    )}
+    </>
   );
 };
 

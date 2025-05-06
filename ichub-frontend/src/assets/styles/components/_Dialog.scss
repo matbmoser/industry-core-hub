@@ -53,6 +53,16 @@
                 color: $brand-text !important;
             }
         }
+        .MuiTextField-root {
+            @include mixins.rounded-bordered;
+            @include mixins.space-shadow($brand-blue);
+        }
+        .MuiInputLabel-shrink{
+            font-weight: bold;
+            color: $brand-text!important;
+            background: $brand-dark!important;
+            padding: 0 10px;
+        }
     }
     .MuiDialogActions-root {
         padding: 20px 0;
@@ -65,6 +75,19 @@
         &:hover {
             background: $blue-gradient-bg!important;
             border-color: $brand-text!important;
+        }
+    }
+    .action-button{
+        background-color: $brand-text!important;
+        border-radius: 8px!important;
+        border-color: $brand-light-blue!important;
+        color: $brand-primary !important;
+        border: 1px solid $brand-text!important;
+    
+        &:hover {
+            background: $brand-light-blue!important;
+            border-color: $brand-text!important;
+            color: $brand-text !important;
         }
     }
 }

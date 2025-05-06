@@ -30,14 +30,14 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
-import { JsonViewerDialogProps } from '../../types/jsonViewer';
+import { ProductDetailDialogProps } from '../../types/dialogViewer';
 
-const JsonViewerDialog = ({ open, onClose, carJsonData }: JsonViewerDialogProps) => {
+const JsonViewerDialog = ({ open, onClose, partData }: ProductDetailDialogProps) => {
     const [copied, setCopied] = useState(false);
-    const title = carJsonData?.name ? `${carJsonData.name} JSON data` : "DCM JSON Data";
+    const title = partData?.name ? `${partData.name} JSON data` : "DCM JSON Data";
 
     const handleCopy = () => {
-        const json_string = JSON.stringify(carJsonData, null, 2);
+        const json_string = JSON.stringify(partData, null, 2);
         navigator.clipboard.writeText(json_string)
           .then(() => {
             setCopied(true);
@@ -74,7 +74,7 @@ const JsonViewerDialog = ({ open, onClose, carJsonData }: JsonViewerDialogProps)
                         </Button>
                     </div>
                     <code style={{ textAlign: 'left', display: 'block' }}>
-                        {JSON.stringify(carJsonData, null, 2)}
+                        {JSON.stringify(partData, null, 2)}
                     </code>
                 </pre>
             </DialogContent>
