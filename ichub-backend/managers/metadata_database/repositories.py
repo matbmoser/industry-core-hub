@@ -193,14 +193,15 @@ class TwinRepository(BaseRepository[Twin]):
             manufacturer_part_id: Optional[str] = None,
             global_id: Optional[UUID] = None,
             include_data_exchange_agreements: bool = False,
-            include_aspects: bool = False) -> List[Twin]:
+            include_aspects: bool = False,
+            include_registrations: bool = False) -> List[Twin]:
         
         stmt = select(Twin).join(
             CatalogPart, CatalogPart.twin_id == Twin.id).join(
             LegalEntity, LegalEntity.id == CatalogPart.legal_entity_id
         ).distinct()
 
-        stmt = self._apply_subquery_filters(stmt, include_data_exchange_agreements, include_aspects)
+        stmt = self._apply_subquery_filters(stmt, include_data_exchange_agreements, include_aspects, include_registrations)
 
         if manufacturer_id:
             stmt = stmt.where(LegalEntity.bpnl == manufacturer_id)
@@ -214,7 +215,7 @@ class TwinRepository(BaseRepository[Twin]):
         return self._session.scalars(stmt).all()
     
     @staticmethod
-    def _apply_subquery_filters(stmt, include_data_exchange_agreements: bool, include_aspects: bool):
+    def _apply_subquery_filters(stmt, include_data_exchange_agreements: bool, include_aspects: bool, include_registrations: bool):
         if include_data_exchange_agreements:
             subquery = select(TwinExchange).join(
                 DataExchangeAgreement, TwinExchange.data_exchange_agreement_id == DataExchangeAgreement.id
@@ -223,10 +224,16 @@ class TwinRepository(BaseRepository[Twin]):
             ).subquery()
             stmt = stmt.join(subquery, subquery.c.twin_id == Twin.id, isouter=True)
 
+        if include_registrations:
+            stmt = stmt.options(selectinload(Twin.twin_registrations))
+        
         if include_aspects:
-            print("Include aspects")
-            stmt = stmt.options(selectinload(Twin.twin_aspects).selectinload(TwinAspect.twin_aspect_registrations))
+            if include_registrations:
+                stmt = stmt.options(selectinload(Twin.twin_aspects).selectinload(TwinAspect.twin_aspect_registrations))
+            else:
+                stmt = stmt.options(selectinload(Twin.twin_aspects))
 
+        
         return stmt
 
 

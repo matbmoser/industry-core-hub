@@ -342,7 +342,8 @@ class TwinManagementService:
             db_twins = repo.twin_repository.find_catalog_part_twins(
                 global_id=global_id,
                 include_data_exchange_agreements=True,
-                include_aspects=True
+                include_aspects=True,
+                include_registrations=True
             )
             
             result = []
@@ -372,6 +373,11 @@ class TwinManagementService:
                         )
                     ) for db_twin_exchange in db_twin.twin_exchanges
                 ]
+
+                twin_result.registrations = {
+                    db_twin_registration.enablement_service_stack.name: db_twin_registration.dtr_registered
+                     for db_twin_registration in db_twin.twin_registrations
+                }
 
                 twin_result.aspects = {
                     db_twin_aspect.semantic_id: TwinAspectRead(

@@ -97,6 +97,7 @@ class TwinCreateBase(BaseModel):
 
 class TwinDetailsReadBase(BaseModel):
     additional_context: Optional[Dict[str, Any]] = Field(alias="additionalContext", description="Additional context information about the digital twin. This can include various metadata or properties associated with the twin. Intended for handling twins by third party apps.", default=None)
+    registrations: Optional[Dict[str, bool]] = Field(description="A map of registration information for the digital twin in different enablement service stacks. The key is the name of the enablement service stack.", default=None)
     aspects: Optional[Dict[str, TwinAspectRead]] = Field(description="A map of aspect information for the digital twin. The key is the semantic ID of the aspect. The value is a TwinAspectRead object containing details about the aspect.", default=None)
 
 class CatalogPartTwinRead(CatalogPartRead, TwinRead):
