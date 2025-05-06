@@ -61,9 +61,9 @@ class Twin(SQLModel, table=True):
     additional_context: Optional[str] = Field(default=None, description="Additional context for the twin.")
 
     # Relationships
-    catalog_parts: List["CatalogPart"] = Relationship(back_populates="twin")
-    serialized_parts: List["SerializedPart"] = Relationship(back_populates="twin")
-    jis_parts: List["JISPart"] = Relationship(back_populates="twin")
+    catalog_part: Optional["CatalogPart"] = Relationship(back_populates="twin")
+    serialized_part: Optional["SerializedPart"] = Relationship(back_populates="twin")
+    jis_part: Optional["JISPart"] = Relationship(back_populates="twin")
     twin_aspects: List["TwinAspect"] = Relationship(back_populates="twin")
     twin_exchanges: List["TwinExchange"] = Relationship(back_populates="twin")
     twin_registrations: List["TwinRegistration"] = Relationship(back_populates="twin")
@@ -75,13 +75,13 @@ class CatalogPart(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     manufacturer_part_id: str = Field(index=True, unique=True, description="The manufacturer part ID.")
     legal_entity_id: int = Field(foreign_key="legal_entity.id", description="The ID of the associated legal entity.")
-    twin_id: Optional[int] = Field(foreign_key="twin.id", description="The ID of the associated twin.")
+    twin_id: Optional[int] = Field(foreign_key="twin.id", description="The ID of the associated twin.", unique=True)
     category: Optional[str] = Field(default=None, description="The category of the catalog part.")
     bpns: Optional[str] = Field(default=None, description="The optional site information (BPNS) of the catalog part.")
 
     # Relationships
     legal_entity: LegalEntity = Relationship(back_populates="catalog_parts")
-    twin: Optional[Twin] = Relationship(back_populates="catalog_parts")
+    twin: Optional[Twin] = Relationship(back_populates="catalog_part")
     partner_catalog_parts: List["PartnerCatalogPart"] = Relationship(back_populates="catalog_part")
     batches: List["Batch"] = Relationship(back_populates="catalog_part")
 
@@ -127,11 +127,11 @@ class SerializedPart(SQLModel, table=True):
     partner_catalog_part_id: int = Field(foreign_key="partner_catalog_part.id", description="The ID of the associated partner catalog part.")
     part_instance_id: str = Field(index=True, unique=True, description="The part instance ID.")
     van: Optional[str] = Field(default=None, description="The optional VAN (Vehicle Assembly Number).")
-    twin_id: int = Field(foreign_key="twin.id", description="The ID of the associated twin.")
+    twin_id: Optional[int] = Field(foreign_key="twin.id", description="The ID of the associated twin.")
 
     # Relationships
     partner_catalog_part: PartnerCatalogPart = Relationship(back_populates="serialized_parts")
-    twin: Twin = Relationship(back_populates="serialized_parts")
+    twin: Optional[Twin] = Relationship(back_populates="serialized_part")
 
     __tablename__ = "serialized_part"
 
@@ -142,11 +142,11 @@ class JISPart(SQLModel, table=True):
     jis_number: str = Field(index=True, unique=True, description="The JIS number.")
     parent_order_number: Optional[str] = Field(default=None, description="The parent order number.")
     jis_call_date: Optional[datetime] = Field(default=None, description="The JIS call date.")
-    twin_id: int = Field(foreign_key="twin.id", description="The ID of the associated twin.")
+    twin_id: Optional[int] = Field(foreign_key="twin.id", description="The ID of the associated twin.")
 
     # Relationships
     partner_catalog_part: PartnerCatalogPart = Relationship(back_populates="jis_parts")
-    twin: Twin = Relationship(back_populates="jis_parts")
+    twin: Optional[Twin] = Relationship(back_populates="jis_part")
 
     __tablename__ = "jis_part"
 

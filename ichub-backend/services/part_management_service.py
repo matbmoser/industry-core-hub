@@ -56,14 +56,16 @@ class PartManagementService():
                 # Create the catalog part in the metadata database
                 db_catalog_part = CatalogPart(
                     manufacturer_part_id=catalog_part_create.manufacturer_part_id,
-                    legal_entity=db_legal_entity
+                    legal_entity=db_legal_entity,
+                    category=catalog_part_create.category,
                 )
                 repos.catalog_part_repository.create(db_catalog_part)
 
             # Prepare the result object
             result = CatalogPartRead(
                 manufacturerId=catalog_part_create.manufacturer_id,
-                manufacturerPartId=catalog_part_create.manufacturer_part_id)
+                manufacturerPartId=catalog_part_create.manufacturer_part_id,
+                category=catalog_part_create.category)
 
             # Check if we already should create some customer part IDs for the given catalog part
             if catalog_part_create.customer_part_ids:
@@ -93,7 +95,11 @@ class PartManagementService():
 
             return result
 
-    def create_catalog_part_by_ids(self, manufacturer_id: str, manufacturer_part_id: str, customer_parts: Optional[List[PartnerCatalogPartBase]]) -> CatalogPartRead:
+    def create_catalog_part_by_ids(self,
+        manufacturer_id: str,
+        manufacturer_part_id: str,
+        category: Optional[str],
+        customer_parts: Optional[List[PartnerCatalogPartBase]]) -> CatalogPartRead:
         """Convenience method to create a catalog part by its IDs."""
 
         partner_catalog_parts = []
@@ -107,6 +113,7 @@ class PartManagementService():
         catalog_part_create = CatalogPartCreate(
             manufacturerId=manufacturer_id,
             manufacturerPartId=manufacturer_part_id,
+            category=category,
             customerPartIds=partner_catalog_parts
         )
 
@@ -130,20 +137,15 @@ class PartManagementService():
             
             if db_catalog_parts:
                 for db_catalog_part in db_catalog_parts:
-                    customer_parts: Dict[str, BusinessPartnerRead] = {}
-
-                    if db_catalog_part.partner_catalog_parts:
-                        for db_partner_catalog_part in db_catalog_part.partner_catalog_parts:
-                            customer_parts[db_partner_catalog_part.customer_part_id] = BusinessPartnerRead(
-                                name=db_partner_catalog_part.business_partner.name,
-                                bpnl=db_partner_catalog_part.business_partner.bpnl
-                            )
-
                     result.append(
                         CatalogPartRead(
                             manufacturerId=db_catalog_part.legal_entity.bpnl,
                             manufacturerPartId=db_catalog_part.manufacturer_part_id,
-                            customerPartIds=customer_parts
+                            category=db_catalog_part.category,
+                            customerPartIds={partner_catalog_part.customer_part_id: BusinessPartnerRead(
+                                name=partner_catalog_part.business_partner.name,
+                                bpnl=partner_catalog_part.business_partner.bpnl
+                            ) for partner_catalog_part in db_catalog_part.partner_catalog_parts}
                         )
                     )
             

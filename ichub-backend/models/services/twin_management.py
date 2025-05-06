@@ -25,10 +25,11 @@
 from datetime import datetime
 import enum
 from uuid import UUID
-from typing import Dict, Optional, Any
+from typing import Dict, Optional, List, Any
 from pydantic import BaseModel, Field
 
 from models.services.part_management import CatalogPartBase, CatalogPartRead, BatchCreate, SerializedPartCreate, JISPartCreate
+from models.services.partner_management import DataExchangeAgreementRead
 
 class TwinAspectRegistrationStatus(enum.Enum):
     """An enumeration of potential status values when a twin aspect is registered within the system"""
@@ -86,6 +87,7 @@ class TwinRead(BaseModel):
     dtr_aas_id: UUID = Field(alias="dtrAasId", description="The shell descriptor ID ('AAS ID') of the digital twin in the Digital Twin Registry.") 
     created_date: datetime = Field(alias="createdDate", description="The date when the digital twin was created.")
     modified_date: datetime = Field(alias="modifiedDate", description="The date when the digital twin was last modified.")
+    shares: Optional[List[DataExchangeAgreementRead]] = Field(description="A list of data exchange agreements the digital twin is shared via.", default=None)
 
 class TwinCreateBase(BaseModel):
     """Represents a digital twin to be created within the Digital Twin Registry."""
@@ -99,7 +101,6 @@ class TwinDetailsRead(TwinRead):
 
 class CatalogPartTwinRead(CatalogPartRead, TwinRead):
     """Represents a catalog part twin within the Digital Twin Registry."""
-    pass
 
 class CatalogPartTwinCreate(CatalogPartBase, TwinCreateBase):
     pass

@@ -89,8 +89,8 @@ async def partner_management_get_data_exchange_agreements(business_partner_numbe
     return partner_management_service.get_data_exchange_agreements(business_partner_number)
 
 @app.get("/twin-management/catalog-part-twin", response_model=List[CatalogPartTwinRead], tags=["Twin Management"])
-async def twin_management_get_catalog_part_twins() -> List[CatalogPartTwinRead]:
-    return twin_management_service.get_catalog_part_twins()
+async def twin_management_get_catalog_part_twins(include_data_exchange_agreements: bool = False) -> List[CatalogPartTwinRead]:
+    return twin_management_service.get_catalog_part_twins(include_data_exchange_agreements=include_data_exchange_agreements)
 
 @app.post("/twin-management/catalog-part-twin", response_model=TwinRead, tags=["Twin Management"])
 async def twin_management_create_catalog_part_twin(catalog_part_twin_create: CatalogPartTwinCreate) -> TwinRead:

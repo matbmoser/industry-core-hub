@@ -186,6 +186,32 @@ class TwinRepository(BaseRepository[Twin]):
         stmt = select(Twin).where(
             Twin.global_id == global_id)
         return self._session.scalars(stmt).first()
+    
+    def find_catalog_part_twins(self,
+            manufacturer_id: Optional[str] = None,
+            manufacturer_part_id: Optional[str] = None,
+            include_data_exchange_agreements: bool = False) -> List[Twin]:
+        
+        stmt = select(Twin).join(
+            CatalogPart, CatalogPart.twin_id == Twin.id).join(
+            LegalEntity, LegalEntity.id == CatalogPart.legal_entity_id
+        ).distinct()
+
+        if include_data_exchange_agreements:
+            subquery = select(TwinExchange).join(
+                DataExchangeAgreement, TwinExchange.data_exchange_agreement_id == DataExchangeAgreement.id
+            ).join(
+                BusinessPartner, BusinessPartner.id == DataExchangeAgreement.business_partner_id
+            ).subquery()
+            stmt = stmt.join(subquery, subquery.c.twin_id == Twin.id, isouter=True)
+
+        if manufacturer_id:
+            stmt = stmt.where(LegalEntity.bpnl == manufacturer_id)
+
+        if manufacturer_part_id:
+            stmt = stmt.where(CatalogPart.manufacturer_part_id == manufacturer_part_id)
+
+        return self._session.scalars(stmt).all()
 
 class TwinAspectRepository(BaseRepository[TwinAspect]):
     def get_by_twin_id_semantic_id(self, twin_id: int, semantic_id: str, include_registrations: bool = False) -> Optional[TwinAspect]:

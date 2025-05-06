@@ -29,6 +29,7 @@ from managers.metadata_database.manager import RepositoryManagerFactory
 from managers.enablement_services.dtr_manager import DTRManager
 from managers.enablement_services.edc_manager import EDCManager
 from managers.enablement_services.submodel_service_manager import SubmodelServiceManager
+from models.services.partner_management import BusinessPartnerRead, DataExchangeAgreementRead
 from models.services.twin_management import (
     CatalogPartTwinRead,
     CatalogPartTwinCreate,
@@ -125,8 +126,49 @@ class TwinManagementService:
                 modifiedDate=db_twin.modified_date
             )
 
-    def get_catalog_part_twins(self, manufacturer_id: Optional[str] = None, manufacturer_part_id: Optional[str] = None) -> List[CatalogPartTwinRead]:
-        pass
+    def get_catalog_part_twins(self,
+        manufacturer_id: Optional[str] = None,
+        manufacturer_part_id: Optional[str] = None,
+        include_data_exchange_agreements: bool = False) -> List[CatalogPartTwinRead]:
+        
+        with RepositoryManagerFactory.create() as repo:
+            db_twins = repo.twin_repository.find_catalog_part_twins(
+                manufacturer_id=manufacturer_id,
+                manufacturer_part_id=manufacturer_part_id,
+                include_data_exchange_agreements=include_data_exchange_agreements
+            )
+            
+            result = []
+            for db_twin in db_twins:
+                db_catalog_part = db_twin.catalog_part
+                twin_result = CatalogPartTwinRead(
+                    globalId=db_twin.global_id,
+                    dtrAasId=db_twin.aas_id,
+                    createdDate=db_twin.created_date,
+                    modifiedDate=db_twin.modified_date,
+                    manufacturerId=db_catalog_part.legal_entity.bpnl,
+                    manufacturerPartId=db_catalog_part.manufacturer_part_id,
+                    category=db_catalog_part.category,
+                    customerPartIds={partner_catalog_part.customer_part_id: BusinessPartnerRead(
+                        name=partner_catalog_part.business_partner.name,
+                        bpnl=partner_catalog_part.business_partner.bpnl
+                    ) for partner_catalog_part in db_catalog_part.partner_catalog_parts}
+                )
+                if include_data_exchange_agreements:
+                    twin_result.shares = [
+                        DataExchangeAgreementRead(
+                            name=db_twin_exchange.data_exchange_agreement.name,
+                            businessPartner=BusinessPartnerRead(
+                                name=db_twin_exchange.data_exchange_agreement.business_partner.name,
+                                bpnl=db_twin_exchange.data_exchange_agreement.business_partner.bpnl
+                            )
+                        ) for db_twin_exchange in db_twin.twin_exchanges
+                    ]
+
+
+                result.append(twin_result)
+            
+            return result
 
     def create_catalog_part_twin_share(self, catalog_part_share_input: CatalogPartTwinShare) -> bool:
         
