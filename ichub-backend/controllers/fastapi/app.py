@@ -22,13 +22,12 @@
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
 
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 from uuid import UUID
 
-from pydantic import BaseModel, Field
+from fastapi import FastAPI, HTTPException, Request
 
-from fastapi import FastAPI, HTTPException
-
+from services.submodel_dispatcher_service import SubmodelDispatcherService, SubmodelNotSharedWithBusinessPartnerError
 from services.part_management_service import PartManagementService
 from services.partner_management_service import PartnerManagementService
 from services.twin_management_service import TwinManagementService
@@ -60,6 +59,7 @@ app = FastAPI(title="Industry Core Hub Backend API", version="0.0.1", openapi_ta
 part_management_service = PartManagementService()
 partner_management_service = PartnerManagementService()
 twin_management_service = TwinManagementService()
+submodel_dispatcher_service = SubmodelDispatcherService()
 
 @app.get("/part-management/catalog-part/{manufacturer_id}/{manufacturer_part_id}", response_model=CatalogPartRead, tags=["Part Management"])
 async def part_management_get_catalog_part(manufacturer_id: str, manufacturer_part_id: str) -> Optional[CatalogPartRead]:
@@ -114,3 +114,16 @@ async def twin_management_share_catalog_part_twin(catalog_part_twin_share: Catal
 @app.post("/twin-management/twin-aspect", response_model=TwinAspectRead, tags=["Twin Management"])
 async def twin_management_create_twin_aspect(twin_aspect_create: TwinAspectCreate) -> TwinAspectRead:
     return twin_management_service.create_twin_aspect(twin_aspect_create)
+
+@app.get("/submodel-dispatcher/{semantic_id}/{global_id}", response_model=Dict[str, Any], tags=["Submodel Dispatcher"])
+async def submodel_dispatcher_get_submodel_content(semantic_id: str, global_id: UUID, request: Request) -> TwinAspectRead:
+    edc_bpn = request.headers.get("Edc-Bpn")
+    edc_contract_agreement_id = request.headers.get("Edc-Contract-Agreement-Id")
+
+    if not edc_bpn or not edc_contract_agreement_id:
+        raise HTTPException(status_code=400, detail="Missing required headers: Edc-Bpn and Edc-Contract-Agreement-Id")
+
+    try:
+        return submodel_dispatcher_service.get_submodel_content(edc_bpn, edc_contract_agreement_id, semantic_id, global_id)
+    except SubmodelNotSharedWithBusinessPartnerError as e:
+        raise HTTPException(status_code=403, detail=str(e)) from e
