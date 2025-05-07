@@ -39,7 +39,7 @@ from models.services.twin_management import TwinRead, TwinAspectRead, TwinAspect
 tags_metadata = [
     {
         "name": "Part Management",
-        "description": "Management of part metadata (independent of any Catena-X services) - including catalog parts, serialized parts, JIS parts and batches"
+        "description": "Management of part metadata - including catalog parts, serialized parts, JIS parts and batches"
     },
     {
         "name": "Partner Management",
