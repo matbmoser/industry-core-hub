@@ -181,10 +181,20 @@ class PartnerCatalogPartRepository(BaseRepository[PartnerCatalogPart]):
         return partner_catalog_part
 
 class EnablementServiceStackRepository(BaseRepository[EnablementServiceStack]):
-    def get_by_name(self, name: str) -> Optional[EnablementServiceStack]:
+    def get_by_name(self, name: str, join_legal_entity: bool = False) -> Optional[EnablementServiceStack]:
         stmt = select(EnablementServiceStack).where(
             EnablementServiceStack.name == name)  # type: ignore
+        
+        if join_legal_entity:
+            stmt = stmt.join(LegalEntity, LegalEntity.id == EnablementServiceStack.legal_entity_id)
+
         return self._session.scalars(stmt).first()
+    
+    def find_by_legal_entity_bpnl(self, legal_entity_bpnl: str) -> List[EnablementServiceStack]:
+        stmt = select(EnablementServiceStack).join(
+            LegalEntity, LegalEntity.id == EnablementServiceStack.legal_entity_id).where(
+            LegalEntity.bpnl == legal_entity_bpnl)
+        return self._session.scalars(stmt).all()
 
 class TwinRepository(BaseRepository[Twin]):
     def create_new(self, global_id: UUID = None, dtr_aas_id: UUID = None):

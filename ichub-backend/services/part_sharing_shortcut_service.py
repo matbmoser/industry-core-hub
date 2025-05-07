@@ -53,9 +53,10 @@ class PartSharingShortcutService:
 
             # Step 2: Retrieve the enablement service stack entity from the DB according to the given name
             # (if not there => create it with the default name)
-            db_enablement_service_stacks = repo.enablement_service_stack_repository.find_all()
+            db_enablement_service_stacks = repo.enablement_service_stack_repository.find_by_legal_entity_bpnl(create_input.manufacturer_id)
             if not db_enablement_service_stacks:
-                db_legal_entity = repo.legal_entity_repository.find_all()[0]
+                # Legal entity must exist because the catalog part is already there
+                db_legal_entity = repo.legal_entity_repository.get_by_bpnl(create_input.manufacturer_id)
                 
                 db_enablement_service_stack = repo.enablement_service_stack_repository.create(EnablementServiceStack(name = 'EDC/DTR Default', legal_entity_id=db_legal_entity.id))
                 repo.commit()

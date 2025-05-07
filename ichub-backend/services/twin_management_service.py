@@ -64,10 +64,15 @@ class TwinManagementService:
             # Step 2: Retrieve the enablement service stack entity from the DB according to the given name
             # (if not there => raise error)
             db_enablement_service_stack = repo.enablement_service_stack_repository.get_by_name(
-                enablement_service_stack_name
+                enablement_service_stack_name,
+                join_legal_entity=True
             )
             if not db_enablement_service_stack:
                 raise ValueError(f"Enablement service stack '{enablement_service_stack_name}' not found.")
+
+            # Step 2a: Enablement service stack consistency check
+            if db_enablement_service_stack.legal_entity.bpnl != create_input.manufacturer_id:
+                raise ValueError(f"Enablement service stack '{enablement_service_stack_name}' does not belong to the legal entity '{create_input.manufacturer_id}'.")
 
             # Step 3a: Load existing twin metadata from the DB (if there)
             if db_catalog_part.twin_id:
@@ -240,10 +245,15 @@ class TwinManagementService:
             # Step 2: Retrieve the enablement service stack entity from the DB according to the given name
             # (if not there => raise error)
             db_enablement_service_stack = repo.enablement_service_stack_repository.get_by_name(
-                enablement_service_stack_name
+                enablement_service_stack_name,
+                join_legal_entity=True
             )
             if not db_enablement_service_stack:
                 raise ValueError(f"Enablement service stack '{enablement_service_stack_name}' not found.")
+
+            # Step 2a: Enablement service stack consistency check
+            if db_enablement_service_stack.legal_entity.bpnl != db_twin.catalog_part.legal_entity.bpnl:
+                raise ValueError(f"Enablement service stack '{enablement_service_stack_name}' does not belong to the legal entity '{db_twin.catalog_part.legal_entity.bpnl}'.")
 
             # Step 3: Retrieve a potentially existing twin aspect entity for the given twin_id and semantic_id
             db_twin_aspect = repo.twin_aspect_repository.get_by_twin_id_semantic_id(
