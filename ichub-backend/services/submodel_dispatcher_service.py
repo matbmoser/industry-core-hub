@@ -62,7 +62,9 @@ class SubmodelDispatcherService:
             db_twin_exchange = repos.twin_exchange_repository.find_by_global_id_business_partner_number(
                 global_id, edc_bpn)
             
+            # We found no "share" for the part => raise an error
             if not db_twin_exchange:
                 raise SubmodelNotSharedWithBusinessPartnerError(f"Requested twin with global ID {global_id} not shared with business partner {edc_bpn}.")
             
+            # Call the submodel service manager to get the submodel content from the submodel service
             return self.submodel_service_manager.get_twin_aspect_document(global_id, semantic_id)

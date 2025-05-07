@@ -117,13 +117,18 @@ async def twin_management_create_twin_aspect(twin_aspect_create: TwinAspectCreat
 
 @app.get("/submodel-dispatcher/{semantic_id}/{global_id}", response_model=Dict[str, Any], tags=["Submodel Dispatcher"])
 async def submodel_dispatcher_get_submodel_content(semantic_id: str, global_id: UUID, request: Request) -> TwinAspectRead:
+    # Extract the headers we get from the EDC Data Plane
     edc_bpn = request.headers.get("Edc-Bpn")
     edc_contract_agreement_id = request.headers.get("Edc-Contract-Agreement-Id")
 
+    # ... and check if both are present
     if not edc_bpn or not edc_contract_agreement_id:
         raise HTTPException(status_code=400, detail="Missing required headers: Edc-Bpn and Edc-Contract-Agreement-Id")
 
+    # Get the submodel content (including the security check)
     try:
         return submodel_dispatcher_service.get_submodel_content(edc_bpn, edc_contract_agreement_id, semantic_id, global_id)
+    
+    # If the requestor has no access to the twin return a respective 403
     except SubmodelNotSharedWithBusinessPartnerError as e:
         raise HTTPException(status_code=403, detail=str(e)) from e
