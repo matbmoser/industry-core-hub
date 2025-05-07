@@ -47,7 +47,7 @@ tags_metadata = [
     },
     {
         "name": "Twin Management",
-        "description": "Management of how product information can be managed and shared within Catena-X systems"
+        "description": "Management of how product information can be managed and shared"
     },
     {
         "name": "Submodel Dispatcher",
