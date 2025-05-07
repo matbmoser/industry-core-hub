@@ -28,3 +28,9 @@ authorization:
 database:
   connectionString: "postgresql://user:$DATABASE_PASSWORD@localhost:5432/mydatabase"
   echo: true
+digitalTwinRegistry:
+  hostname: https://dataprovider-dtr.tx.test
+  apiPath: /api/v3
+  uri: /semantics/registry
+  lookup:
+    uri: /semantics/registry

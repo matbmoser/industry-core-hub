@@ -25,6 +25,7 @@
 from typing import Optional, Dict, Any, List
 from uuid import UUID
 
+from config.config_manager import ConfigManager
 from managers.metadata_database.manager import RepositoryManagerFactory
 from managers.enablement_services.dtr_manager import DTRManager
 from managers.enablement_services.edc_manager import EDCManager
@@ -406,8 +407,17 @@ def _create_dtr_manager(connection_settings: Optional[Dict[str, Any]]) -> DTRMan
     Create a new instance of the DTRManager class.
     """
     # TODO: later we can configure the manager via the connection settings from the DB here
+    # For now we take the values from the config file
+    dtr_hostname = ConfigManager.get_config('digitalTwinRegistry.hostname')
+    dtr_uri = ConfigManager.get_config('digitalTwinRegistry.uri')
+    dtr_lookup_uri = ConfigManager.get_config('digitalTwinRegistry.lookupUri')
+    dtr_api_path = ConfigManager.get_config('digitalTwinRegistry.apiPath')
+    dtr_url = f"{dtr_hostname}{dtr_uri}"
+    dtr_lookup_url = f"{dtr_hostname}{dtr_lookup_uri}"
 
-    return DTRManager()
+    return DTRManager(
+        dtr_url=dtr_url, dtr_lookup_url=dtr_lookup_url,
+        api_path=str(dtr_api_path))
 
 def _create_edc_manager(connection_settings: Optional[Dict[str, Any]]) -> EDCManager:
     """

@@ -20,30 +20,106 @@
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
 
+from tractusx_sdk.industry.services import AasService
+from tractusx_sdk.industry.models.aas.v3 import (
+    ShellDescriptor,
+    SpecificAssetId,
+    Reference,
+    ReferenceTypes,
+    ReferenceKeyTypes,
+    ReferenceKey,
+    Result,
+)
+
 from typing import Dict
 from uuid import UUID
 
 class DTRManager:
-    
-    def __init__(self, dtr_url: str = 'http://localhost:8443', dtr_username: str = 'username', dtr_password: str = 'password'):
+    def __init__(
+        self,
+        dtr_url: str,
+        dtr_lookup_url: str,
+        api_path: str,
+    ):
         self.dtr_url = dtr_url
-        self.dtr_username = dtr_username
-        self.dtr_password = dtr_password
-        self.dtr_client = None
-
+        self.dtr_lookup_url = dtr_lookup_url
+        self.aas_service = AasService(
+            base_url=dtr_url,
+            base_lookup_url=dtr_lookup_url,
+            api_path=api_path,
+            verify_ssl=False,
+        )
 
     def create_shell_descriptor(self, aas_id: UUID, global_id: UUID, manufacturer_id: str, manufacturer_part_id: str,
                       customer_part_ids: Dict[str, str], part_category: str):
         """
         Registers a twin in the DTR.
         """
-        print("===============================")
-        print("==== Digital Twin Registry ====")
-        print("===============================")
-        print(f"Registering twin with global_id={global_id}, aas_id={aas_id}, "
-              f"manufacturer_id={manufacturer_id}, manufacturer_part_id={manufacturer_part_id}, "
-              f"customer_part_ids={customer_part_ids}, part_category={part_category}")
-        print()
+        specific_asset_ids = []
+        for customer_part_id, bpn in customer_part_ids.items():
+            specific_customer_part_asset_id = SpecificAssetId(
+                name="customerPartId",
+                value=customer_part_id,
+                externalSubjectId=Reference(
+                    type=ReferenceTypes.EXTERNAL_REFERENCE,
+                    keys=[
+                        ReferenceKey(
+                            type=ReferenceKeyTypes.GLOBAL_REFERENCE, value=bpn
+                        ),
+                    ],
+                ),
+            )  # type: ignore
+            specific_asset_ids.append(specific_customer_part_asset_id)
+
+        specific_manufacturer_asset_id = SpecificAssetId(
+            name="manufacturerId",
+            value=manufacturer_id,
+            externalSubjectId=Reference(
+                type=ReferenceTypes.EXTERNAL_REFERENCE,
+                keys=[
+                    ReferenceKey(type=ReferenceKeyTypes.GLOBAL_REFERENCE, value=bpn)
+                    for bpn in customer_part_ids.values()
+                ],
+            ),
+        )  # type: ignore
+        specific_asset_ids.append(specific_manufacturer_asset_id)
+
+        digital_twin_asset_id = SpecificAssetId(
+            name="digitalTwinType",
+            value="PartType",
+            externalSubjectId=Reference(
+                type=ReferenceTypes.EXTERNAL_REFERENCE,
+                keys=[
+                    ReferenceKey(type=ReferenceKeyTypes.GLOBAL_REFERENCE, value=bpn)
+                    for bpn in customer_part_ids.values()
+                ],
+            ),
+        )  # type: ignore
+        specific_asset_ids.append(digital_twin_asset_id)
+
+        specific_manufacturer_part_asset_id = SpecificAssetId(
+            name="manufacturerPartId",
+            value=manufacturer_part_id,
+            externalSubjectId=Reference(
+                type=ReferenceTypes.EXTERNAL_REFERENCE,
+                keys=[
+                    ReferenceKey(
+                        type=ReferenceKeyTypes.GLOBAL_REFERENCE, value="PUBLIC_READABLE"
+                    ),
+                ],
+            ),
+        )  # type: ignore
+        specific_asset_ids.append(specific_manufacturer_part_asset_id)
+
+        shell = ShellDescriptor(
+            id=str(aas_id),
+            globalAssetId=str(global_id),
+            specificAssetIds=specific_asset_ids,
+        )  # type: ignore
+
+        res = self.aas_service.create_asset_administration_shell_descriptor(shell)
+        if isinstance(res, Result):
+            raise Exception("Error creating shell descriptor", res)
 
     def create_submodel_descriptor(self, aas_id: UUID, submodel_id: UUID, semantic_id: str):
         """
