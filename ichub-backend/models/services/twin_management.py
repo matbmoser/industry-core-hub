@@ -25,10 +25,11 @@
 from datetime import datetime
 import enum
 from uuid import UUID
-from typing import Dict, Optional, Any
+from typing import Dict, Optional, List, Any
 from pydantic import BaseModel, Field
 
-from models.services.part_management import CatalogPartCreate, BatchCreate, SerializedPartCreate, JISPartCreate
+from models.services.part_management import CatalogPartBase, CatalogPartRead, BatchCreate, SerializedPartCreate, JISPartCreate
+from models.services.partner_management import DataExchangeAgreementRead
 
 class TwinAspectRegistrationStatus(enum.Enum):
     """An enumeration of potential status values when a twin aspect is registered within the system"""
@@ -73,32 +74,43 @@ class TwinAspectRead(BaseModel):
     registrations: Optional[Dict[str, TwinAspectRegistration]] = Field(description="A map of registration information for the aspect in different enablement service stacks. The key is the name of the enablement service stack.", default={})
 
 class TwinAspectCreate(BaseModel):
-    catenax_id: UUID = Field(alias="catenaXId", description="The Catena-X ID / global ID of the digital twin to which the new aspect belongs.")
+    global_id: UUID = Field(alias="globalId", description="The Catena-X ID / global ID of the digital twin to which the new aspect belongs.")
     semantic_id: str = Field(alias="semanticId", description="The semantic ID of the new aspect determining the structure of the associated payload data.")
-    submodel_id: Optional[UUID] = Field(alias="submodelId", description="The optional ID of the submodel descriptor within the DTR shell descriptor for the associated twin. If not specified, a new UUID will be created automatically.") 
-    enablement_service_stack_name: str = Field(alias="enablementServiceStackName", description="The name of the enablement service stack where the twin aspect should be registered.")
+    submodel_id: Optional[UUID] = Field(alias="submodelId", description="The optional ID of the submodel descriptor within the DTR shell descriptor for the associated twin. If not specified, a new UUID will be created automatically.", default=None) 
+    #enablement_service_stack_name: str = Field(alias="enablementServiceStackName", description="The name of the enablement service stack where the twin aspect should be registered.")
     payload: Dict[str, Any] = Field(description="The payload data of the new aspect. This is a JSON object that contains the actual data of the aspect. The structure of this object is determined by the semantic ID of the aspect.")
 
 class TwinRead(BaseModel):
     """Represents a digital twin within the Digital Twin Registry."""
 
-    catenax_id: UUID = Field(alias="catenaXId", description="The Catena-X ID / global ID of the digital twin.")
+    global_id: UUID = Field(alias="globalId", description="The Catena-X ID / global ID of the digital twin.")
     dtr_aas_id: UUID = Field(alias="dtrAasId", description="The shell descriptor ID ('AAS ID') of the digital twin in the Digital Twin Registry.") 
     created_date: datetime = Field(alias="createdDate", description="The date when the digital twin was created.")
     modified_date: datetime = Field(alias="modifiedDate", description="The date when the digital twin was last modified.")
+    shares: Optional[List[DataExchangeAgreementRead]] = Field(description="A list of data exchange agreements the digital twin is shared via.", default=None)
 
 class TwinCreateBase(BaseModel):
     """Represents a digital twin to be created within the Digital Twin Registry."""
 
-    catenax_id: Optional[UUID] = Field(alias="catenaXId", description="Optionally the Catena-X ID / global ID of the digital twin to create. If not specified, a new UUID will be created automatically.", default=None)
+    global_id: Optional[UUID] = Field(alias="globalId", description="Optionally the Catena-X ID / global ID of the digital twin to create. If not specified, a new UUID will be created automatically.", default=None)
     dtr_aas_id: Optional[UUID] = Field(alias="dtrAasId", description="Optionally the shell descriptor ID ('AAS ID') of the digital twin in the Digital Twin Registry. If not specified, a new UUID will be created automatically.", default=None)
 
-class TwinDetailsRead(TwinRead):
-    additional_context: Optional[Dict[str, Any]] = Field(alias="additionalContext", description="Additional context information about the digital twin. This can include various metadata or properties associated with the twin. Intended for handling twins by third party apps.")
-    aspects: Optional[Dict[str, TwinAspectRead]] = Field(description="A map of aspect information for the digital twin. The key is the semantic ID of the aspect. The value is a TwinAspectRead object containing details about the aspect.", default={})
+class TwinDetailsReadBase(BaseModel):
+    additional_context: Optional[Dict[str, Any]] = Field(alias="additionalContext", description="Additional context information about the digital twin. This can include various metadata or properties associated with the twin. Intended for handling twins by third party apps.", default=None)
+    registrations: Optional[Dict[str, bool]] = Field(description="A map of registration information for the digital twin in different enablement service stacks. The key is the name of the enablement service stack.", default=None)
+    aspects: Optional[Dict[str, TwinAspectRead]] = Field(description="A map of aspect information for the digital twin. The key is the semantic ID of the aspect. The value is a TwinAspectRead object containing details about the aspect.", default=None)
 
-class CatalogPartTwinCreate(CatalogPartCreate, TwinCreateBase):
+class CatalogPartTwinRead(CatalogPartRead, TwinRead):
+    """Represents a catalog part twin within the Digital Twin Registry."""
+
+class CatalogPartTwinCreate(CatalogPartBase, TwinCreateBase):
     pass
+
+class CatalogPartTwinDetailsRead(CatalogPartTwinRead, TwinDetailsReadBase):
+    """Represents the details of a catalog part twin within the Digital Twin Registry."""
+
+class CatalogPartTwinShare(CatalogPartBase):
+    business_partner_number: str = Field(alias="businessPartnerNumber", description="The business partner number of the business partner with which the catalog part is shared.")
 
 class BatchTwinCreate(BatchCreate, TwinCreateBase):
     pass

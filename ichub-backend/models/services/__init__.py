@@ -44,7 +44,7 @@ from .part_management import (
 )
 
 from .partner_management import (
-    BusinessPartner,
+    BusinessPartnerRead,
     DataExchangeContractRead,
     DataExchangeContractCreate,
     DataExchangeAgreementCreate,
@@ -59,8 +59,8 @@ from .twin_management import (
     TwinAspectCreate,
     TwinRead,
     TwinCreateBase,
-    TwinDetailsRead,
     CatalogPartTwinCreate,
+    CatalogPartTwinDetailsRead,
     BatchTwinCreate,
     JISPartTwinCreate,
     SerializedPartTwinCreate

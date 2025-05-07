@@ -20,10 +20,23 @@
  * SPDX-License-Identifier: Apache-2.0
 ********************************************************************************/
 
-import { PartInstance } from "./product";
+import { useState } from 'react';
 
-export interface JsonViewerDialogProps {
-    open: boolean;
-    onClose: () => void;
-    carJsonData: PartInstance;  // Use PartInstance interface here
+// Type for the hook's return value
+type Drawer = {
+  isOpen: boolean;
+  openDrawer: () => void;
+  closeDrawer: () => void;
+  toggleDrawer: () => void;
+};
+
+// The custom hook with TypeScript typing
+export function Drawer(initialState: boolean = false): Drawer {
+  const [isOpen, setIsOpen] = useState<boolean>(initialState);
+
+  const openDrawer = () => setIsOpen(true);
+  const closeDrawer = () => setIsOpen(false);
+  const toggleDrawer = () => setIsOpen(prev => !prev);
+
+  return { isOpen, openDrawer, closeDrawer, toggleDrawer };
 }

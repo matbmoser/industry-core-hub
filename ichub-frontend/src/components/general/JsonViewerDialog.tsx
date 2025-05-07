@@ -21,17 +21,23 @@
 ********************************************************************************/
 
 import { useState } from 'react';
-import { Button, Dialog, DialogHeader, DialogContent, Icon } from '@catena-x/portal-shared-components';
+import { Button, Icon } from '@catena-x/portal-shared-components';
 
-import { JsonViewerDialogProps } from '../../types/jsonViewer';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
-const JsonViewerDialog = ({ open, onClose, carJsonData }: JsonViewerDialogProps) => {
+import { ProductDetailDialogProps } from '../../types/dialogViewer';
+
+const JsonViewerDialog = ({ open, onClose, partData }: ProductDetailDialogProps) => {
     const [copied, setCopied] = useState(false);
-    const title = carJsonData?.name ? `${carJsonData.name} JSON data` : "DCM JSON Data";
-    const description = carJsonData?.description ? `${carJsonData.description}` : "";
+    const title = partData?.name ? `${partData.name} JSON data` : "DCM JSON Data";
 
     const handleCopy = () => {
-        const json_string = JSON.stringify(carJsonData, null, 2);
+        const json_string = JSON.stringify(partData, null, 2);
         navigator.clipboard.writeText(json_string)
           .then(() => {
             setCopied(true);
@@ -43,25 +49,41 @@ const JsonViewerDialog = ({ open, onClose, carJsonData }: JsonViewerDialogProps)
       };
 
     return (
-        <Dialog open={open} maxWidth="xl">
-            <DialogHeader intro={description} title={title} />
-            <DialogContent>
-                <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', background: '#f4f4f4', padding: '0 10px', borderRadius: '5px', textAlign: 'right' }}>
-                    <span className='mr-3'>{copied ? "JSON copied ✅" : ""}</span>
-                    <Button variant="text" onClick={handleCopy} size='small'>
-                        <Icon fontSize="16" iconName="ContentCopy" />
-                    </Button>
-                </pre>
-                <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', background: '#f4f4f4', padding: '0 10px 5px 10px', borderRadius: '5px' }}>
-                    {JSON.stringify(carJsonData, null, 2)}
+        <Dialog open={open} maxWidth="xl" className='custom-dialog'>
+            <DialogTitle sx={{ m: 0, p: 2 }}>
+                {title}
+            </DialogTitle>
+            <IconButton
+                aria-label="close"
+                onClick={onClose}
+                sx={(theme) => ({
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: theme.palette.grey[500],
+                })}
+                >
+                <CloseIcon />
+            </IconButton>
+            <DialogContent dividers>
+                <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', background: '#f4f4f4', padding: '0 10px 5px 10px', borderRadius: '5px', textAlign: 'right' }}>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginBottom: '4px' }}>
+                        <span className='mr-3'>{copied ? 'JSON copied ✅' : ''}</span>
+                        <Button variant="text" onClick={handleCopy} size='small' className='copy-button'>
+                            <Icon fontSize="16" iconName="ContentCopy" />
+                        </Button>
+                    </div>
+                    <code style={{ textAlign: 'left', display: 'block' }}>
+                        {JSON.stringify(partData, null, 2)}
+                    </code>
                 </pre>
             </DialogContent>
-            <div className="mx-auto my-4 text-center">
-                <Button variant="outlined" onClick={onClose} size='small'>
-                    <Icon fontSize="16" iconName="Close" />
-                    Close
+            <DialogActions>
+                <Button className="close-button" variant="outlined" size="small" onClick={onClose}>
+                <Icon fontSize="16" iconName="Close" />
+                    <span className="close-button-content">CLOSE</span>
                 </Button>
-            </div>
+            </DialogActions>
         </Dialog>
     )
 }

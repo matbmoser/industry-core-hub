@@ -30,6 +30,7 @@ pypi/pypi/-/markdown-it-py/3.0.0, MIT, approved, clearlydefined
 pypi/pypi/-/mdurl/0.1.2, MIT, approved, clearlydefined
 pypi/pypi/-/packaging/24.1, Apache-2.0 AND BSD-3-Clause, approved, clearlydefined
 pypi/pypi/-/pluggy/1.5.0, MIT, approved, clearlydefined
+pypi/pypi/-/psycopg2-binary/2.9.10, , approved, #20738
 pypi/pypi/-/pycparser/2.22, LGPL-2.0-or-later AND BSD-3-Clause, approved, #14636
 pypi/pypi/-/pydantic/2.6.3, MIT, approved, #13069
 pypi/pypi/-/pydantic_core/2.16.3, MIT, approved, clearlydefined
@@ -39,6 +40,7 @@ pypi/pypi/-/pytest/8.1.1, MIT, approved, #19365
 pypi/pypi/-/python-dotenv/1.0.1, BSD-2-Clause AND BSD-3-Clause, approved, clearlydefined
 pypi/pypi/-/python-keycloak/4.0.1, MIT, approved, clearlydefined
 pypi/pypi/-/python-multipart/0.0.20, Apache-2.0, approved, clearlydefined
+pypi/pypi/-/requests-mock/1.12.1, Apache-2.0, approved, clearlydefined
 pypi/pypi/-/requests-toolbelt/1.0.0, Apache-2.0, approved, #15024
 pypi/pypi/-/requests/2.32.3, Apache-2.0 AND MIT AND Apache-2.0, approved, #14884
 pypi/pypi/-/rfc3986/1.5.0, Apache-2.0, approved, #19390
@@ -49,7 +51,7 @@ pypi/pypi/-/sniffio/1.3.1, Apache-2.0 OR (Apache-2.0 AND MIT), approved, clearly
 pypi/pypi/-/sqlmodel/0.0.22, MIT, approved, clearlydefined
 pypi/pypi/-/starlette/0.40.0, BSD-2-Clause AND BSD-3-Clause, approved, clearlydefined
 pypi/pypi/-/tomli/2.0.1, MIT, approved, #7824
-pypi/pypi/-/tractusx_sdk/0.0.2, Apache-2.0 AND CC-BY-4.0, approved, #20505
+pypi/pypi/-/tractusx_sdk/0.0.3, Apache-2.0 AND CC-BY-4.0, approved, #20505
 pypi/pypi/-/typer/0.15.1, MIT, approved, clearlydefined
 pypi/pypi/-/typing_extensions/4.12.2, Python-2.0, approved, #19383
 pypi/pypi/-/urllib3/2.3.0, MIT AND Python-2.0 AND MPL-2.0, approved, #19863

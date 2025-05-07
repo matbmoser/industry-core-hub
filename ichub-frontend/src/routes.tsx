@@ -22,7 +22,7 @@
 
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import MainLayout from "./layout/MainLayout";
+import MainLayout from "./layouts/MainLayout";
 import ProductsList from './pages/ProductsList';
 import ProductsDetails from './pages/ProductsDetails';
 

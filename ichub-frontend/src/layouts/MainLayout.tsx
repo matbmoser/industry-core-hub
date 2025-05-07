@@ -21,23 +21,24 @@
 ********************************************************************************/
 
 import { Outlet } from "react-router-dom";
-import { Grid2 } from '@mui/material';
-
+import Grid2 from '@mui/material/Grid2';
 import Header from '../components/general/Header';
 import Sidebar from '../components/general/Sidebar';
 
 function MainLayout() {
   return (
-    <Grid2 container className="contentWrapper">
-      <Grid2 size={12} className="headerArea">
+    <Grid2 container direction="column" className="contentWrapper">
+      <Grid2 size={{md:12, xs: 12}}>
         <Header/>
       </Grid2>
-      <Grid2 size={{xl: 2, lg: 4, md: 5, sm: 12, xs: 12}} className="sidebarArea">
+      <Grid2 container className="pageWrapper" spacing={0}>
+        <Grid2  className="sidebarArea">
           <Sidebar />
         </Grid2>
-        <Grid2 size={{xl: 10, lg: 8, md: 7, sm: 12, xs: 12}} className="contentArea">
+        <Grid2 size={{md:11, xs: 12}} className="contentArea flex flex-content-center" >
           <Outlet />
         </Grid2>
+      </Grid2>
     </Grid2>
   );
 };

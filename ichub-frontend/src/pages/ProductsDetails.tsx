@@ -26,29 +26,39 @@ import carPartsData from "../tests/payloads/sample-data.json";
 import { StatusTag, Button, Icon } from '@catena-x/portal-shared-components';
 import { PRODUCT_STATUS } from "../types/common";
 import JsonViewerDialog from "../components/general/JsonViewerDialog";
-import { Grid2 } from '@mui/material';
-import InstanceProductsTable from "../components/product-detail/InstanceProductsTable";
+import Grid2 from '@mui/material/Grid2';
+import InstanceProductsTable from "../Features/CatalogManagement/components/product-detail/InstanceProductsTable";
 import PageNotification from "../components/general/PageNotification";
-import ShareDropdown from "../components/product-detail/ShareDropdown";
-import ProductButton from "../components/product-detail/ProductButton";
-import ProductData from "../components/product-detail/ProductData";
+import ShareDropdown from "../Features/CatalogManagement/components/product-detail/ShareDropdown";
+import ProductButton from "../Features/CatalogManagement/components/product-detail/ProductButton";
+import ProductData from "../Features/CatalogManagement/components/product-detail/ProductData";
+import ShareDialog from "../components/general/ShareDialog";
 
 const ProductsDetails = () => {
   const { id } = useParams<{ id: string }>();
   const part = carPartsData.find((part) => part.uuid === id);
-  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [jsonDialogOpen, setJsonDialogOpen] = React.useState(false);
+  const [shareDialogOpen, setShareDialogOpen] = React.useState(false);
   const [notification, setNotification] = React.useState<{ open: boolean; severity: "success" | "error"; title: string } | null>(null);
 
   if (!part) {
     return <div>Product not found</div>;
   }
 
-  const handleOpenDialog = () => {
-    setDialogOpen(true);
+  const handleOpenJsonDialog = () => {
+    setJsonDialogOpen(true);
   };
 
-  const handleCloseDialog = () => {
-    setDialogOpen(false);
+  const handleCloseJsonDialog = () => {
+    setJsonDialogOpen(false);
+  };
+
+  const handleOpenShareDialog = () => {
+    setShareDialogOpen(true);
+  };
+
+  const handleCloseShareDialog = () => {
+    setShareDialogOpen(false);
   };
 
   const handleCopy = () => {
@@ -85,60 +95,40 @@ const ProductsDetails = () => {
     URL.revokeObjectURL(url);
   };
 
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: part.name,
-          text: `Check out this part: ${part.name} (UUID: ${part.uuid})`,
-          url: window.location.href
-        });
-      } catch (error) {
-        console.error("Error sharing:", error);
-      }
-    } else {
-      console.log("Web Share API not supported.");
-    }
-  };
-
 
   const getStatusTag = (status: string) => {
     switch (status.toLowerCase()) {
       case PRODUCT_STATUS.REGISTERED:
         return <StatusTag color="confirmed" label="Registered" variant="outlined" />;
       case PRODUCT_STATUS.DRAFT:
-        return <StatusTag color="label" label="Draft" variant="outlined" />;
+        return <StatusTag color="info" label="Draft" variant="outline" />;
       case PRODUCT_STATUS.SHARED:
-        return <StatusTag color="pending" label="Shared" variant="filled" />;
+        return <StatusTag color="warning" label="Shared" variant="filled" />;
       default:
         return null;
     }
   };
 
   return (
-    <>      
-      <PageNotification notification={notification} />
-      
       <Grid2 container direction="column" className="productDetail">
-        <Grid2 container spacing={2} className="mb-5">
-          <Grid2 size={{lg: 4, md: 6, sm: 6}} display="flex" justifyContent="start">
+        <Grid2 container spacing={2} className="mb-5" justifyContent={{ md: "space-between", sm: "center" }} alignItems="center" direction={{ sm: "column", md: "row" }}>
+          <PageNotification notification={notification} />
+          <Grid2 size={{ md: 3, sm: 12 }} display="flex" justifyContent="center">
             {getStatusTag(part.status)}
           </Grid2>
-          <Grid2 size={{lg: 4, md: 6, sm: 6}} display="flex" justifyContent={{ lg: "center", md: "end", sm: "end" }}>
-            <Button size="small" onClick={() => console.log("DCM v2.0 button")} className="update-button" endIcon={<Icon fontSize="16" iconName="Edit" />}>            
-                <span className="update-button-content">UPDATE</span>            
+          <Grid2 size={{ md: 3, sm: 12 }} display="flex" justifyContent="center">
+            <Button size="small" onClick={() => console.log("DCM v2.0 button")} className="update-button" endIcon={<Icon fontSize="16" iconName="Edit" />}>
+              <span className="update-button-content">UPDATE</span>
             </Button>
           </Grid2>
-          <Grid2 size={{lg: 4, md: 12, sm: 12}} display="flex" justifyContent="end">
-            <ShareDropdown handleCopy={handleCopy} handleDownload={handleDownload} handleShare={handleShare} />
+          <Grid2 size={{ md: 3, sm: 12 }} display="flex" justifyContent="center">
+            <ShareDropdown handleCopy={handleCopy} handleDownload={handleDownload} handleShare={handleOpenShareDialog} />
           </Grid2>
         </Grid2>
-
         <ProductData part={part} />
-
         <Grid2 container spacing={2} direction="column" className="add-on-buttons">
-          
-          <ProductButton gridSize={{ sm: 12 }} buttonText="DIGITAL PRODUCT PASSPORT v5.0.0" onClick={handleOpenDialog} />
+
+          <ProductButton gridSize={{ sm: 12 }} buttonText="DIGITAL PRODUCT PASSPORT v5.0.0" onClick={handleOpenJsonDialog} />
 
           <Grid2 container spacing={2} justifyContent="center">
             <ProductButton gridSize={{ lg: 4, md: 12, sm: 12 }} buttonText="PCF v3.0.0" onClick={() => console.log("PCF v2.0 button")} />
@@ -153,14 +143,10 @@ const ProductsDetails = () => {
           </Grid2>
 
         </Grid2>
-
-        <Grid2 size={12} className='product-table-wrapper'>
-          <InstanceProductsTable />
-        </Grid2>
-
-        <JsonViewerDialog open={dialogOpen} onClose={handleCloseDialog} carJsonData={part}/>
+        <JsonViewerDialog open={jsonDialogOpen} onClose={handleCloseJsonDialog} partData={part} />
+        <ShareDialog open={shareDialogOpen} onClose={handleCloseShareDialog} partData={part} />
+        <InstanceProductsTable />
       </Grid2>
-    </>
   );
 }
 
