@@ -28,6 +28,7 @@ from uuid import UUID
 from pydantic import BaseModel, Field
 
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import JSONResponse
 
 from services.part_management_service import PartManagementService
 from services.partner_management_service import PartnerManagementService
@@ -40,7 +41,7 @@ from models.services.twin_management import TwinRead, TwinAspectRead, TwinAspect
 tags_metadata = [
     {
         "name": "Part Management",
-        "description": "Management of part metadata (independent of any Catena-X services) - including catalog parts, serialized parts, JIS parts and batches"
+        "description": "Management of part metadata - including catalog parts, serialized parts, JIS parts and batches"
     },
     {
         "name": "Partner Management",
@@ -48,7 +49,7 @@ tags_metadata = [
     },
     {
         "name": "Twin Management",
-        "description": "Management of how product information can be managed and shared within Catena-X systems"
+        "description": "Management of how product information can be managed and shared"
     },
     {
         "name": "Submodel Dispatcher",
@@ -109,9 +110,9 @@ async def twin_management_create_catalog_part_twin(catalog_part_twin_create: Cat
 }, tags=["Twin Management"])
 async def twin_management_share_catalog_part_twin(catalog_part_twin_share: CatalogPartTwinShare):
     if twin_management_service.create_catalog_part_twin_share(catalog_part_twin_share):
-        raise HTTPException(status_code=201, detail="Catalog part twin shared successfully")    
+        return JSONResponse(status_code=201, content={"description":"Catalog part twin shared successfully"})
     else:
-        raise HTTPException(status_code=204, detail="Catalog part twin already shared")
+        return JSONResponse(status_code=204, content={"description":"Catalog part twin already shared"})
 
 @app.post("/twin-management/twin-aspect", response_model=TwinAspectRead, tags=["Twin Management"])
 async def twin_management_create_twin_aspect(twin_aspect_create: TwinAspectCreate) -> TwinAspectRead:
