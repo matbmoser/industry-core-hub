@@ -28,6 +28,7 @@ from uuid import UUID
 from pydantic import BaseModel, Field
 
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import JSONResponse
 
 from services.part_management_service import PartManagementService
 from services.partner_management_service import PartnerManagementService
