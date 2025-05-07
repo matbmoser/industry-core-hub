@@ -44,7 +44,7 @@ const ShareDialog = ({ open, onClose, partData }: ProductDetailDialogProps) => {
   const [error, setError] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
 
-  const handleBpnlChange = (event: any, value: string | null) => {
+  const handleBpnlChange = (_event: any, value: string | null) => {
     setBpnl(value ??'');
     setError(false);
     setSuccessMessage('');
