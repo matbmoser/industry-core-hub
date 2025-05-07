@@ -33,8 +33,14 @@ class RepositoryManager:
         self._business_partner_repository = None
         self._catalog_part_repository = None
         self._data_exchange_agreement_repository = None
+        self._enablement_service_stack_repository = None
         self._legal_entity_repository = None
         self._partner_catalog_part_repository = None
+        self._twin_repository = None
+        self._twin_aspect_repository = None
+        self._twin_aspect_registration_repository = None
+        self._twin_exchange_repository = None
+        self._twin_registration_repository = None
 
     # Context Manager Methods
     def __enter__(self):
@@ -94,6 +100,14 @@ class RepositoryManager:
         return self._data_exchange_agreement_repository
 
     @property
+    def enablement_service_stack_repository(self):
+        """Lazy initialization of the enablement service stack repository."""
+        if self._enablement_service_stack_repository is None:
+            from managers.metadata_database.repositories import EnablementServiceStackRepository
+            self._enablement_service_stack_repository = EnablementServiceStackRepository(self._session)
+        return self._enablement_service_stack_repository
+
+    @property
     def legal_entity_repository(self):
         """Lazy initialization of the legal entity repository."""
         if self._legal_entity_repository is None:
@@ -109,6 +123,45 @@ class RepositoryManager:
             self._partner_catalog_part_repository = PartnerCatalogPartRepository(self._session)
         return self._partner_catalog_part_repository
     
+    @property
+    def twin_repository(self):
+        """Lazy initialization of the twin repository."""
+        if self._twin_repository is None:
+            from managers.metadata_database.repositories import TwinRepository
+            self._twin_repository = TwinRepository(self._session)
+        return self._twin_repository
+
+    @property
+    def twin_aspect_repository(self):
+        """Lazy initialization of the twin aspect repository."""
+        if self._twin_aspect_repository is None:
+            from managers.metadata_database.repositories import TwinAspectRepository
+            self._twin_aspect_repository = TwinAspectRepository(self._session)
+        return self._twin_aspect_repository
+    
+    @property
+    def twin_aspect_registration_repository(self):
+        """Lazy initialization of the twin aspect registration repository."""
+        if self._twin_aspect_registration_repository is None:
+            from managers.metadata_database.repositories import TwinAspectRegistrationRepository
+            self._twin_aspect_registration_repository = TwinAspectRegistrationRepository(self._session)
+        return self._twin_aspect_registration_repository
+
+    @property
+    def twin_exchange_repository(self):
+        """Lazy initialization of the twin exchange repository."""
+        if self._twin_exchange_repository is None:
+            from managers.metadata_database.repositories import TwinExchangeRepository
+            self._twin_exchange_repository = TwinExchangeRepository(self._session)
+        return self._twin_exchange_repository
+
+    @property
+    def twin_registration_repository(self):
+        """Lazy initialization of the twin registration repository."""
+        if self._twin_registration_repository is None:
+            from managers.metadata_database.repositories import TwinRegistrationRepository
+            self._twin_registration_repository = TwinRegistrationRepository(self._session)
+        return self._twin_registration_repository
 
 class RepositoryManagerFactory:
     """Factory class for creating repository managers."""

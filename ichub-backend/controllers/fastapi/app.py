@@ -23,26 +23,36 @@
 #################################################################################
 
 from typing import List, Optional
+from uuid import UUID
 
-from fastapi import FastAPI
+from pydantic import BaseModel, Field
+
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import JSONResponse
 
 from services.part_management_service import PartManagementService
 from services.partner_management_service import PartnerManagementService
-from models.services.part_management import CatalogPartRead, PartnerCatalogPartBase, CatalogPartCreate
-from models.services.partner_management import BusinessPartnerRead, BusinessPartnerCreate, BusinessPartnerCreateInput, DataExchangeAgreementRead
+from services.twin_management_service import TwinManagementService
+from models.services.part_management import CatalogPartBase, CatalogPartRead, CatalogPartCreate
+from models.services.partner_management import BusinessPartnerRead, BusinessPartnerCreate, DataExchangeAgreementRead
+from models.services.twin_management import TwinRead, TwinAspectRead, TwinAspectCreate, CatalogPartTwinRead, CatalogPartTwinDetailsRead, CatalogPartTwinCreate, CatalogPartTwinShare
 
 tags_metadata = [
     {
         "name": "Part Management",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed ..."
+        "description": "Management of part metadata - including catalog parts, serialized parts, JIS parts and batches"
     },
     {
         "name": "Partner Management",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed ..."
+        "description": "Management of master data around business partners - including business partners, data exchange agreements and contracts"
     },
     {
         "name": "Twin Management",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed ..."
+        "description": "Management of how product information can be managed and shared"
+    },
+    {
+        "name": "Submodel Dispatcher",
+        "description": "Internal API called by EDC Data Planes in order the deliver data of of the internall used Submodel Service"
     }
 ]
 
@@ -50,6 +60,7 @@ app = FastAPI(title="Industry Core Hub Backend API", version="0.0.1", openapi_ta
 
 part_management_service = PartManagementService()
 partner_management_service = PartnerManagementService()
+twin_management_service = TwinManagementService()
 
 @app.get("/part-management/catalog-part/{manufacturer_id}/{manufacturer_part_id}", response_model=CatalogPartRead, tags=["Part Management"])
 async def part_management_get_catalog_part(manufacturer_id: str, manufacturer_part_id: str) -> Optional[CatalogPartRead]:
@@ -78,3 +89,29 @@ async def partner_management_create_business_partner(business_partner_create: Bu
 @app.get("/partner-management/business-partner/{business_partner_number}/data-exchange-agreement", response_model=List[DataExchangeAgreementRead], tags=["Partner Management"])
 async def partner_management_get_data_exchange_agreements(business_partner_number: str) -> List[DataExchangeAgreementRead]:
     return partner_management_service.get_data_exchange_agreements(business_partner_number)
+
+@app.get("/twin-management/catalog-part-twin", response_model=List[CatalogPartTwinRead], tags=["Twin Management"])
+async def twin_management_get_catalog_part_twins(include_data_exchange_agreements: bool = False) -> List[CatalogPartTwinRead]:
+    return twin_management_service.get_catalog_part_twins(include_data_exchange_agreements=include_data_exchange_agreements)
+
+@app.get("/twin-management/catalog-part-twin/{global_id}", response_model=List[CatalogPartTwinDetailsRead], tags=["Twin Management"])
+async def twin_management_get_catalog_part_twin(global_id: UUID) -> List[CatalogPartTwinDetailsRead]:
+    return twin_management_service.get_catalog_part_twin_details(global_id)
+
+@app.post("/twin-management/catalog-part-twin", response_model=TwinRead, tags=["Twin Management"])
+async def twin_management_create_catalog_part_twin(catalog_part_twin_create: CatalogPartTwinCreate) -> TwinRead:
+    return twin_management_service.create_catalog_part_twin(catalog_part_twin_create)
+
+@app.post("/twin-management/catalog-part-twin/share", responses={
+    201: {"description": "Catalog part twin shared successfully"},
+    204: {"description": "Catalog part twin already shared"}
+}, tags=["Twin Management"])
+async def twin_management_share_catalog_part_twin(catalog_part_twin_share: CatalogPartTwinShare):
+    if twin_management_service.create_catalog_part_twin_share(catalog_part_twin_share):
+        return JSONResponse(status_code=201, content={"description":"Catalog part twin shared successfully"})
+    else:
+        return JSONResponse(status_code=204, content={"description":"Catalog part twin already shared"})
+
+@app.post("/twin-management/twin-aspect", response_model=TwinAspectRead, tags=["Twin Management"])
+async def twin_management_create_twin_aspect(twin_aspect_create: TwinAspectCreate) -> TwinAspectRead:
+    return twin_management_service.create_twin_aspect(twin_aspect_create)

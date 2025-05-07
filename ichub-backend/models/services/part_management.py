@@ -32,6 +32,7 @@ from models.services.partner_management import BusinessPartnerRead
 class CatalogPartBase(BaseModel):
     manufacturer_id: str = Field(alias="manufacturerId", description="The BPNL (manufactuer ID) of the part to register.")
     manufacturer_part_id: str = Field(alias="manufacturerPartId", description="The manufacturer part ID of the part.")
+    category: Optional[str] = Field(description="The category of the part.", default=None)
 
 class PartnerCatalogPartBase(BaseModel):
     customer_part_id: str = Field(alias="customerPartId", description="The customer part ID for partner specific mapping of the catalog part.")
