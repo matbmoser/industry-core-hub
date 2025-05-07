@@ -107,6 +107,15 @@ class BaseRepository(Generic[ModelType]):
 
 class BusinessPartnerRepository(BaseRepository[BusinessPartner]):
 
+    def create_new(self, name: str, bpnl: str) -> BusinessPartner:
+        """Create a new BusinessPartner instance."""
+        business_partner = BusinessPartner(
+            name=name,
+            bpnl=bpnl
+        )
+        self.create(business_partner)
+        return business_partner
+
     def get_by_name(self, name: str) -> Optional[BusinessPartner]:
         stmt = select(BusinessPartner).where(
             BusinessPartner.name == name)  # type: ignore
@@ -155,7 +164,21 @@ class LegalEntityRepository(BaseRepository[LegalEntity]):
         return self._session.scalars(stmt).first()
 
 class PartnerCatalogPartRepository(BaseRepository[PartnerCatalogPart]):
-    pass
+    def get_by_catalog_part_id_business_partner_id(self, catalog_part_id: int, business_partner_id: int) -> Optional[PartnerCatalogPart]:
+        stmt = select(PartnerCatalogPart).where(
+            PartnerCatalogPart.catalog_part_id == catalog_part_id).where(
+            PartnerCatalogPart.business_partner_id == business_partner_id)
+        return self._session.scalars(stmt).first()
+    
+    def create_new(self, catalog_part_id: int, business_partner_id: int, customer_part_id: str) -> PartnerCatalogPart:
+        """Create a new PartnerCatalogPart instance."""
+        partner_catalog_part = PartnerCatalogPart(
+            catalog_part_id=catalog_part_id,
+            business_partner_id=business_partner_id,
+            customer_part_id=customer_part_id,
+        )
+        self.create(partner_catalog_part)
+        return partner_catalog_part
 
 class EnablementServiceStackRepository(BaseRepository[EnablementServiceStack]):
     def get_by_name(self, name: str) -> Optional[EnablementServiceStack]:
