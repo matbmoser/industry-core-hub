@@ -20,11 +20,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
 
-
-# Package-level variables
-__author__ = 'Eclipse Tractus-X Contributors'
-__license__ = "Apache License, Version 2.0"
-
 from typing import Dict
 from uuid import UUID
 
