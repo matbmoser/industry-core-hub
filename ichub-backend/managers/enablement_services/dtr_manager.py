@@ -42,6 +42,7 @@ from urllib import parse
 from config.config_manager import ConfigManager
 from tools.aspect_id_tools import extract_aspect_id_name_from_urn_camelcase
 
+
 class DTRManager:
     def __init__(
         self,
@@ -144,7 +145,7 @@ class DTRManager:
 
         res = self.aas_service.create_asset_administration_shell_descriptor(shell)
         if isinstance(res, Result):
-            raise Exception("Error creating shell descriptor", res)
+            raise Exception("Error creating shell descriptor", res.to_json_string())
         return res
 
     def create_submodel_descriptor(
@@ -173,7 +174,9 @@ class DTRManager:
         if not (parsed_href_url.scheme == "https" and parsed_href_url.netloc):
             raise Exception(f"Generated href URL is malformed: {href_url}")
 
-        dsp_endpoint_url = f"{self.edc_controlplane_hostname}{self.edc_controlplane_catalog_path}"
+        dsp_endpoint_url = (
+            f"{self.edc_controlplane_hostname}{self.edc_controlplane_catalog_path}"
+        )
         parsed_dsp_endpoint_url = parse.urlparse(dsp_endpoint_url)
         if not (
             parsed_dsp_endpoint_url.scheme == "https" and parsed_dsp_endpoint_url.netloc
@@ -211,5 +214,6 @@ class DTRManager:
 
         res = self.aas_service.create_submodel_descriptor(aas_id.urn, submodel)
         if isinstance(res, Result):
-            raise Exception("Error creating submodels descriptor", res)
+            raise Exception("Error creating submodels descriptor", res.to_json_string())
+        return res
         return res
