@@ -216,4 +216,43 @@ class DTRManager:
         if isinstance(res, Result):
             raise Exception("Error creating submodels descriptor", res.to_json_string())
         return res
+
+    def get_shell_descriptor_by_id(self, aas_id: UUID) -> ShellDescriptor:
+        """
+        Retrieves a shell descriptor from the DTR.
+        """
+        res = self.aas_service.get_asset_administration_shell_descriptor_by_id(
+            aas_id.urn
+        )
+        if isinstance(res, Result):
+            raise Exception("Error retrieving shell descriptor", res.to_json_string())
         return res
+
+    def get_submodel_descriptor_by_id(
+        self, aas_id: UUID, submodel_id: UUID
+    ) -> SubModelDescriptor:
+        """
+        Retrieves a submodel descriptor from the DTR.
+        """
+        res = self.aas_service.get_submodel_descriptor_by_ass_and_submodel_id(
+            aas_id.urn, submodel_id.urn
+        )
+        if isinstance(res, Result):
+            raise Exception("Error retrieving submodel descriptor", res.to_json_string())
+        return res
+
+    def delete_shell_descriptor(self, aas_id: UUID) -> None:
+        """
+        Deletes a shell descriptor in the DTR.
+        """
+        res = self.aas_service.delete_asset_administration_shell_descriptor(aas_id.urn)
+        if isinstance(res, Result):
+            raise Exception("Error deleting shell descriptor", res.to_json_string())
+
+    def delete_submodel_descriptor(self, aas_id: UUID, submodel_id: UUID) -> None:
+        """
+        Deletes a submodel descriptor in the DTR.
+        """
+        res = self.aas_service.delete_submodel_descriptor(aas_id.urn, submodel_id.urn)
+        if isinstance(res, Result):
+            raise Exception("Error deleting submodel descriptor", res.to_json_string())
