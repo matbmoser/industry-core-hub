@@ -22,47 +22,27 @@
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
 
-from .part_management import (
-    CatalogPartRead,
-    CatalogPartCreate,
-    CatalogPartDelete,
-    CatalogPartQuery,
-    PartnerCatalogPartCreate,
-    PartnerCatalogPartDelete,
-    BatchRead,
-    BatchCreate,
-    BatchDelete,
-    BatchQuery,
-    SerializedPartRead,
-    SerializedPartCreate,
-    SerializedPartDelete,
-    SerializedPartQuery,
-    JISPartRead,
-    JISPartCreate,
-    JISPartDelete,
-    JISPartQuery
-)
+from dataclasses import dataclass
+import re
 
-from .partner_management import (
-    BusinessPartnerRead,
-    DataExchangeContractRead,
-    DataExchangeContractCreate,
-    DataExchangeAgreementCreate,
-    DataExchangeAgreementRead
-)
+REG_EX_SEMANTIC_ID = re.compile('^(([^:]+):)*(\d(.\d)*)#(\w*)$')
 
-from .twin_management import (
-    TwinAspectRegistrationStatus,
-    TwinsAspectRegistrationMode,
-    TwinAspectRegistration,
-    TwinAspectRead,
-    TwinAspectCreate,
-    TwinRead,
-    TwinCreateBase,
-    CatalogPartTwinCreate,
-    CatalogPartTwinDetailsRead,
-    BatchTwinCreate,
-    JISPartTwinCreate,
-    SerializedPartTwinCreate
-)
+@dataclass
+class SubmodelType():
+    semantic_id: str
+    submodel_name: str
+    id_short: str
+    version: str
+    namespace_prefix: str
 
+
+
+def get_submodel_type(semantic_id: str) -> SubmodelType:
+    match: re.Match = REG_EX_SEMANTIC_ID.fullmatch(semantic_id)
+
+    name = match.group(5)
+    id_short = name[0].lower() + name[1:]
+    version = match.group(3)
+    namespace_prefix = match.group(2)
+
+    return SubmodelType(semantic_id, name, id_short, version, namespace_prefix)

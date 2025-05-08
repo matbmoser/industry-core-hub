@@ -32,23 +32,33 @@ import PageNotification from "../components/general/PageNotification";
 import ShareDropdown from "../Features/CatalogManagement/components/product-detail/ShareDropdown";
 import ProductButton from "../Features/CatalogManagement/components/product-detail/ProductButton";
 import ProductData from "../Features/CatalogManagement/components/product-detail/ProductData";
+import ShareDialog from "../components/general/ShareDialog";
 
 const ProductsDetails = () => {
   const { id } = useParams<{ id: string }>();
   const part = carPartsData.find((part) => part.uuid === id);
-  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [jsonDialogOpen, setJsonDialogOpen] = React.useState(false);
+  const [shareDialogOpen, setShareDialogOpen] = React.useState(false);
   const [notification, setNotification] = React.useState<{ open: boolean; severity: "success" | "error"; title: string } | null>(null);
 
   if (!part) {
     return <div>Product not found</div>;
   }
 
-  const handleOpenDialog = () => {
-    setDialogOpen(true);
+  const handleOpenJsonDialog = () => {
+    setJsonDialogOpen(true);
   };
 
-  const handleCloseDialog = () => {
-    setDialogOpen(false);
+  const handleCloseJsonDialog = () => {
+    setJsonDialogOpen(false);
+  };
+
+  const handleOpenShareDialog = () => {
+    setShareDialogOpen(true);
+  };
+
+  const handleCloseShareDialog = () => {
+    setShareDialogOpen(false);
   };
 
   const handleCopy = () => {
@@ -85,22 +95,6 @@ const ProductsDetails = () => {
     URL.revokeObjectURL(url);
   };
 
-  const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: part.name,
-          text: `Check out this part: ${part.name} (UUID: ${part.uuid})`,
-          url: window.location.href
-        });
-      } catch (error) {
-        console.error("Error sharing:", error);
-      }
-    } else {
-      console.log("Web Share API not supported.");
-    }
-  };
-
 
   const getStatusTag = (status: string) => {
     switch (status.toLowerCase()) {
@@ -128,13 +122,13 @@ const ProductsDetails = () => {
             </Button>
           </Grid2>
           <Grid2 size={{ md: 3, sm: 12 }} display="flex" justifyContent="center">
-            <ShareDropdown handleCopy={handleCopy} handleDownload={handleDownload} handleShare={handleShare} />
+            <ShareDropdown handleCopy={handleCopy} handleDownload={handleDownload} handleShare={handleOpenShareDialog} />
           </Grid2>
         </Grid2>
         <ProductData part={part} />
         <Grid2 container spacing={2} direction="column" className="add-on-buttons">
 
-          <ProductButton gridSize={{ sm: 12 }} buttonText="DIGITAL PRODUCT PASSPORT v5.0.0" onClick={handleOpenDialog} />
+          <ProductButton gridSize={{ sm: 12 }} buttonText="DIGITAL PRODUCT PASSPORT v5.0.0" onClick={handleOpenJsonDialog} />
 
           <Grid2 container spacing={2} justifyContent="center">
             <ProductButton gridSize={{ lg: 4, md: 12, sm: 12 }} buttonText="PCF v3.0.0" onClick={() => console.log("PCF v2.0 button")} />
@@ -149,7 +143,8 @@ const ProductsDetails = () => {
           </Grid2>
 
         </Grid2>
-        <JsonViewerDialog open={dialogOpen} onClose={handleCloseDialog} carJsonData={part} />
+        <JsonViewerDialog open={jsonDialogOpen} onClose={handleCloseJsonDialog} partData={part} />
+        <ShareDialog open={shareDialogOpen} onClose={handleCloseShareDialog} partData={part} />
         <InstanceProductsTable />
       </Grid2>
   );

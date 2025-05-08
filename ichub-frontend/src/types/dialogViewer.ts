@@ -22,8 +22,8 @@
 
 import { PartInstance } from "./product";
 
-export interface JsonViewerDialogProps {
+export interface ProductDetailDialogProps {
     open: boolean;
     onClose: () => void;
-    carJsonData: PartInstance;  // Use PartInstance interface here
+    partData: PartInstance;  // Use PartInstance interface here
 }

@@ -23,9 +23,24 @@
 #################################################################################
 
 from sqlmodel import SQLModel, Session, select
+from sqlalchemy.orm import selectinload
 from typing import TypeVar, Type, List, Optional, Generic
+from uuid import UUID, uuid4
+from datetime import datetime, timezone
 
-from models.metadata_database.models import BusinessPartner, CatalogPart, DataExchangeAgreement, LegalEntity, PartnerCatalogPart
+from models.metadata_database.models import (
+    BusinessPartner,
+    CatalogPart,
+    DataExchangeAgreement,
+    EnablementServiceStack,
+    LegalEntity,
+    PartnerCatalogPart,
+    Twin,
+    TwinAspect,
+    TwinAspectRegistration,
+    TwinExchange,
+    TwinRegistration,
+)
 
 ModelType = TypeVar("ModelType", bound=SQLModel)
 
@@ -80,14 +95,15 @@ class BaseRepository(Generic[ModelType]):
             self._session.refresh(obj)
         return obj
     
-    def delete(self, obj_id: int, *, commit: bool = False) -> None:
+    def delete(self, obj_id: int) -> None:
         obj = self._session.get(self.get_type(), obj_id)
         if obj is None:
-            err_msg = f'Object not found with id {obj_id}'
+            err_msg = f'{self.get_type()} with id {obj_id} not found!'
             raise ValueError(err_msg)
+        self.delete_obj(obj)
+
+    def delete_obj(self, obj: ModelType) -> None:
         self._session.delete(obj)
-        if commit:
-            self._session.commit()
 
 class BusinessPartnerRepository(BaseRepository[BusinessPartner]):
 
@@ -120,12 +136,16 @@ class CatalogPartRepository(BaseRepository[CatalogPart]):
 
         if join_partner_catalog_parts:
             subquery = select(PartnerCatalogPart).join(BusinessPartner, BusinessPartner.id == PartnerCatalogPart.business_partner_id).where(PartnerCatalogPart.catalog_part_id == CatalogPart.id).subquery()
-            stmt = stmt.join(subquery, subquery.c.catalog_part_id == CatalogPart.id)
+            stmt = stmt.join(subquery, subquery.c.catalog_part_id == CatalogPart.id, isouter=True)
 
         return self._session.exec(stmt).all()
 
 class DataExchangeAgreementRepository(BaseRepository[DataExchangeAgreement]):
-    pass
+    def get_by_business_partner_id(self, business_partner_id: int) -> List[DataExchangeAgreement]:
+        stmt = select(DataExchangeAgreement).where(
+            DataExchangeAgreement.business_partner_id == business_partner_id  # type: ignore
+        )
+        return self._session.scalars(stmt).all()
 
 class LegalEntityRepository(BaseRepository[LegalEntity]):
 
@@ -137,3 +157,173 @@ class LegalEntityRepository(BaseRepository[LegalEntity]):
 class PartnerCatalogPartRepository(BaseRepository[PartnerCatalogPart]):
     pass
 
+class EnablementServiceStackRepository(BaseRepository[EnablementServiceStack]):
+    def get_by_name(self, name: str) -> Optional[EnablementServiceStack]:
+        stmt = select(EnablementServiceStack).where(
+            EnablementServiceStack.name == name)  # type: ignore
+        return self._session.scalars(stmt).first()
+
+class TwinRepository(BaseRepository[Twin]):
+    def create_new(self, global_id: UUID = None, dtr_aas_id: UUID = None):
+        """Create a new Twin instance with the given global_id and dtr_aas_id."""
+        
+        if global_id is None:
+            global_id = uuid4()
+
+        if dtr_aas_id is None:
+            dtr_aas_id = uuid4()
+        
+        twin = Twin(
+            global_id=global_id,
+            dtr_aas_id=dtr_aas_id,
+            created_at=datetime.now(timezone.utc),
+            updated_at=datetime.now(timezone.utc)
+        )
+        self.create(twin)
+        
+        return twin
+    
+    def find_by_global_id(self, global_id: UUID) -> Optional[Twin]:
+        stmt = select(Twin).where(
+            Twin.global_id == global_id)
+        return self._session.scalars(stmt).first()
+    
+    def find_catalog_part_twins(self,
+            manufacturer_id: Optional[str] = None,
+            manufacturer_part_id: Optional[str] = None,
+            global_id: Optional[UUID] = None,
+            include_data_exchange_agreements: bool = False,
+            include_aspects: bool = False,
+            include_registrations: bool = False) -> List[Twin]:
+        
+        stmt = select(Twin).join(
+            CatalogPart, CatalogPart.twin_id == Twin.id).join(
+            LegalEntity, LegalEntity.id == CatalogPart.legal_entity_id
+        ).distinct()
+
+        stmt = self._apply_subquery_filters(stmt, include_data_exchange_agreements, include_aspects, include_registrations)
+
+        if manufacturer_id:
+            stmt = stmt.where(LegalEntity.bpnl == manufacturer_id)
+
+        if manufacturer_part_id:
+            stmt = stmt.where(CatalogPart.manufacturer_part_id == manufacturer_part_id)
+
+        if global_id:
+            stmt = stmt.where(Twin.global_id == global_id)
+
+        return self._session.scalars(stmt).all()
+    
+    @staticmethod
+    def _apply_subquery_filters(stmt, include_data_exchange_agreements: bool, include_aspects: bool, include_registrations: bool):
+        if include_data_exchange_agreements:
+            subquery = select(TwinExchange).join(
+                DataExchangeAgreement, TwinExchange.data_exchange_agreement_id == DataExchangeAgreement.id
+            ).join(
+                BusinessPartner, BusinessPartner.id == DataExchangeAgreement.business_partner_id
+            ).subquery()
+            stmt = stmt.join(subquery, subquery.c.twin_id == Twin.id, isouter=True)
+
+        if include_registrations:
+            stmt = stmt.options(selectinload(Twin.twin_registrations))
+        
+        if include_aspects:
+            if include_registrations:
+                stmt = stmt.options(selectinload(Twin.twin_aspects).selectinload(TwinAspect.twin_aspect_registrations))
+            else:
+                stmt = stmt.options(selectinload(Twin.twin_aspects))
+
+        
+        return stmt
+
+
+class TwinAspectRepository(BaseRepository[TwinAspect]):
+    def get_by_twin_id_semantic_id(self, twin_id: int, semantic_id: str, include_registrations: bool = False) -> Optional[TwinAspect]:
+        """Retrieve a TwinAspect by its submodel_id."""
+        stmt = select(TwinAspect).where(TwinAspect.twin_id == twin_id).where(TwinAspect.semantic_id == semantic_id)
+
+        if include_registrations:
+            stmt = stmt.join(
+                TwinAspectRegistration, TwinAspectRegistration.twin_aspect_id == TwinAspect.id, isouter=True
+            )
+
+        return self._session.scalars(stmt).first()
+
+    def create_new(self, twin_id: int, semantic_id: str, submodel_id: UUID = None) -> TwinAspect:
+        """Create a new TwinAspect instance."""
+        if not submodel_id:
+            submodel_id = uuid4()
+        
+        twin_aspect = TwinAspect(
+            submodel_id=submodel_id,
+            semantic_id=semantic_id,
+            twin_id=twin_id,
+            created_at=datetime.now(timezone.utc),
+            updated_at=datetime.now(timezone.utc),
+        )
+        self.create(twin_aspect)
+        return twin_aspect
+
+
+class TwinAspectRegistrationRepository(BaseRepository[TwinAspectRegistration]):
+    def get_by_twin_aspect_id_enablement_service_stack_id(
+        self, twin_aspect_id: int, enablement_service_stack_id: int
+    ) -> Optional[TwinAspectRegistration]:
+        """Retrieve a TwinAspectRegistration by twin_aspect_id and enablement_service_stack_id."""
+        stmt = select(TwinAspectRegistration).where(
+            TwinAspectRegistration.twin_aspect_id == twin_aspect_id
+        ).where(
+            TwinAspectRegistration.enablement_service_stack_id == enablement_service_stack_id
+        )
+        return self._session.scalars(stmt).first()
+
+    def create_new(
+        self,
+        twin_aspect_id: int,
+        enablement_service_stack_id: int,
+        status: int = 0,
+        registration_mode: int = 0,
+    ) -> TwinAspectRegistration:
+        """Create a new TwinAspectRegistration instance."""
+        twin_aspect_registration = TwinAspectRegistration(
+            twin_aspect_id=twin_aspect_id,
+            enablement_service_stack_id=enablement_service_stack_id,
+            status=status,
+            registration_mode=registration_mode,
+            created_at=datetime.now(timezone.utc),
+            modified_date=datetime.now(timezone.utc),
+        )
+        self.create(twin_aspect_registration)
+        return twin_aspect_registration
+
+class TwinExchangeRepository(BaseRepository[TwinExchange]):
+    def get_by_twin_id_data_exchange_agreement_id(self, twin_id: int, data_exchange_agreement_id: int) -> Optional[Twin]:
+        stmt = select(TwinExchange).where(
+            TwinExchange.twin_id == twin_id).where(
+            TwinExchange.data_exchange_agreement_id == data_exchange_agreement_id
+            )
+        return self._session.scalars(stmt).first()
+    
+    def create_new(self, twin_id: int, data_exchange_agreement_id: int) -> TwinExchange:
+        twin_exchange = TwinExchange(
+            twin_id=twin_id,
+            data_exchange_agreement_id=data_exchange_agreement_id
+        )
+        self.create(twin_exchange)
+        return twin_exchange
+
+class TwinRegistrationRepository(BaseRepository[TwinRegistration]):
+    def get_by_twin_id_enablement_service_stack_id(self, twin_id: int, enablement_service_stack_id: int) -> Optional[TwinRegistration]:
+        stmt = select(TwinRegistration).where(
+            TwinRegistration.twin_id == twin_id).where(
+            TwinRegistration.enablement_service_stack_id == enablement_service_stack_id)
+        return self._session.scalars(stmt).first()
+    
+    def create_new(self, twin_id: int, enablement_service_stack_id: int, dtr_registered: bool = False) -> TwinRegistration:
+        twin_registration = TwinRegistration(
+            twin_id=twin_id,
+            enablement_service_stack_id=enablement_service_stack_id,
+            dtr_registered=dtr_registered
+        )
+        self.create(twin_registration)
+        return twin_registration
