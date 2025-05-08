@@ -117,7 +117,7 @@ async def twin_management_create_twin_aspect(twin_aspect_create: TwinAspectCreat
     return twin_management_service.create_twin_aspect(twin_aspect_create)
 
 @app.get("/submodel-dispatcher/{semantic_id}/{global_id}/submodel", response_model=Dict[str, Any], tags=["Submodel Dispatcher"])
-async def submodel_dispatcher_get_submodel_content(semantic_id: str, global_id: UUID, request: Request) -> TwinAspectRead:
+async def submodel_dispatcher_get_submodel_content(semantic_id: str, global_id: UUID, request: Request) -> Dict[str, Any]:
     # Extract the headers we get from the EDC Data Plane
     edc_bpn = request.headers.get("Edc-Bpn")
     edc_contract_agreement_id = request.headers.get("Edc-Contract-Agreement-Id")
