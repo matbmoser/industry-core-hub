@@ -38,8 +38,6 @@ sys.dont_write_bytecode = True
 
 from runtimes.fastapi import start
 
-## Declare Global Variables
-
 urllib3.disable_warnings()
 captureWarnings(True)
 
