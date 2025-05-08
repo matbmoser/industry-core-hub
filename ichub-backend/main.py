@@ -66,7 +66,7 @@ if __name__ == "__main__":
      _/ // /__/_____/ __  / /_/ / /_/ /  / /_/ / /_/ / /__/ ,< /  __/ / / / /_/ /  
     /___/\____/    /_/ /_/\__,_/_.___/  /_____/\__,_/\___/_/|_|\___/_/ /_/\__,_/   
     """)
-    print("\n\n\t\t\t\t\t\t\t\t\t\tv0.1.3")
+    print("\n\n\t\t\t\t\t\t\t\t\t\tv0.0.1")
     print("Application starting, listening to requests...\n")
 
     start()
