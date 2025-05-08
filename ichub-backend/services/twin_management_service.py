@@ -23,7 +23,7 @@
 #################################################################################
 
 from typing import Optional, Dict, Any, List
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from config.config_manager import ConfigManager
 from managers.metadata_database.manager import RepositoryManagerFactory
@@ -314,9 +314,12 @@ class TwinManagementService:
                 
                 # Step 7a: Register the submodel in the DTR (if necessary)
                 dtr_manager.create_submodel_descriptor(
-                    db_twin.aas_id,
-                    db_twin_aspect.submodel_id,
-                    db_twin_aspect.semantic_id,
+                    global_id=db_twin.global_id,
+                    aas_id=db_twin.aas_id,
+                    submodel_id=db_twin_aspect.submodel_id,
+                    semantic_id=db_twin_aspect.semantic_id,
+                    # TODO: later we should use the asset id from the EDC manager
+                    edc_asset_id=uuid4()
                 )
 
                 # Step 7b: Update the registration status to DTR_REGISTERED
