@@ -56,8 +56,6 @@ def extract_aspect_id_name_from_urn_camelcase(aspect_urn: str) -> str:
     "urn:bamm:io.catenax.material_for_recycling:1.1.0#MaterialForRecycling" -> "materialForRecycling"
     """
     name = extract_aspect_id_name_from_urn(aspect_urn)
-    if not name:
-        return name
     # lower‐case the first character
     return name[0].lower() + name[1:]
 
