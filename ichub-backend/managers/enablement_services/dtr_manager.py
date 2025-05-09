@@ -76,6 +76,7 @@ class DTRManager:
         manufacturer_part_id: str,
         customer_part_ids: Dict[str, str],
         part_category: str,
+        digital_twin_type: str,
     ) -> ShellDescriptor:
         """
         Registers a twin in the DTR.
@@ -111,7 +112,7 @@ class DTRManager:
 
         digital_twin_asset_id = SpecificAssetId(
             name="digitalTwinType",
-            value="PartType",
+            value=digital_twin_type,
             externalSubjectId=Reference(
                 type=ReferenceTypes.EXTERNAL_REFERENCE,
                 keys=[

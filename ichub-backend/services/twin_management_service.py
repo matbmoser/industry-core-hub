@@ -44,6 +44,8 @@ from models.services.twin_management import (
     TwinsAspectRegistrationMode,
 )
 
+CATALOG_DIGITAL_TWIN_TYPE = "PartType"
+
 class TwinManagementService:
     """
     Service class for managing twin-related operations (CRUD and Twin sharing).
@@ -115,7 +117,8 @@ class TwinManagementService:
                     manufacturer_id=create_input.manufacturer_id,
                     manufacturer_part_id=create_input.manufacturer_part_id,
                     customer_part_ids=customer_part_ids,
-                    part_category=db_catalog_part.category
+                    part_category=db_catalog_part.category,
+                    digital_twin_type=CATALOG_DIGITAL_TWIN_TYPE
                 )
 
                 db_twin_registration.dtr_registered = True
