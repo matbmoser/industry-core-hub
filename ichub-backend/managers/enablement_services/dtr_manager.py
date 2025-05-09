@@ -81,8 +81,15 @@ class DTRManager:
         """
         Registers a twin in the DTR.
         """
+        # List with specific asset ids that
+        # are required by the Industry Core KIT
         specific_asset_ids = []
+        # Adds the customerPartId of the customers from which we have
+        # this information
         for customer_part_id, bpn in customer_part_ids.items():
+            # This value is optional, so if we don't have it, we skip it
+            if not customer_part_id:
+                continue
             specific_customer_part_asset_id = SpecificAssetId(
                 name="customerPartId",
                 value=customer_part_id,
@@ -97,6 +104,9 @@ class DTRManager:
             )  # type: ignore
             specific_asset_ids.append(specific_customer_part_asset_id)
 
+        # Adds the manufacturerId that we have assigned to the part
+        # The visibility of this id is restricted to partners we have
+        # a contract with, so we use set their BPN
         specific_manufacturer_asset_id = SpecificAssetId(
             name="manufacturerId",
             value=manufacturer_id,
@@ -110,6 +120,7 @@ class DTRManager:
         )  # type: ignore
         specific_asset_ids.append(specific_manufacturer_asset_id)
 
+        # Is added to allow data consumers to search for all digital twins of a particular type
         digital_twin_asset_id = SpecificAssetId(
             name="digitalTwinType",
             value=digital_twin_type,
@@ -123,6 +134,8 @@ class DTRManager:
         )  # type: ignore
         specific_asset_ids.append(digital_twin_asset_id)
 
+        # The ID of the type/catalog part from the manufacturer
+        # visble to everyone
         specific_manufacturer_part_asset_id = SpecificAssetId(
             name="manufacturerPartId",
             value=manufacturer_part_id,
@@ -162,12 +175,15 @@ class DTRManager:
         """
         aspect_id_name = extract_aspect_id_name_from_urn_camelcase(semantic_id)
 
+        # semantic_id must be added to the submodel descriptor (CX-00002)
         semantic_id_reference = Reference(
             type=ReferenceTypes.EXTERNAL_REFERENCE,
             keys=[
                 ReferenceKey(type=ReferenceKeyTypes.GLOBAL_REFERENCE, value=semantic_id)
             ],
         )
+
+        # Check that href and DSP URLs are valid
 
         href_url = f"{self.edc_dataplane_hostname}{self.edc_dataplane_public_path}/{semantic_id}/{global_id.urn}/submodel"
 
@@ -239,7 +255,9 @@ class DTRManager:
             aas_id.urn, submodel_id.urn
         )
         if isinstance(res, Result):
-            raise Exception("Error retrieving submodel descriptor", res.to_json_string())
+            raise Exception(
+                "Error retrieving submodel descriptor", res.to_json_string()
+            )
         return res
 
     def delete_shell_descriptor(self, aas_id: UUID) -> None:
