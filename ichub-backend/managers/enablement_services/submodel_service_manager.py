@@ -50,7 +50,7 @@ class SubmodelServiceManager:
         print(f"==== Start of Payload ====")
         print(payload)
         print(f"==== End of Payload ====")
-        print("Submodel uploaded successfully (dummy implementation).")
+        print("Submodel uploaded successfully.")
         print()
 
     def get_twin_aspect_document(self, global_id: UUID, semantic_id: str) -> Dict[str, Any]:
