@@ -39,7 +39,6 @@ class SubmodelServiceManager:
         """Upload a submodel to the service."""
         # Implementation for uploading a submodel
         if not self.file_system.exists(semantic_id):
-            print("No hay")
             self.file_system.create_directory(semantic_id)
         self.file_system.write(f"{semantic_id}/{global_id}.json",payload)
         print("==========================")
