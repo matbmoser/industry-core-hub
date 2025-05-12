@@ -118,7 +118,7 @@ async def twin_management_share_catalog_part_twin(catalog_part_twin_share: Catal
 async def twin_management_create_twin_aspect(twin_aspect_create: TwinAspectCreate) -> TwinAspectRead:
     return twin_management_service.create_twin_aspect(twin_aspect_create)
 
-@app.post("/twin-management/catalog-part-twin/share-shortcut", response_model=CatalogPartTwinDetailsRead, tags=["Twin Management"])
+@app.post("/share/catalog-part", response_model=CatalogPartTwinDetailsRead, tags=["Twin Management"])
 async def twin_management_create_part_sharing_shortcut(catalog_part_twin_share: CatalogPartTwinShare,
     auto_generate_part_type_information_submodel:bool = True) -> CatalogPartTwinDetailsRead:
     return part_sharing_shortcut_service.create_catalog_part_sharing_shortcut(
