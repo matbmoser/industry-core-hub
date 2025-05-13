@@ -78,7 +78,11 @@ tbc.
 
 ### ICH Database
 
-The ICH Database is an relational database deployed in PostgreSQL that can be query using SQL.
+The design followed to model the database with the information required by the ICH is shown in the following figure.
+
+![ICHDatabase_Design](./media/CX-Next-Drawings-Data Model CX-Next.drawio.svg)
+
+From that design the Database repository was created. The ICH Database is an relational database deployed in PostgreSQL that can be query using SQL.
 The database diagram is shown next.
 
 ![ICHDatabase](./media/ICHDatabase.png)
