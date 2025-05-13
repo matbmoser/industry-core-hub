@@ -168,7 +168,7 @@ class DTRManager:
         aas_id: UUID,
         submodel_id: UUID,
         semantic_id: str,
-        edc_asset_id: UUID,
+        edc_asset_id: str,
     ) -> SubModelDescriptor:
         """
         Creates a submodel descriptor in the DTR.
@@ -202,7 +202,7 @@ class DTRManager:
                 f"Generated DSP endpoint URL for subprotocolBody is malformed: {dsp_endpoint_url}"
             )
 
-        subprotocol_body_str = f"dspEndpoint={dsp_endpoint_url};id={edc_asset_id.urn}"
+        subprotocol_body_str = f"dspEndpoint={dsp_endpoint_url};id={edc_asset_id}"
 
         endpoint = Endpoint(
             interface="SUBMODEL-3.0",
