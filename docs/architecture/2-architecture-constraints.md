@@ -22,7 +22,7 @@ The Frontend component is built on React.js and offers an interface where users 
 
 ![Building Blocks](../media/BuildingBlocks.png)
 
-In addition, the ICH includes a metadata database where essential information for the parts, assets, twins and contracts is registered ([ICH Database section] (https://github.com/flarrinaga/industry-core-hub/blob/development/docs/architecture/2-architecture-constraints.md#ich-database))
+In addition, the ICH includes a metadata database where essential information for the parts, assets, twins and contracts is registered ([ICH Database section](https://github.com/flarrinaga/industry-core-hub/blob/development/docs/architecture/2-architecture-constraints.md#ich-database))
 
 The following image shows how the number of operations a use case needs to perfom through the ICH is reduced in comparison to use cases accessing directly to the data space components or only using the SDK libraries.
 Changes in any of the components only affect libraries. This implies that use cases using the ICH will not be affected by those changes while use cases accessing directly will need to be updated.  
