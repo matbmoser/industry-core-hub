@@ -15,7 +15,7 @@ The High-Level System Architecture for the Industry Core Hub is presented next.
 ![ICH_High_Level_Architecture](./media/ICH_HighLevelArchitecture.png)
 
 The main components of the ICH are the ICH Backend and the ICH Frontend. 
-The Backend is written in Python and offers a simplify FastAPI that enables easy integration with external components such as the Eclipse Dataspace Connector (EDC) and the industry components (DTR). The API offered is consumed by the users through frontend. Use cases can also consume that FastAPIdirectly.
+The Backend is written in Python and offers a simplify FastAPI and Backend Services that enable easy integration with a database and external components such as the Eclipse Dataspace Connector (EDC) and the industry components (DTR). The API offered is consumed by the users through the frontend. Use cases can also consume that FastAPI directly.
 The Backend component includes two SDK modules provided by Tractus-X ([Tractus_X SDK](https://github.com/eclipse-tractusx/tractusx-sdk)). The DataSpace SDK module enables interactions with the EDC and the Industry SDK module with the DTR. 
 
 The Frontend component is built on React.js and offers an interface where users can upload information about their parts and register them in the dataspace.
@@ -31,8 +31,45 @@ Changes in any of the components only affect libraries. This implies that use ca
 
 ### ICH Backend Component
 
+The Industry Core Hub backend follows a service-oriented architecture with clear separation of concerns. It is built using FastAPI and implements a layered architecture with controllers, services, and repositories.
 
-tbc.
+![ICHBackendArchitecture](../media/ICH_Backend_Structure.png)
+
+The backend implements three core services that encapsulate business logic:
+## Part Management Service
+The Part Management Service handles catalog parts, serialized parts, JIS parts, and batches. It provides functionality to:
+
+- Create and retrieve catalog parts
+- Manage part relationships
+- Handle part mappings between partners
+  
+Catalog parts are identified by manufacturer ID and manufacturer part ID, representing the foundational part entities in the system.
+## Partner Management Service
+The Partner Management Service manages business partners and data exchange agreements between partners. It provides functionality to:
+
+- Create and list business partners
+- Retrieve business partner details
+- Manage data exchange agreements
+- Configure contract terms for data sharing
+
+Business partners are identified by their Business Partner Number (BPNL) in the Catena-X ecosystem.
+## Twin Management Service
+The Twin Management Service handles digital twins and their aspects. It integrates with the Digital Twin Registry (DTR) and provides functionality to:
+
+- Create and manage digital twins
+- Associate twins with parts
+- Define and update twin aspects
+
+Digital twins are central to the Catena-X ecosystem, providing digital representations of physical parts.
+## FastAPI
+The backend exposes a RESTful API with endpoints organized by service domain:
+
+| Service Domain     | Endpoint Pattern       | Description                                                           |
+|--------------------|------------------------|-----------------------------------------------------------------------|
+| Part Management    | /part-management/*     | Endpoints for managing catalog parts and their instances              |
+| Partner Management | /partner-management/*  | Endpoints for managing business partners and data exchange agreements |
+| Twin Management    | /twin-management/*     | Endpoints for managing digital twins                                  |
+
 
 ### ICH Frontend Component
 
