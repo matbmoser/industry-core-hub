@@ -36,7 +36,7 @@ The Industry Core Hub backend follows a service-oriented architecture with clear
 ![ICHBackendArchitecture](./media/ICH_Backend_Structure.png)
 
 The backend implements three core services that encapsulate business logic:
-## Part Management Service
+#### Part Management Service
 The Part Management Service handles catalog parts, serialized parts, JIS parts, and batches. It provides functionality to:
 
 - Create and retrieve catalog parts
@@ -44,7 +44,7 @@ The Part Management Service handles catalog parts, serialized parts, JIS parts, 
 - Handle part mappings between partners
   
 Catalog parts are identified by manufacturer ID and manufacturer part ID, representing the foundational part entities in the system.
-## Partner Management Service
+#### Partner Management Service
 The Partner Management Service manages business partners and data exchange agreements between partners. It provides functionality to:
 
 - Create and list business partners
@@ -53,7 +53,7 @@ The Partner Management Service manages business partners and data exchange agree
 - Configure contract terms for data sharing
 
 Business partners are identified by their Business Partner Number (BPNL) in the Catena-X ecosystem.
-## Twin Management Service
+#### Twin Management Service
 The Twin Management Service handles digital twins and their aspects. It integrates with the Digital Twin Registry (DTR) and provides functionality to:
 
 - Create and manage digital twins
@@ -61,7 +61,7 @@ The Twin Management Service handles digital twins and their aspects. It integrat
 - Define and update twin aspects
 
 Digital twins are central to the Catena-X ecosystem, providing digital representations of physical parts.
-## FastAPI
+#### FastAPI
 The backend exposes a RESTful API with endpoints organized by service domain:
 
 | Service Domain     | Endpoint Pattern       | Description                                                           |
@@ -83,7 +83,7 @@ The database diagram is shown next.
 
 ![ICHDatabase](./media/ICHDatabase.png)
  
-The database tables are documented in models.py (ichub-backend/models/metadata_database/models.py)
+The database tables are documented in models.py [(ichub-backend/models/metadata_database/models.py)](https://github.com/flarrinaga/industry-core-hub/blob/development/ichub-backend/models/metadata_database/models.py)
 
 ### Constraints
 - each Data partner needs to run its own ICH in his environment. The ICH is not a central component.
