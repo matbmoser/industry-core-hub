@@ -27,7 +27,7 @@ In addition, the ICH includes a metadata database where essential information fo
 The following image shows how the number of operations a use case needs to perfom through the ICH is reduced in comparison to use cases accessing directly to the data space components or only using the SDK libraries.
 Changes in any of the components only affect libraries. This implies that use cases using the ICH will not be affected by those changes while use cases accessing directly will need to be updated.  
 
-![ICHOperation](../media/BackendArchitecture.png)
+![ICHOperation](./media/BackendArchitecture.png)
 
 ### ICH Backend Component
 
