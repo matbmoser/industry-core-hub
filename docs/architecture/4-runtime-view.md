@@ -31,9 +31,15 @@ The process consists of 8 steps:
 
 The following diagrams present a closer view of Steps1-3, Step4-6 and Step7-8
 
+#### Steps1-3
+
 ![ICHBackendSequenceDiagram(Steps1-3)](./media/BackendSequenceDiagram/BackendSequenceDiagram(Steps1-3).png)
 
+#### Steps4-6
+
 ![ICHBackendSequenceDiagram(Steps4-6)](./media/BackendSequenceDiagram/BackendSequenceDiagram(Steps4-6).png)
+
+#### Steps7-8
 
 ![ICHBackendSequenceDiagram(Steps7-8)](./media/BackendSequenceDiagram/BackendSequenceDiagram(Steps7-8).png)
 
