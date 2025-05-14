@@ -32,6 +32,7 @@ import CreatePartnerDialog from "../features/partner-management/components/gener
 
 const PartnersList = () => {
   const [partnerList, setPartnerList] = useState<PartnerInstance[]>([]);
+  const [editingPartner, setEditingPartner] = useState<PartnerInstance | undefined>(undefined);
   const [initialPartnerList, setInitialPartnerList] = useState<PartnerInstance[]>([]);
   const [createPartnerDialogOpen, setCreatePartnerDialogOpen] = useState(false);
   const [page, setPage] = useState(0);
@@ -44,13 +45,24 @@ const PartnersList = () => {
 
   const handleCloseCreatePartnerDialog = () => {
     setCreatePartnerDialogOpen(false);
+    setEditingPartner(undefined);
   };
 
   const handleCreatePartner = (newPartner: PartnerInstance) => {
-    setPartnerList((prev) => [...prev, newPartner]);
-    setInitialPartnerList((prev) => [...prev, newPartner]);
     // Here we just set the new partner to the list
     // Afterwards we would have to call the API to store it
+
+    if (editingPartner) {
+      setPartnerList(prev =>
+        prev.map(p => (p.bpnl === newPartner.bpnl ? newPartner : p))
+      );
+      setInitialPartnerList(prev =>
+        prev.map(p => (p.bpnl === newPartner.bpnl ? newPartner : p))
+      );
+    } else {
+      setPartnerList(prev => [...prev, newPartner]);
+      setInitialPartnerList(prev => [...prev, newPartner]);
+    }
   };
 
   const handleChangePage = (
@@ -82,6 +94,14 @@ const PartnersList = () => {
     //navigate(`/partner/${partnerBPNL}`);  // Navigate to the details page
   };
 
+  const handleEdit = (bpnlToEdit: string) => {
+    const partnerToEdit = partnerList.find(p => p.bpnl === bpnlToEdit);
+    if (partnerToEdit) {
+      setEditingPartner(partnerToEdit);
+      setCreatePartnerDialogOpen(true);
+    }
+  };
+
   const handleDelete = (bpnlToDelete: string) => {
     setPartnerList((prev) => prev.filter((partner) => partner.bpnl !== bpnlToDelete));
     setInitialPartnerList((prev) => prev.filter((partner) => partner.bpnl !== bpnlToDelete));
@@ -110,6 +130,7 @@ const PartnersList = () => {
         <PartnerCard
           onClick={handleButtonClick}
           onDelete={handleDelete}
+          onEdit={handleEdit}
           items={visibleRows.map((partner) => ({
             bpnl: partner.bpnl,
             name: partner.name,
@@ -128,7 +149,7 @@ const PartnersList = () => {
           className="product-list-pagination"
         />
       </Grid2>
-      <CreatePartnerDialog open={createPartnerDialogOpen} onClose={handleCloseCreatePartnerDialog} onSave={handleCreatePartner}/>
+      <CreatePartnerDialog open={createPartnerDialogOpen} onClose={handleCloseCreatePartnerDialog} onSave={handleCreatePartner} partnerData={editingPartner}/>
     </Grid2>
   );
 };

@@ -20,7 +20,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import Delete from "@mui/icons-material/Delete";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { Box, Typography, IconButton } from "@mui/material";
 
 export interface AppContent {
@@ -32,9 +33,10 @@ export interface CardDecisionProps {
   items: AppContent[];
   onClick: (e: string) => void;
   onDelete?: (e: string) => void;
+  onEdit?: (e: string) => void;
 }
 
-export const PartnerCard = ({ items, onClick, onDelete }: CardDecisionProps) => {
+export const PartnerCard = ({ items, onClick, onDelete, onEdit }: CardDecisionProps) => {
 
   return (
     <Box className="custom-cards-list">
@@ -56,12 +58,20 @@ export const PartnerCard = ({ items, onClick, onDelete }: CardDecisionProps) => 
                 <Box></Box>
                 <Box className="custom-card-header-buttons">
                   <IconButton
+                    onClick={() => {
+                      onEdit?.(bpnl);
+                    }}
+                  >
+                    <EditIcon sx={{ color: "white" }} />
+                  </IconButton>
+                  
+                  <IconButton
                     onClick={(e) => {
                       e.stopPropagation();
                       onDelete?.(bpnl);
                     }}
                   >
-                    <Delete sx={{ color: "rgba(255, 255, 255, 0.68)" }} />
+                    <DeleteIcon sx={{ color: "rgba(255, 255, 255, 0.68)" }} />
                   </IconButton>
                 </Box>
               </Box>

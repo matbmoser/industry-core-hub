@@ -23,7 +23,8 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@catena-x/portal-shared-components';
 import { Box, TextField, Alert, Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Typography } from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
+import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 import { PartnerDialogProps } from '../../../../types/partnerDialogViewer';
 
@@ -105,6 +106,7 @@ const CreatePartnerDialog = ({ open, onClose, onSave, partnerData }: PartnerDial
             fullWidth
             value={bpnl}
             onChange={(e) => setBpnl(e.target.value)}
+            disabled={!!partnerData} // Disable if editing
           />
         </Box>
         {successMessage && (
@@ -117,7 +119,7 @@ const CreatePartnerDialog = ({ open, onClose, onSave, partnerData }: PartnerDial
         <Button className="close-button" variant="outlined" size="small" onClick={onClose} startIcon={<CloseIcon />} >
           CLOSE
         </Button>
-        <Button className="action-button" variant="contained" size="small" onClick={handleCreate} startIcon={<SendIcon />} >
+        <Button className="action-button" variant="contained" size="small" onClick={handleCreate} startIcon={partnerData ? <EditIcon /> : <AddIcon />} >
           {partnerData ? 'UPDATE' : 'CREATE'}
         </Button>
       </DialogActions>
