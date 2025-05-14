@@ -23,7 +23,7 @@
 import IosShare from "@mui/icons-material/IosShare";
 import MoreVert from "@mui/icons-material/MoreVert";
 import Launch from "@mui/icons-material/Launch";
-import { Box, Typography, IconButton, useTheme, Button } from "@mui/material";
+import { Box, Typography, IconButton, Button } from "@mui/material";
 import { CardChip, StatusVariants } from "./CardChip";
 
 export interface AppContent {
@@ -51,7 +51,6 @@ export const ProductCard = ({
   onMore,
   onClick,
 }: CardDecisionProps) => {
-  const theme = useTheme();
 
   const handleDecision = (
     e: React.SyntheticEvent,
@@ -63,158 +62,55 @@ export const ProductCard = ({
   };
 
   return (
-    <Box
-      className="product-cards"
-      sx={{
-        display: "flex",
-        msFlexWrap: "wrap",
-        flexWrap: "wrap",
-        justifyContent: "center",
-      }}
-    >
+    <Box className="custom-cards-list">
       {items.map((item) => {
         const id = item.uuid ?? "";
         const name = item.name ?? "";
         return (
-          <Box
-            key={id}
-            sx={{
-              paddingRight: "10px",
-              paddingLeft: "10px",
-              width: "280px",
-              minWidth: "280px",
-              marginBottom: "20px",
-              borderRadius: "5px",
-              color: "white",
-            }}
-          >
+          <Box key={id} className="custom-card-box">
             <Box
-              className="product-card"
+              className="custom-card"
               sx={{
-                borderRadius: "8px",
-                display: "flex",
-                flexDirection: "column",
-                width: "auto",
-                height: "220px",
-                justifyContent: "space-between",
-                color: "white",
-                cursor: "pointer",
-                ":hover": {
-                  boxShadow: theme.shadows["20"],
-                },
+                height: "220px"
               }}
               onClick={() => {
                 onClick(id);
               }}
             >
-              <Box
-                sx={{
-                  marginBottom: "10px",
-                  width: "100%",
-                  display: "flex",
-                  padding: "10px 10px",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
+              <Box className="custom-card-header">
                 <CardChip status={item.status} statusText={item.status} />
 
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifySelf: "right",
-                  }}
-                >
-                  
+                <Box className="custom-card-header-buttons">                  
                   {item.status !== StatusVariants.draft && (
                     /* If the item is not in draft, sharing is enabled */
                     <IconButton
-                      sx={{
-                        padding: "0",
-                        margin: "0 10px",
-                        borderRadius: "8px",
-                        ":hover": {
-                          opacity: "0.5",
-                          backgroundColor: "transparent",
-                        },
-                      }}
                       onClick={(e) => {
                         handleDecision(e, id, ButtonEvents.SHARE);
                       }}
                     >
-                      <IosShare sx={{ color: "white", fontSize: "20px" }} />
+                      <IosShare sx={{ color: "white"}} />
                     </IconButton>
                   )}
                   <IconButton
-                    sx={{
-                      border: "0",
-                      borderRadius: "8px",
-                      padding: "0",
-                      ":hover": {
-                        opacity: "0.5",
-                        backgroundColor: "transparent",
-                      },
-                    }}
                     onClick={(e) => {
                       handleDecision(e, id, ButtonEvents.MORE);
                     }}
                   >
-                    <MoreVert
-                      sx={{
-                        color: "rgba(255, 255, 255, 0.68)",
-                        fontSize: "20px",
-                        ":hover": { color: " #0156ff" },
-                      }}
-                    />
+                    <MoreVert sx={{ color: "rgba(255, 255, 255, 0.68)" }} />
                   </IconButton>
                 </Box>
               </Box>
-              <Box
-                sx={{
-                  padding: "10px 25px",
-                }}
-              >
-                <Typography
-                  variant="h5"
-                  sx={{
-                    WebkitLineClamp: 2,
-                    display: "WebkitBox",
-                    WebkitBoxOrient: "vertical",
-                    overflow: "hidden",
-                    fontWeight: "bold",
-                    fontSize: "18px",
-                    color: "white",
-                  }}
-                >
+              <Box className="custom-card-content">
+                <Typography variant="h5">
                   {name}
                 </Typography>
                 <br></br>
-                <Typography
-                  variant="label2"
-                  sx={{
-                    color: "white",
-                    height: "48px",
-                  }}
-                >
+                <Typography variant="label2">
                   {item.class}
                 </Typography>
               </Box>
-              <Box sx={{ width: "100%" }}>
-                <Button
-                  variant="contained"
-                  size="small"
-                  sx={{
-                    borderRadius: "8px",
-                    borderTopLeftRadius: "0",
-                    borderTopRightRadius: "0",
-                    background: "rgba(35, 35, 38, 0.76)",
-                    width: "100%",
-                    ":hover": {
-                      background: "linear-gradient(180deg, rgba(1,32,96,0.8323704481792717) 0%, rgba(5,107,153,0.5690651260504201) 100%)"
-                    }
-                  }}
-                  endIcon={<Launch sx={{ color: "white" }} />}
-                >
+              <Box className="custom-card-button-box">
+                <Button variant="contained" size="small" endIcon={<Launch />}>
                   View
                 </Button>
               </Box>

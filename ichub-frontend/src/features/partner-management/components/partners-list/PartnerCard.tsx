@@ -20,8 +20,7 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import Launch from "@mui/icons-material/Launch";
-import { Box, Typography, useTheme, Button } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 export interface AppContent {
   bpnl?: string;
@@ -37,101 +36,31 @@ export const PartnerCard = ({
   items,
   onClick,
 }: CardDecisionProps) => {
-  const theme = useTheme();
 
   return (
-    <Box
-      className="product-cards"
-      sx={{
-        display: "flex",
-        msFlexWrap: "wrap",
-        flexWrap: "wrap",
-        justifyContent: "center",
-      }}
-    >
+    <Box className="custom-cards-list">
       {items.map((item) => {
         const bpnl = item.bpnl ?? "";
         const name = item.name ?? "";
         return (
-          <Box
-            key={bpnl}
-            sx={{
-              paddingRight: "10px",
-              paddingLeft: "10px",
-              width: "280px",
-              minWidth: "280px",
-              marginBottom: "20px",
-              borderRadius: "5px",
-              color: "white",
-            }}
-          >
+          <Box key={bpnl} className="custom-card-box">
             <Box
-              className="product-card"
+              className="custom-card"
               sx={{
-                borderRadius: "8px",
-                display: "flex",
-                flexDirection: "column",
-                width: "auto",
-                height: "150px",
-                justifyContent: "space-between",
-                color: "white",
-                cursor: "pointer",
-                ":hover": {
-                  boxShadow: theme.shadows["20"],
-                },
+                height: "120px",
               }}
               onClick={() => {
                 onClick(bpnl);
               }}
             >
-              <Box
-                sx={{
-                  padding: "10px 25px",
-                }}
-              >
-                <Typography
-                  variant="h5"
-                  sx={{
-                    WebkitLineClamp: 2,
-                    display: "WebkitBox",
-                    WebkitBoxOrient: "vertical",
-                    overflow: "hidden",
-                    fontWeight: "bold",
-                    fontSize: "18px",
-                    color: "white",
-                  }}
-                >
+              <Box className="custom-card-content">
+                <Typography variant="h5">
                   {name}
                 </Typography>
                 <br></br>
-                <Typography
-                  variant="label2"
-                  sx={{
-                    color: "white",
-                    height: "48px",
-                  }}
-                >
+                <Typography variant="label2">
                   {item.bpnl}
                 </Typography>
-              </Box>
-              <Box sx={{ width: "100%" }}>
-                <Button
-                  variant="contained"
-                  size="small"
-                  sx={{
-                    borderRadius: "8px",
-                    borderTopLeftRadius: "0",
-                    borderTopRightRadius: "0",
-                    background: "rgba(35, 35, 38, 0.76)",
-                    width: "100%",
-                    ":hover": {
-                      background: "linear-gradient(180deg, rgba(1,32,96,0.8323704481792717) 0%, rgba(5,107,153,0.5690651260504201) 100%)"
-                    }
-                  }}
-                  endIcon={<Launch sx={{ color: "white" }} />}
-                >
-                  View
-                </Button>
               </Box>
             </Box>
           </Box>
