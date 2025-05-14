@@ -113,7 +113,7 @@ const ProductsList = () => {
         />
       </Grid2>
 
-      <Grid2 size={12} className="flex flex-content-center pagination-text">
+      <Grid2 size={12} className="flex flex-content-center">
         <TablePagination
           rowsPerPageOptions={[rowsPerPage]}
           component="div"
@@ -121,6 +121,7 @@ const ProductsList = () => {
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
+          className="product-list-pagination"
         />
       </Grid2>
     {selectedPart && (

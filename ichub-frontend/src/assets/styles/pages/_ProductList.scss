@@ -54,3 +54,15 @@
         color: $brand-dark !important;
     }
 }
+
+.product-list-pagination {
+    p {
+        color: $brand-text !important;
+    }
+    button{
+        color: $brand-text !important;
+    }
+    button.Mui-disabled {
+        color: $brand-shadow !important;
+    }
+}
