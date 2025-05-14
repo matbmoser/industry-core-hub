@@ -25,13 +25,13 @@ import { useParams } from "react-router-dom";
 import carPartsData from "../tests/payloads/sample-data.json";
 import { StatusTag, Button, Icon } from '@catena-x/portal-shared-components';
 import { PRODUCT_STATUS } from "../types/common";
-import JsonViewerDialog from "../components/general/JsonViewerDialog";
+import JsonViewerDialog from "../features/catalog-management/components/product-detail/JsonViewerDialog";
 import Grid2 from '@mui/material/Grid2';
-import InstanceProductsTable from "../features/CatalogManagement/components/product-detail/InstanceProductsTable";
+import InstanceProductsTable from "../features/catalog-management/components/product-detail/InstanceProductsTable";
 import PageNotification from "../components/general/PageNotification";
-import ShareDropdown from "../features/CatalogManagement/components/product-detail/ShareDropdown";
-import ProductButton from "../features/CatalogManagement/components/product-detail/ProductButton";
-import ProductData from "../features/CatalogManagement/components/product-detail/ProductData";
+import ShareDropdown from "../features/catalog-management/components/product-detail/ShareDropdown";
+import ProductButton from "../features/catalog-management/components/product-detail/ProductButton";
+import ProductData from "../features/catalog-management/components/product-detail/ProductData";
 import ShareDialog from "../components/general/ShareDialog";
 
 const ProductsDetails = () => {

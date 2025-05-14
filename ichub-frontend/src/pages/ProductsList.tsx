@@ -23,11 +23,11 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import carPartsData from "../tests/payloads/sample-data.json";
-import { ProductCard } from "../components/general/ProductCard";
+import { ProductCard } from "../features/catalog-management/components/product-list/ProductCard";
 import { PartInstance } from "../types/product";
 import TablePagination from '@mui/material/TablePagination';
 import { Typography, Grid2 } from '@mui/material';
-import { StatusVariants } from "../components/general/CardChip";
+import { StatusVariants } from "../features/catalog-management/components/product-list/CardChip";
 import ShareDialog from "../components/general/ShareDialog";
 
 
