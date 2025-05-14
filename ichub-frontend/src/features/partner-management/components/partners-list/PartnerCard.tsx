@@ -31,12 +31,10 @@ export interface AppContent {
 export interface CardDecisionProps {
   items: AppContent[];
   onClick: (e: string) => void;
+  onDelete?: (e: string) => void;
 }
 
-export const PartnerCard = ({
-  items,
-  onClick,
-}: CardDecisionProps) => {
+export const PartnerCard = ({ items, onClick, onDelete }: CardDecisionProps) => {
 
   return (
     <Box className="custom-cards-list">
@@ -58,7 +56,10 @@ export const PartnerCard = ({
                 <Box></Box>
                 <Box className="custom-card-header-buttons">
                   <IconButton
-                    onClick={() => {}}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete?.(bpnl);
+                    }}
                   >
                     <Delete sx={{ color: "rgba(255, 255, 255, 0.68)" }} />
                   </IconButton>

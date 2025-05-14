@@ -28,13 +28,30 @@ import TablePagination from '@mui/material/TablePagination';
 import { Typography, Grid2, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { PartnerCard } from "../features/partner-management/components/partners-list/PartnerCard";
+import CreatePartnerDialog from "../features/partner-management/components/general/CreatePartnerDialog";
 
 const PartnersList = () => {
   const [partnerList, setPartnerList] = useState<PartnerInstance[]>([]);
   const [initialPartnerList, setInitialPartnerList] = useState<PartnerInstance[]>([]);
+  const [createPartnerDialogOpen, setCreatePartnerDialogOpen] = useState(false);
   const [page, setPage] = useState(0);
   const rowsPerPage = 10;
   //const navigate = useNavigate();
+
+  const handleOpenCreatePartnerDialog = () => {
+    setCreatePartnerDialogOpen(true);
+  };
+
+  const handleCloseCreatePartnerDialog = () => {
+    setCreatePartnerDialogOpen(false);
+  };
+
+  const handleCreatePartner = (newPartner: PartnerInstance) => {
+    setPartnerList((prev) => [...prev, newPartner]);
+    setInitialPartnerList((prev) => [...prev, newPartner]);
+    // Here we just set the new partner to the list
+    // Afterwards we would have to call the API to store it
+  };
 
   const handleChangePage = (
     _event: React.MouseEvent<HTMLButtonElement> | null,
@@ -65,6 +82,11 @@ const PartnersList = () => {
     //navigate(`/partner/${partnerBPNL}`);  // Navigate to the details page
   };
 
+  const handleDelete = (bpnlToDelete: string) => {
+    setPartnerList((prev) => prev.filter((partner) => partner.bpnl !== bpnlToDelete));
+    setInitialPartnerList((prev) => prev.filter((partner) => partner.bpnl !== bpnlToDelete));
+  };
+
   const visibleRows = useMemo(
     () => {
       return [...partnerList].slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -81,12 +103,13 @@ const PartnersList = () => {
       </Grid2>
 
       <Grid2 size={12} container justifyContent="flex-end" marginRight={6} marginBottom={2}>
-        <Button className="add-partner-button" variant="outlined" size="small" onClick={()=>{}} startIcon={<AddIcon />} >New</Button>
+        <Button className="add-partner-button" variant="outlined" size="small" onClick={handleOpenCreatePartnerDialog} startIcon={<AddIcon />} >New</Button>
       </Grid2>
 
       <Grid2 className="flex flex-content-center" size={12}>
         <PartnerCard
           onClick={handleButtonClick}
+          onDelete={handleDelete}
           items={visibleRows.map((partner) => ({
             bpnl: partner.bpnl,
             name: partner.name,
@@ -105,6 +128,7 @@ const PartnersList = () => {
           className="product-list-pagination"
         />
       </Grid2>
+      <CreatePartnerDialog open={createPartnerDialogOpen} onClose={handleCloseCreatePartnerDialog} onSave={handleCreatePartner}/>
     </Grid2>
   );
 };
