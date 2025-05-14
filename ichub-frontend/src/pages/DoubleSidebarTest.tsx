@@ -20,17 +20,20 @@
  * SPDX-License-Identifier: Apache-2.0
 ********************************************************************************/
 
+import Grid2 from '@mui/material/Grid2';
 
-import {
-    Storefront,
-    Category,
-    People,
-    Assignment
-  } from '@mui/icons-material';
-  
-  export const features = [
-    { icon: <Storefront />, path: '/catalog', disabled: false },
-    { icon: <People />, path: '/shared', disabled: false },
-    { icon: <Category />, path: '/categories', disabled: true },
-    { icon: <Assignment />, path: '/status', disabled: true }
-  ];
+const DoubleSidebarTest = () => {
+
+  return (
+    <Grid2 container direction="row">
+        <Grid2 size={2} sx={{backgroundColor: '#056b9991', height: '100vh'}}>
+            <p style={{color: 'white', margin: '20px'}}>Second sidebar</p>
+        </Grid2>
+        <Grid2 size={10} sx={{backgroundColor: '#000f16'}}>
+            <p style={{color: 'white', margin: '20px'}}>Content</p>
+        </Grid2>
+    </Grid2>
+  );
+}
+
+export default DoubleSidebarTest

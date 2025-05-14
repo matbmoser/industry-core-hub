@@ -25,6 +25,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./layouts/MainLayout";
 import ProductsList from './pages/ProductsList';
 import ProductsDetails from './pages/ProductsDetails';
+import DoubleSidebarTest from "./pages/DoubleSidebarTest";
 
 export default function AppRoutes() {
   return (
@@ -36,7 +37,7 @@ export default function AppRoutes() {
 
           {/* Here we must change the elements as we go along as we develop */}
           <Route path="/catalog" element={<ProductsList />} />
-          <Route path="/categories" element={<ProductsList />} />
+          <Route path="/categories" element={<DoubleSidebarTest />} />
           <Route path="/shared" element={<ProductsList />} />
           <Route path="/status" element={<ProductsList />} />
         </Route>
