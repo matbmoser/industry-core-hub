@@ -1,15 +1,22 @@
 [
     {
         "name": "Volkswagen AG",
-        "bpnl": "BPNL42621500AS61"
+        "bpnl": "BPNL4565423555AS"
     },
     {
         "name": "BMW Racing Gmbh",
-        "bpnl": "BPNL3A4T8A5621S3"
+        "bpnl": "BPNL0000001023"
     },
     {
-        "name": "John the Recycler KG",
-        "bpnl": "BPNL5ASD5428800A"
+        "name": "BASF",
+        "bpnl": "BPNL5004654513"
+    },
+    {
+        "name": "Mercedes-Benz",
+        "bpnl": "BPNL856ASD9656A"
+    },
+    {
+        "name": "BOSCH",
+        "bpnl": "BPNL5470544322"
     }
 ]
-  
