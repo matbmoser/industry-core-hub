@@ -23,6 +23,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import carPartsData from "../tests/payloads/sample-data.json";
+import sharedPartners from '../tests/payloads/shared-partners.json';
 import { StatusTag, Button, Icon } from '@catena-x/portal-shared-components';
 import { PRODUCT_STATUS } from "../types/common";
 import JsonViewerDialog from "../features/catalog-management/components/product-detail/JsonViewerDialog";
@@ -127,7 +128,7 @@ const ProductsDetails = () => {
             <ShareDropdown handleCopy={handleCopy} handleDownload={handleDownload} handleShare={handleOpenShareDialog} />
           </Grid2>
         </Grid2>
-        <ProductData part={part} />
+        <ProductData part={part} sharedParts={sharedPartners} />
         <Grid2 container spacing={2} direction="column" className="add-on-buttons">
 
           <ProductButton gridSize={{ sm: 12 }} buttonText="DIGITAL PRODUCT PASSPORT v5.0.0" onClick={handleOpenJsonDialog} />
