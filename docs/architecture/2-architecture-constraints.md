@@ -16,7 +16,7 @@ The High-Level System Architecture for the Industry Core Hub is presented next.
 
 The main components of the ICH are the ICH Backend and the ICH Frontend. 
 The Backend is written in Python and offers a simplify FastAPI and Backend Services that enable easy integration with a database and external components such as the Eclipse Dataspace Connector (EDC) and the industry components (DTR). The API offered is consumed by the users through the frontend. Use cases can also consume that FastAPI directly.
-The Backend component includes two SDK modules provided by Tractus-X ([Tractus_X SDK](https://github.com/eclipse-tractusx/tractusx-sdk)). The DataSpace SDK module enables interactions with the EDC and the Industry SDK module with the DTR. 
+The Backend component includes two SDK modules provided by Tractus-X ([Tractus_X SDK](https://github.com/eclipse-tractusx/tractusx-sdk)). The DataSpace SDK module enables interactions with the EDC and the Industry SDK module with the DTR and the Submodel Server. 
 
 The Frontend component is built on React.js and offers an interface where users can upload information about their parts and register them in the dataspace.
 
@@ -35,7 +35,7 @@ The Industry Core Hub backend follows a service-oriented architecture with clear
 
 ![ICHBackendArchitecture](./media/ICH_Backend_Structure.png)
 
-The backend implements three core services that encapsulate business logic:
+The backend implements four core services that encapsulate business logic:
 #### Part Management Service
 The Part Management Service handles catalog parts, serialized parts, JIS parts, and batches. It provides functionality to:
 
@@ -61,14 +61,17 @@ The Twin Management Service handles digital twins and their aspects. It integrat
 - Define and update twin aspects
 
 Digital twins are central to the Catena-X ecosystem, providing digital representations of physical parts.
+#### Submodel Dispatcher Service
+This implementation just checks if the twin where the submodel belongs to is shared with the business partner via any data exchange agreement. For this version it does not check the semantic ID of the sumodel. This could later be done when the ICH manages the submodel contracts behind the data exchange agreements. 
 #### FastAPI
 The backend exposes a RESTful API with endpoints organized by service domain:
 
-| Service Domain     | Endpoint Pattern       | Description                                                           |
-|--------------------|------------------------|-----------------------------------------------------------------------|
-| Part Management    | /part-management/*     | Endpoints for managing catalog parts and their instances              |
-| Partner Management | /partner-management/*  | Endpoints for managing business partners and data exchange agreements |
-| Twin Management    | /twin-management/*     | Endpoints for managing digital twins                                  |
+| Service Domain      | Endpoint Pattern       | Description                                                                                                |
+|---------------------|------------------------|------------------------------------------------------------------------------------------------------------|
+| Part Management     | /part-management/*     | Endpoints for managing catalog parts and their instances                                                   |
+| Partner Management  | /partner-management/*  | Endpoints for managing business partners and data exchange agreements                                      |
+| Twin Management     | /twin-management/*     | Endpoints for managing digital twins                                                                       |
+| Submodel Dispatcher | /submodel-dispatcher/* | Internal API called by EDC Data Planes in order the deliver data of of the internall used Submodel Service |
 
 
 ### ICH Frontend Component
