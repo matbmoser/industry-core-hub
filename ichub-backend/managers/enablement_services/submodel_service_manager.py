@@ -26,6 +26,7 @@ from hashlib import sha256
 
 from config.config_manager import ConfigManager
 from config.log_manager import LoggingManager
+from tools import InvalidUUIDError
 
 from tractusx_sdk.industry.adapters.submodel_adapter_factory import SubmodelAdapterFactory
 from tractusx_sdk.industry.adapters.submodel_adapters.file_system_adapter import FileSystemAdapter
@@ -42,6 +43,11 @@ class SubmodelServiceManager:
     def upload_twin_aspect_document(self, global_id : UUID, semantic_id: str, payload: Dict[str, Any]):
         """Upload a submodel to the service."""
         # Implementation for uploading a submodel
+        if not isinstance(global_id, UUID):
+            try:
+                global_id = UUID(global_id)
+            except ValueError:
+                raise InvalidUUIDError(global_id)
         sha256_semantic_id = sha256(semantic_id.encode()).hexdigest()
         if not self.file_system.exists(sha256_semantic_id):
             self.file_system.create_directory(sha256_semantic_id)
@@ -55,6 +61,11 @@ class SubmodelServiceManager:
     def get_twin_aspect_document(self, global_id: UUID, semantic_id: str) -> Dict[str, Any]:
         """Get a submodel from the service."""
         # Implementation for retrieving a submodel
+        if not isinstance(global_id, UUID):
+            try:
+                global_id = UUID(global_id)
+            except ValueError:
+                raise InvalidUUIDError(global_id)
         sha256_semantic_id = sha256(semantic_id.encode()).hexdigest()
         self.logger.info(f"Retrieving submodel with Global ID: {global_id}")
         self.logger.debug(f"Semantic ID: {semantic_id}")
