@@ -22,20 +22,21 @@
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
 
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 from uuid import UUID
 
-from pydantic import BaseModel, Field
-
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, Request, Header
 from fastapi.responses import JSONResponse
 
+from services.submodel_dispatcher_service import SubmodelDispatcherService, SubmodelNotSharedWithBusinessPartnerError
 from services.part_management_service import PartManagementService
 from services.partner_management_service import PartnerManagementService
 from services.twin_management_service import TwinManagementService
+from services.part_sharing_shortcut_service import PartSharingShortcutService
 from models.services.part_management import CatalogPartBase, CatalogPartRead, CatalogPartCreate
 from models.services.partner_management import BusinessPartnerRead, BusinessPartnerCreate, DataExchangeAgreementRead
 from models.services.twin_management import TwinRead, TwinAspectRead, TwinAspectCreate, CatalogPartTwinRead, CatalogPartTwinDetailsRead, CatalogPartTwinCreate, CatalogPartTwinShare
+from tools.submodel_type_util import InvalidSemanticIdError
 
 tags_metadata = [
     {
@@ -61,6 +62,8 @@ app = FastAPI(title="Industry Core Hub Backend API", version="0.0.1", openapi_ta
 part_management_service = PartManagementService()
 partner_management_service = PartnerManagementService()
 twin_management_service = TwinManagementService()
+part_sharing_shortcut_service = PartSharingShortcutService()
+submodel_dispatcher_service = SubmodelDispatcherService()
 
 @app.get("/part-management/catalog-part/{manufacturer_id}/{manufacturer_part_id}", response_model=CatalogPartRead, tags=["Part Management"])
 async def part_management_get_catalog_part(manufacturer_id: str, manufacturer_part_id: str) -> Optional[CatalogPartRead]:
@@ -115,3 +118,43 @@ async def twin_management_share_catalog_part_twin(catalog_part_twin_share: Catal
 @app.post("/twin-management/twin-aspect", response_model=TwinAspectRead, tags=["Twin Management"])
 async def twin_management_create_twin_aspect(twin_aspect_create: TwinAspectCreate) -> TwinAspectRead:
     return twin_management_service.create_twin_aspect(twin_aspect_create)
+
+@app.post("/share/catalog-part", response_model=CatalogPartTwinDetailsRead, tags=["Twin Management"])
+async def twin_management_create_part_sharing_shortcut(catalog_part_twin_share: CatalogPartTwinShare,
+    auto_generate_part_type_information_submodel:bool = True) -> CatalogPartTwinDetailsRead:
+    return part_sharing_shortcut_service.create_catalog_part_sharing_shortcut(
+        catalog_part_twin_share,
+        auto_generate_part_type_information=auto_generate_part_type_information_submodel
+    )
+
+@app.get("/submodel-dispatcher/{semantic_id}/{global_id}/submodel/$value", response_model=Dict[str, Any], tags=["Submodel Dispatcher"])
+@app.get("/submodel-dispatcher/{semantic_id}/{global_id}/submodel", response_model=Dict[str, Any], tags=["Submodel Dispatcher"])
+@app.get("/submodel-dispatcher/{semantic_id}/{global_id}", response_model=Dict[str, Any], tags=["Submodel Dispatcher"])
+async def submodel_dispatcher_get_submodel_content_submodel_value(
+    semantic_id: str,
+    global_id: UUID,
+    edc_bpn: str = Header(alias="Edc-Bpn", description="The BPN of the consumer delivered by the EDC Data Plane"),
+    edc_contract_agreement_id: str = Header(alias="Edc-Contract-Agreement-Id", description="The contract agreement id of the consumer delivered by the EDC Data Plane")
+    ) -> Dict[str, Any]:
+
+    return submodel_dispatcher_service.get_submodel_content(edc_bpn, edc_contract_agreement_id, semantic_id, global_id)
+
+@app.exception_handler(SubmodelNotSharedWithBusinessPartnerError)
+async def submodel_not_shared_with_business_partner_exception_handler(
+        request: Request,
+        exc: SubmodelNotSharedWithBusinessPartnerError) -> JSONResponse:
+    """
+    Custom exception handler for SubmodelNotSharedWithBusinessPartnerError.
+    Returns a 403 Forbidden response with the error message.
+    """
+    return JSONResponse(status_code=403, content={"detail": str(exc)})
+
+@app.exception_handler(InvalidSemanticIdError)
+async def invalid_semantic_id_exception_handler(
+        request: Request,
+        exc: InvalidSemanticIdError) -> JSONResponse:
+    """
+    Custom exception handler for InvalidSemanticIdError.
+    Returns a 400 Bad Request with the error message.
+    """
+    return JSONResponse(status_code=400, content={"detail": str(exc)})
