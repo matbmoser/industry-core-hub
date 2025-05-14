@@ -21,7 +21,7 @@
  ********************************************************************************/
 
 import { useState, useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import sharedPartners from "../tests/payloads/shared-partners.json";
 import { PartnerInstance } from "../types/partner";
 import TablePagination from '@mui/material/TablePagination';
@@ -34,7 +34,7 @@ const PartnersList = () => {
   const [initialPartnerList, setInitialPartnerList] = useState<PartnerInstance[]>([]);
   const [page, setPage] = useState(0);
   const rowsPerPage = 10;
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const handleChangePage = (
     _event: React.MouseEvent<HTMLButtonElement> | null,
