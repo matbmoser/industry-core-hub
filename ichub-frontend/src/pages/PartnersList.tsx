@@ -25,7 +25,8 @@ import { useNavigate } from "react-router-dom";
 import sharedPartners from "../tests/payloads/shared-partners.json";
 import { PartnerInstance } from "../types/partner";
 import TablePagination from '@mui/material/TablePagination';
-import { Typography, Grid2 } from '@mui/material';
+import { Typography, Grid2, Button } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import { PartnerCard } from "../features/partner-management/components/partners-list/PartnerCard";
 
 const PartnersList = () => {
@@ -76,6 +77,10 @@ const PartnersList = () => {
         <Typography className="text">
           Partners View
         </Typography>
+      </Grid2>
+
+      <Grid2 size={12} container justifyContent="flex-end" marginRight={6} marginBottom={2}>
+        <Button className="add-partner-button" variant="outlined" size="small" onClick={()=>{}} startIcon={<AddIcon />} >New</Button>
       </Grid2>
 
       <Grid2 className="flex flex-content-center" size={12}>

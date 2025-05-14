@@ -20,7 +20,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { Box, Typography } from "@mui/material";
+import Delete from "@mui/icons-material/Delete";
+import { Box, Typography, IconButton } from "@mui/material";
 
 export interface AppContent {
   bpnl?: string;
@@ -47,12 +48,22 @@ export const PartnerCard = ({
             <Box
               className="custom-card"
               sx={{
-                height: "120px",
+                height: "130px",
               }}
               onClick={() => {
                 onClick(bpnl);
               }}
             >
+              <Box className="custom-card-header">
+                <Box></Box>
+                <Box className="custom-card-header-buttons">
+                  <IconButton
+                    onClick={() => {}}
+                  >
+                    <Delete sx={{ color: "rgba(255, 255, 255, 0.68)" }} />
+                  </IconButton>
+                </Box>
+              </Box>
               <Box className="custom-card-content">
                 <Typography variant="h5">
                   {name}
