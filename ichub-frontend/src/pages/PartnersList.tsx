@@ -61,7 +61,8 @@ const PartnersList = () => {
 
   const handleButtonClick = (partnerBPNL: string) => {
     console.log('Button clicked for partner:', partnerBPNL);
-    navigate(`/partner/${partnerBPNL}`);  // Navigate to the details page
+    // For now we will just log the partnerBPNL
+    //navigate(`/partner/${partnerBPNL}`);  // Navigate to the details page
   };
 
   const visibleRows = useMemo(
