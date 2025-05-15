@@ -76,8 +76,9 @@ The backend exposes a RESTful API with endpoints organized by service domain:
 
 ### ICH Frontend Component
 
+The Industry Core Hub frontend is built using React with Material UI (MUI) and the Catena-X Portal shared component library. It implements a component-based architecture focused on catalog and product management. The high level architecture is shown in the following figure.
 
-tbc.
+![ICHFrontend_High_Level_Architecture](../media/ICH_Frontend_Architecture.png)
 
 ### ICH Database
 
