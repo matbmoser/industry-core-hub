@@ -80,6 +80,64 @@ The Industry Core Hub frontend is built using React with Material UI (MUI) and t
 
 ![ICHFrontend_High_Level_Architecture](./media/ICH_Frontend_Architecture.png)
 
+The architecture has been structured in layers. The Entry Points layer holds the components that start the application and upload the rest of components in other layers. 
+The Styling layer presents the themes and scss styles used in the application. The key styling features are:
+- Custom theme defined in theme.ts
+- Global styles in main.scss
+- Component-specific styling in SCSS files
+- Integration with Catena-X Portal design system
+
+The pages and components developed in the project are allocated in the Pages and the Core Components layers.
+
+#### Page Layer 
+The frontend consists of two primary page components that serve as containers for other UI elements.
+- ProductsList Page: displays a grid of product cards with pagination and provides navigation capabilities via the sidebar. Its key features are:
+  - Grid layout of products using ProductCard components
+  - Collapsible sidebar navigation
+  - Share functionality via ShareDialog
+  - Pagination using MUI TablePagination
+- ProductDetails Page: displays detailed information about a specific product and offers various actions.
+  - Product status indication 
+  - Product information display
+  - Action buttons for accessing different product aspects
+  - JSON data viewing via JsonViewerDialog
+  - Sharing options via ShareDialog and ShareDropdown
+
+#### Core Components Layer
+
+This layer holds the following components:
+- ProductCard: A card component that displays basic product information and provides click and share actions. Its key features are:
+  - Displays product name, class, and status
+  - Click handler for navigation to details
+  - Share button for opening ShareDialog
+    
+ - ShareDialog: A dialog component used for sharing product information. Its key features are:
+  - Displays sharing options for a product
+  - Used in both ProductsList and ProductsDetails pages
+
+ - JsonViewerDialog: A dialog component that renders structured JSON data in a readable format. Its key features are:
+  - Displays product data in JSON format
+  - Used primarily in ProductsDetails for viewing the Digital Product Passport
+
+ - Sidebar: A collapsible navigation sidebar component. Its key features are:
+  - Provides navigation between different application sections
+  - Can be toggled open/closed
+  - Adjusts main content layout when open
+
+- ProductData: It is features specific component that displays detailed information about a product.
+- ProductButton: It is features specific component. It is a specialized button component for product-related actions.
+- ShareDropdown: It is features specific component. A dropdown menu with sharing options.
+- InstanceProductsTable: It is features specific component. A table component that displays product instances.
+
+#### Integration with UI Frameworks
+
+The pages and components in the ICH Frontend use components provided by MUI and Catena-X frameworks.
+
+The Material UI (MUI) Framework provides core UI components like Grid, Typography, IconButton, Drawer and AppBar.
+The Catena-X Portal Shared Components provide specialized components like StatusTag, Button, and Icon.
+
+This integration ensures consistency with the broader Catena-X ecosystem while leveraging the robust component library of Material UI.
+
 ### ICH Database
 
 The design followed to model the database with the information required by the ICH is shown in the following figure.
