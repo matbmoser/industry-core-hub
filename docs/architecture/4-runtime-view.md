@@ -14,7 +14,7 @@ In future versions this user will be the ICH frontend or any component of a use 
 The interactions are shown in the diagrams below.
 For the purpose of simplifying, the interactions via ICH Frontend are not shown completely.
 
-### Interaction diagrams
+### Backend Interaction diagrams
 The following figure presents the process followed at ICH Backend level.
 
 ![ICHBackendSequenceDiagram](./media/BackendSequenceDiagram/BackendSequenceDiagram.png)
@@ -43,6 +43,15 @@ The following diagrams present a closer view of Steps1-3, Step4-6 and Step7-8
 
 ![ICHBackendSequenceDiagram(Steps7-8)](./media/BackendSequenceDiagram/BackendSequenceDiagram(Steps7-8).png)
 
+### Frontend Interaction diagrams
+The following figure presents the process followed at ICH Frontend level. The following images present the sequence followed in the two main pages of the component (ProductLists and ProductDetails)
+
+![ICHFrontendSequenceDiagramProductLists](./media/FrontendSequenceDiagram/ProductListSequenceDiagram.png)
+
+![ICHFrontendSequenceDiagramProductDetails](./media/FrontendSequenceDiagram/ProducDetailsSequenceDiagram.png)
+
+### Frontend-Backend Integration diagrams
+TBC
   
 ### NOTICE
 
