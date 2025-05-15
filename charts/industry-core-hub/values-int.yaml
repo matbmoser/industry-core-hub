@@ -78,7 +78,30 @@ frontend:
               backend:
                 service: "frontend"
                 port: 8080
-backend: 
+backend:
+  # -- Persistance configuration for the backend
+  persistence:
+    # -- Create a PVC to persist storage (if disabled, data and logs will not be persisted)
+    enabled: true
+    data:
+      # -- Enable data persistence
+      enabled: true
+      # -- Storage size for data
+      size: 1Gi
+      # -- Access mode for data volume
+      accessMode: ReadWriteOnce
+      # -- Storage class for data volume
+      storageClass: "default"
+    logs:
+      # -- Enable logs persistence
+      enabled: true
+      # -- Storage size for logs
+      size: 1Gi
+      # -- Access mode for logs volume
+      accessMode: ReadWriteOnce
+      # -- Storage class for logs volume
+      storageClass: "default"
+
   configuration:
     authorization:
       enabled: true
