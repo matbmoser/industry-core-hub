@@ -111,15 +111,15 @@ This layer holds the following components:
   - Click handler for navigation to details
   - Share button for opening ShareDialog
     
- - ShareDialog: A dialog component used for sharing product information. Its key features are:
+- ShareDialog: A dialog component used for sharing product information. Its key features are:
   - Displays sharing options for a product
   - Used in both ProductsList and ProductsDetails pages
 
- - JsonViewerDialog: A dialog component that renders structured JSON data in a readable format. Its key features are:
+- JsonViewerDialog: A dialog component that renders structured JSON data in a readable format. Its key features are:
   - Displays product data in JSON format
   - Used primarily in ProductsDetails for viewing the Digital Product Passport
 
- - Sidebar: A collapsible navigation sidebar component. Its key features are:
+- Sidebar: A collapsible navigation sidebar component. Its key features are:
   - Provides navigation between different application sections
   - Can be toggled open/closed
   - Adjusts main content layout when open
