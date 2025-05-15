@@ -37,7 +37,7 @@ class SubmodelServiceManager:
     logger = LoggingManager.get_logger(__name__)
 
     def __init__(self):
-        submodel_service_path = ConfigManager.get_config("submodel-service.path", default={})
+        submodel_service_path = ConfigManager.get_config("submodel_service.path", default={})
         self.file_system = SubmodelAdapterFactory.get_file_system(root_path=submodel_service_path)
 
     def upload_twin_aspect_document(self, global_id : UUID, semantic_id: str, payload: Dict[str, Any]):
