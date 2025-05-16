@@ -12,7 +12,7 @@ The figure also presents the relations of the ICH with the use cases and users. 
 ### Architectural Overview- ICH components
 The High-Level System Architecture for the Industry Core Hub is presented next.
 
-![ICH_High_Level_Architecture](./media/ICH_HighLevelArchitecture.png)
+![ICH_High_Level_Architecture](./media/ICH_HighLevelArchitecture.svg)
 
 The main components of the ICH are the ICH Backend and the ICH Frontend. 
 The Backend is written in Python and offers a simplify FastAPI and Backend Services that enable easy integration with a database and external components such as the Eclipse Dataspace Connector (EDC) and the industry components (DTR). The API offered is consumed by the users through the frontend. Use cases can also consume that FastAPI directly.
@@ -20,20 +20,20 @@ The Backend component includes two SDK modules provided by Tractus-X ([Tractus_X
 
 The Frontend component is built on React.js and offers an interface where users can upload information about their parts and register them in the dataspace.
 
-![Building Blocks](../media/BuildingBlocks.svg)
+![Building Blocks](../media/BuildingBlocks.png)
 
 In addition, the ICH includes a metadata database where essential information for the parts, assets, twins and contracts is registered ([ICH Database section](https://github.com/flarrinaga/industry-core-hub/blob/development/docs/architecture/2-architecture-constraints.md#ich-database))
 
 The following image shows how the number of operations a use case needs to perfom through the ICH is reduced in comparison to use cases accessing directly to the data space components or only using the SDK libraries.
 Changes in any of the components only affect libraries. This implies that use cases using the ICH will not be affected by those changes while use cases accessing directly will need to be updated.  
 
-![ICHOperation](../media/BackendArchitecture.svg)
+![ICHOperation](../media/BackendArchitecture.png)
 
 ### ICH Backend Component
 
 The Industry Core Hub backend follows a service-oriented architecture with clear separation of concerns. It is built using FastAPI and implements a layered architecture with controllers, services, and repositories.
 
-![ICHBackendArchitecture](./media/ICH_Backend_Structure.svg)
+![ICHBackendArchitecture](./media/ICH_BackendStructure.svg)
 
 The backend implements four core services that encapsulate business logic:
 #### Part Management Service
