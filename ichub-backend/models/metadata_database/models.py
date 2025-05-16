@@ -121,7 +121,7 @@ class Twin(SQLModel, table=True):
     global_id: UUID = Field(default_factory=uuid4, unique=True, description="The global ID (aka. Catena-X ID) of the twin.")
     aas_id: UUID = Field(default_factory=uuid4, unique=True, description="The AAS ID of the twin.")
     created_date: datetime = Field(index=True, default_factory=datetime.utcnow, description="The creation date of the twin.")
-    modified_date: datetime = Field(inted=True, default_factory=datetime.utcnow, description="The last modification date of the twin.")
+    modified_date: datetime = Field(index=True, default_factory=datetime.utcnow, description="The last modification date of the twin.")
     asset_class: Optional[str] = Field(default=None, description="The asset class of the twin.")
     additional_context: Optional[str] = Field(default=None, description="Additional context for the twin.")
 
