@@ -2,7 +2,7 @@
 The introduction presents the context where the Industry Core Hub will operate.
 More detail about the relation of the Industry Core Hub and other components of Catena-X is shown below. As stated in the introduction, the Industry Core Hub will act as a middleware layer that orchestrates interactions between applications and Tractus-X components, enabling organizations to implement dataspace connectivity without deep expertise in each component.
 
-![Catena_X_Building_Blocks](./media/ICH_Catena_X_BuildingBlocks.png)
+![Catena_X_Building_Blocks](./media/ICH_Catena_X_BuildingBlocks.svg)
 
 The following figure shows more detail about the different calls between the components. These calls are made using the APIs offered by each of the components. 
 The figure also presents the relations of the ICH with the use cases and users. Users will interact with the ICH by means of a user interface (frontend)
@@ -20,20 +20,20 @@ The Backend component includes two SDK modules provided by Tractus-X ([Tractus_X
 
 The Frontend component is built on React.js and offers an interface where users can upload information about their parts and register them in the dataspace.
 
-![Building Blocks](../media/BuildingBlocks.png)
+![Building Blocks](../media/BuildingBlocks.svg)
 
 In addition, the ICH includes a metadata database where essential information for the parts, assets, twins and contracts is registered ([ICH Database section](https://github.com/flarrinaga/industry-core-hub/blob/development/docs/architecture/2-architecture-constraints.md#ich-database))
 
 The following image shows how the number of operations a use case needs to perfom through the ICH is reduced in comparison to use cases accessing directly to the data space components or only using the SDK libraries.
 Changes in any of the components only affect libraries. This implies that use cases using the ICH will not be affected by those changes while use cases accessing directly will need to be updated.  
 
-![ICHOperation](../media/BackendArchitecture.png)
+![ICHOperation](../media/BackendArchitecture.svg)
 
 ### ICH Backend Component
 
 The Industry Core Hub backend follows a service-oriented architecture with clear separation of concerns. It is built using FastAPI and implements a layered architecture with controllers, services, and repositories.
 
-![ICHBackendArchitecture](./media/ICH_Backend_Structure.png)
+![ICHBackendArchitecture](./media/ICH_Backend_Structure.svg)
 
 The backend implements four core services that encapsulate business logic:
 #### Part Management Service
@@ -78,7 +78,7 @@ The backend exposes a RESTful API with endpoints organized by service domain:
 
 The Industry Core Hub frontend is built using React with Material UI (MUI) and the Catena-X Portal shared component library. It implements a component-based architecture focused on catalog and product management. The high level architecture is shown in the following figure.
 
-![ICHFrontend_High_Level_Architecture](./media/ICH_Frontend_Architecture.png)
+![ICHFrontend_High_Level_Architecture](./media/ICH_Frontend_Architecture.svg)
 
 The architecture has been structured in layers. The Entry Points layer holds the components that start the application and upload the rest of components in other layers. 
 The Styling layer presents the themes and scss styles used in the application. The key styling features are:
