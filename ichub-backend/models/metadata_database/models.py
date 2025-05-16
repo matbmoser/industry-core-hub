@@ -504,6 +504,9 @@ class EnablementServiceStack(SQLModel, table=True):
 
     # Relationships
     legal_entity: LegalEntity = Relationship(back_populates="enablement_service_stacks")
+    twin_aspect_registrations: List["TwinAspectRegistration"] = Relationship(back_populates="enablement_service_stack")
+    twin_registrations: List["TwinRegistration"] = Relationship(back_populates="enablement_service_stack")
+
 
     __tablename__ = "enablement_service_stack"
 
@@ -585,7 +588,7 @@ class TwinAspectRegistration(SQLModel, table=True):
 
     # Relationships
     twin_aspect: TwinAspect = Relationship(back_populates="twin_aspect_registrations")
-    enablement_service_stack: EnablementServiceStack = Relationship()
+    enablement_service_stack: EnablementServiceStack = Relationship(back_populates="twin_aspect_registrations")
 
     __tablename__ = "twin_aspect_registration"
 
@@ -646,6 +649,6 @@ class TwinRegistration(SQLModel, table=True):
 
     # Relationships
     twin: Twin = Relationship(back_populates="twin_registrations")
-    enablement_service_stack: EnablementServiceStack = Relationship()
+    enablement_service_stack: EnablementServiceStack = Relationship(back_populates="twin_registrations")
 
     __tablename__ = "twin_registration"
