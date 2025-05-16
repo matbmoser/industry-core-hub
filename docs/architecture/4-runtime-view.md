@@ -17,7 +17,7 @@ For the purpose of simplifying, the interactions via ICH Frontend are not shown 
 ### Backend Interaction diagrams
 The following figure presents the process followed at ICH Backend level.
 
-![ICHBackendSequenceDiagram](./media/BackendSequenceDiagram/BackendSequenceDiagram.png)
+![ICHBackendSequenceDiagram](./media/BackendSequenceDiagram/BackendSequenceDiagram.svg)
 
 The process consists of 8 steps:
 - Step 1: Retrieves the catalog part entity according to the catalog part data (manufacturer_id, manufacturer_part_id)
@@ -33,22 +33,22 @@ The following diagrams present a closer view of Steps1-3, Step4-6 and Step7-8
 
 #### Steps1-3
 
-![ICHBackendSequenceDiagram(Steps1-3)](./media/BackendSequenceDiagram/BackendSequenceDiagram(Steps1-3).png)
+![ICHBackendSequenceDiagram(Steps1-3)](./media/BackendSequenceDiagram/BackendSequenceDiagram(Steps1-3).svg)
 
 #### Steps4-6
 
-![ICHBackendSequenceDiagram(Steps4-6)](./media/BackendSequenceDiagram/BackendSequenceDiagram(Steps4-6).png)
+![ICHBackendSequenceDiagram(Steps4-6)](./media/BackendSequenceDiagram/BackendSequenceDiagram(Steps4-6).svg)
 
 #### Steps7-8
 
-![ICHBackendSequenceDiagram(Steps7-8)](./media/BackendSequenceDiagram/BackendSequenceDiagram(Steps7-8).png)
+![ICHBackendSequenceDiagram(Steps7-8)](./media/BackendSequenceDiagram/BackendSequenceDiagram(Steps7-8).svg)
 
 ### Frontend Interaction diagrams
 The following figure presents the process followed at ICH Frontend level. The following images present the sequence followed in the two main pages of the component (ProductLists and ProductDetails)
 
-![ICHFrontendSequenceDiagramProductLists](./media/FrontendSequenceDiagram/ProductListSequenceDiagram.png)
+![ICHFrontendSequenceDiagramProductLists](./media/FrontendSequenceDiagram/ProductListSequenceDiagram.svg)
 
-![ICHFrontendSequenceDiagramProductDetails](./media/FrontendSequenceDiagram/ProducDetailsSequenceDiagram.png)
+![ICHFrontendSequenceDiagramProductDetails](./media/FrontendSequenceDiagram/ProducDetailsSequenceDiagram.svg)
 
 ### Frontend-Backend Integration diagrams
 TBC
