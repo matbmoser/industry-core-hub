@@ -25,7 +25,7 @@
 from typing import Any, Dict, List, Optional
 from uuid import UUID
 
-from fastapi import FastAPI, Request, Header
+from fastapi import FastAPI, Request, Header, Body
 from fastapi.responses import JSONResponse
 
 from services.submodel_dispatcher_service import SubmodelDispatcherService, SubmodelNotSharedWithBusinessPartnerError
@@ -134,8 +134,8 @@ async def twin_management_create_part_sharing_shortcut(catalog_part_twin_share: 
 async def submodel_dispatcher_get_submodel_content_submodel_value(
     semantic_id: str,
     global_id: UUID,
-    edc_bpn: str = Header(alias="Edc-Bpn", description="The BPN of the consumer delivered by the EDC Data Plane"),
-    edc_contract_agreement_id: str = Header(alias="Edc-Contract-Agreement-Id", description="The contract agreement id of the consumer delivered by the EDC Data Plane")
+    edc_bpn: Optional[str] = Header(default=None, alias="Edc-Bpn", description="The BPN of the consumer delivered by the EDC Data Plane"),
+    edc_contract_agreement_id: Optional[str] = Header(default=None, alias="Edc-Contract-Agreement-Id", description="The contract agreement id of the consumer delivered by the EDC Data Plane")
     ) -> Dict[str, Any]:
 
     return submodel_dispatcher_service.get_submodel_content(edc_bpn, edc_contract_agreement_id, semantic_id, global_id)
@@ -169,3 +169,12 @@ async def invalid_uuid_error_exception_handler(
     Returns a 422 Unprocessable Entity with the error message.
     """
     return JSONResponse(status_code=422, content={"detail": str(exc)})
+
+
+@app.post("/submodel-dispatcher/{semantic_id}/{global_id}/submodel", status_code=204, tags=["Submodel Dispatcher"])
+async def submodel_dispatcher_upload_submodel(
+    semantic_id: str,
+    global_id: UUID,
+    submodel_payload: Dict[str, Any] = Body(..., description="The submodel JSON payload")
+) -> None:
+    return submodel_dispatcher_service.upload_submodel( global_id, semantic_id, submodel_payload)
