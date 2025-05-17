@@ -62,7 +62,7 @@ class TwinManagementService:
             if not db_catalog_parts:
                 raise ValueError("Catalog part not found.")
             else:
-                db_catalog_part = db_catalog_parts[0]
+                db_catalog_part, _ = db_catalog_parts[0]
 
             # Step 2: Retrieve the enablement service stack entity from the DB according to the given name
             # (if not there => raise error)
@@ -157,7 +157,9 @@ class TwinManagementService:
                     modifiedDate=db_twin.modified_date,
                     manufacturerId=db_catalog_part.legal_entity.bpnl,
                     manufacturerPartId=db_catalog_part.manufacturer_part_id,
+                    name=db_catalog_part.name,
                     category=db_catalog_part.category,
+                    bpns=db_catalog_part.bpns,
                     customerPartIds={partner_catalog_part.customer_part_id: BusinessPartnerRead(
                         name=partner_catalog_part.business_partner.name,
                         bpnl=partner_catalog_part.business_partner.bpnl
@@ -190,7 +192,7 @@ class TwinManagementService:
             )
             if not db_catalog_parts:
                 raise ValueError("Catalog part not found.")
-            db_catalog_part = db_catalog_parts[0]
+            db_catalog_parts, _ = db_catalog_parts[0]
 
             # Step 2: Retrieve the business partner entity according to the business_partner_name
             # (if not there => raise error)
@@ -375,7 +377,9 @@ class TwinManagementService:
                 modifiedDate=db_twin.modified_date,
                 manufacturerId=db_catalog_part.legal_entity.bpnl,
                 manufacturerPartId=db_catalog_part.manufacturer_part_id,
+                name=db_catalog_part.name,
                 category=db_catalog_part.category,
+                bpns=db_catalog_part.bpns,
                 additionalContext=db_twin.additional_context,
                 customerPartIds={partner_catalog_part.customer_part_id: BusinessPartnerRead(
                     name=partner_catalog_part.business_partner.name,

@@ -76,6 +76,8 @@ backend:
       lookup:
         # -- Same as the uri above
         uri: "/semantics/registry"
+    submodel_dispatcher:
+      path: "./data/submodels"
 
   podAnnotations: {}
 
@@ -125,11 +127,11 @@ backend:
       # -- Restrict a Container's Syscalls with seccomp
       type: RuntimeDefault
     # -- Runs all processes within a pod with a special uid
-    runAsUser: 1000
+    runAsUser: 10000
     # -- Processes within a pod will belong to this guid
-    runAsGroup: 3000
+    runAsGroup: 10001
     # -- The owner for volumes and any files created within volumes will belong to this guid
-    fsGroup: 3000
+    fsGroup: 10001
 
    # The [container security context](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container) defines privilege and access control settings for a Container within a pod
   securityContext:
@@ -153,17 +155,31 @@ backend:
   # -- specifies volume mounts for the backend deployment
   volumeMounts:
     - name: data-volume
-      mountPath: /dataspace-sdk/data
+      mountPath: /industry-core-hub/data
     - name: logs-volume
-      mountPath: /dataspace-sdk/logs
+      mountPath: /industry-core-hub/logs
     - name: backend-config-configmap
-      mountPath: /tmp/config/
-    - name: tmp
-      mountPath: /tmp
+      mountPath: /industry-core-hub/config/
+    - name: tmpfs
+      mountPath: /industry-core-hub/tmp
 
-  # -- additional volume claims for the containers
-  additionalVolumes: []
-
+  # -- volume claims for the containers
+  volumes:
+    # -- persist the backend configuration
+    - name: backend-config-configmap
+      configMap:
+        name: "{{ .Release.Name }}-config"
+    # -- persist the backend data directories
+    - name: logs-volume
+      persistentVolumeClaim:
+        claimName: "{{ .Release.Name }}-pvc-logs-backend"
+    - name: data-volume
+      persistentVolumeClaim:
+        claimName: "{{ .Release.Name }}-pvc-data-backend"
+    # -- temporary file system mount
+    - name: tmpfs
+      emptyDir: {}
+      
   # -- Persistance configuration for the backend
   persistence:
     # -- Create a PVC to persist storage (if disabled, data and logs will not be persisted)

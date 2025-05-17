@@ -23,7 +23,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "industry-core-hub.fullname.backend" . }}-config
+  name: {{ .Release.Name }}-config
   labels:
     {{- include "industry-core-hub.backend.labels" . | nindent 4 }}
 data:
@@ -53,6 +53,8 @@ data:
       uri: {{ .Values.backend.configuration.digitalTwinRegistry.uri | quote }}
       lookup:
         uri: {{ .Values.backend.configuration.digitalTwinRegistry.lookup.uri | quote }}
+    submodel_service:
+      path: {{ .Values.backend.configuration.submodel_dispatcher.path | quote }}
   logging.yml: |-
     version: 1
     disable_existing_loggers: False
