@@ -36,9 +36,6 @@ edc:
     managementpath: /management
     protocolPath: /api/v1/dsp
     catalogPath: /catalog
-  dataplane:
-    hostname: https://connector.data.plane
-    publicPath: /api/public
 digitalTwinRegistry:
   hostname: https://dataprovider-dtr.tx.test
   apiPath: /api/v3
