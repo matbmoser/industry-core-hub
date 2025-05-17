@@ -64,9 +64,6 @@ backend:
         managementpath: "/management"
         protocolPath: "/api/v1/dsp"
         catalogPath: "/catalog"
-      dataplane:
-        hostname: "https://connector.data.plane"
-        publicPath: "/api/public"
     # -- Digital Twin Registry configuration
     digitalTwinRegistry:
       hostname: "https://dataprovider-dtr.tx.test"
