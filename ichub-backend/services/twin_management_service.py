@@ -25,7 +25,7 @@
 from typing import Optional, Dict, Any, List
 from uuid import UUID, uuid4
 
-from config.config_manager import ConfigManager
+from managers.config.config_manager import ConfigManager
 from managers.metadata_database.manager import RepositoryManagerFactory
 from managers.enablement_services.dtr_manager import DTRManager
 from managers.enablement_services.edc_manager import EDCManager

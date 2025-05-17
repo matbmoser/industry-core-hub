@@ -136,9 +136,11 @@ async def submodel_dispatcher_get_submodel_content_submodel_value(
     global_id: UUID,
     edc_bpn: Optional[str] = Header(default=None, alias="Edc-Bpn", description="The BPN of the consumer delivered by the EDC Data Plane"),
     edc_contract_agreement_id: Optional[str] = Header(default=None, alias="Edc-Contract-Agreement-Id", description="The contract agreement id of the consumer delivered by the EDC Data Plane")
-    ) -> Dict[str, Any]:
-
-    return submodel_dispatcher_service.get_submodel_content(edc_bpn, edc_contract_agreement_id, semantic_id, global_id)
+) -> Dict[str, Any]:
+    try:
+        return submodel_dispatcher_service.get_submodel_content(edc_bpn, edc_contract_agreement_id, semantic_id, global_id)
+    except FileNotFoundError:
+        return JSONResponse(status_code=404, content={"detail": "Submodel not found"})
 
 @app.exception_handler(SubmodelNotSharedWithBusinessPartnerError)
 async def submodel_not_shared_with_business_partner_exception_handler(
@@ -184,4 +186,7 @@ async def submodel_dispatcher_delete_submodel(
     semantic_id: str,
     global_id: UUID
 ) -> None:
-    return submodel_dispatcher_service.delete_submodel(global_id, semantic_id)
+    try:
+        submodel_dispatcher_service.delete_submodel(global_id, semantic_id)
+    except FileNotFoundError:
+        return JSONResponse(status_code=404, content={"detail": "Submodel not found"})

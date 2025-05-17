@@ -24,8 +24,8 @@ from typing import Dict, Any
 from uuid import UUID
 from hashlib import sha256
 
-from config.config_manager import ConfigManager
-from config.log_manager import LoggingManager
+from managers.config.config_manager import ConfigManager
+from managers.config.log_manager import LoggingManager
 from tools import InvalidUUIDError
 
 from tractusx_sdk.industry.adapters.submodel_adapter_factory import SubmodelAdapterFactory
@@ -73,7 +73,11 @@ class SubmodelServiceManager:
         self.logger.debug(f"Semantic ID: {semantic_id}")
         self.logger.debug(f"SHA256 Semantic ID: {sha256_semantic_id}")
 
-        content = self.file_system.read(f"{sha256_semantic_id}/{global_id}.json")
+        file_path = f"{sha256_semantic_id}/{global_id}.json"
+        if not self.file_system.exists(file_path):
+            self.logger.error(f"Submodel file not found: {file_path}")
+            raise FileNotFoundError(f"Submodel file not found: {file_path}")
+        content = self.file_system.read(file_path)
         return content
 
     def delete_twin_aspect_document(self, global_id: UUID, semantic_id: str) -> None:
@@ -93,4 +97,5 @@ class SubmodelServiceManager:
             self.file_system.delete(file_path)
             self.logger.info("Submodel deleted successfully.")
         else:
-            self.logger.warning(f"Submodel file not found: {file_path}")
+            self.logger.error(f"Submodel file not found: {file_path}")
+            raise FileNotFoundError(f"Submodel file not found: {file_path}")
