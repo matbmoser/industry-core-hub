@@ -134,13 +134,13 @@ backend:
   # -- specifies volume mounts for the backend deployment
   volumeMounts:
     - name: data-volume
-      mountPath: /data
+      mountPath: /industry-core-hub/data
     - name: logs-volume
-      mountPath: /logs
+      mountPath: /industry-core-hub/logs
     - name: backend-config-configmap
-      mountPath: /tmp/config/
-    - name: tmp
-      mountPath: /tmp
+      mountPath: /industry-core-hub/config/
+    - name: tmpfs
+      mountPath: /industry-core-hub/tmp
 
   # -- volume claims for the containers
   volumes:
