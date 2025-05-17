@@ -39,7 +39,7 @@ from typing import Dict
 from uuid import UUID
 from urllib import parse
 
-from config.config_manager import ConfigManager
+from managers.config.config_manager import ConfigManager
 from tools.aspect_id_tools import extract_aspect_id_name_from_urn_camelcase
 
 

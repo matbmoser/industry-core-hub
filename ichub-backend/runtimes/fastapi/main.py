@@ -22,7 +22,7 @@
 import uvicorn
 from controllers.fastapi import app as api
 from tractusx_sdk.dataspace.tools.utils import get_arguments
-#from config.log_manager import LoggingManager
+from managers.config.log_manager import LoggingManager
 from tractusx_sdk.dataspace.managers import AuthManager
 
 app = api
@@ -39,9 +39,9 @@ def start():
     args = get_arguments()
 
     # Configure the logging confiuration depending on the configuration stated
-    #logger = LoggingManager.get_logger('staging')
-    #if(args.debug):
-    #    logger = LoggingManager.get_logger('development')
+    logger = LoggingManager.get_logger('staging')
+    if(args.debug):
+        logger = LoggingManager.get_logger('development')
 
     ## Start the authentication manager
     auth_manager = AuthManager()

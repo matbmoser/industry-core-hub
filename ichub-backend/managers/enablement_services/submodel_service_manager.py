@@ -24,8 +24,8 @@ from typing import Dict, Any
 from uuid import UUID
 from hashlib import sha256
 
-from config.config_manager import ConfigManager
-from config.log_manager import LoggingManager
+from managers.config.config_manager import ConfigManager
+from managers.config.log_manager import LoggingManager
 from tools import InvalidUUIDError
 
 from tractusx_sdk.industry.adapters.submodel_adapter_factory import SubmodelAdapterFactory

@@ -20,6 +20,11 @@
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
 
+# Import custom logging and configuration modules, and database utility
+from managers.config.log_manager import LoggingManager
+from managers.config.config_manager import ConfigManager
+from database import connect_and_test
+
 ## FAST API example for keycloak
 # from fastapi_keycloak_middleware import CheckPermissions
 # from fastapi_keycloak_middleware import get_user
@@ -31,12 +36,6 @@ from pathlib import Path
 ## Import paths
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 sys.dont_write_bytecode = True
-from runtimes.fastapi import start
-"""
-# Import custom logging and configuration modules, and database utility
-from config.log_manager import LoggingManager
-from config.config_manager import ConfigManager
-from database import connect_and_test
 
 # Import the startup function for the FastAPI application
 from runtimes.fastapi import start
@@ -50,7 +49,7 @@ LoggingManager.init_logging()
 
 # Load application-specific configuration settings
 ConfigManager.load_config()
-"""
+
 # Test database connection
 # If uncommented, it will test the database connection at startup
 # if it the database connection is invalid or databse is not available
