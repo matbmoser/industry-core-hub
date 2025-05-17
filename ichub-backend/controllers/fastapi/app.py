@@ -178,3 +178,10 @@ async def submodel_dispatcher_upload_submodel(
     submodel_payload: Dict[str, Any] = Body(..., description="The submodel JSON payload")
 ) -> None:
     return submodel_dispatcher_service.upload_submodel( global_id, semantic_id, submodel_payload)
+
+@app.delete("/submodel-dispatcher/{semantic_id}/{global_id}/submodel", status_code=204, tags=["Submodel Dispatcher"])
+async def submodel_dispatcher_delete_submodel(
+    semantic_id: str,
+    global_id: UUID
+) -> None:
+    return submodel_dispatcher_service.delete_submodel(global_id, semantic_id)

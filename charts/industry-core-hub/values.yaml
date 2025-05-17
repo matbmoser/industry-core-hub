@@ -55,6 +55,8 @@ backend:
     # -- Database connection config; database connection settings are inferred from postgresql or externalDatabase sections.
     database:
       echo: true
+    submodel_dispatcher:
+      path: "./data/submodels"
 
   podAnnotations: {}
 
@@ -132,9 +134,9 @@ backend:
   # -- specifies volume mounts for the backend deployment
   volumeMounts:
     - name: data-volume
-      mountPath: /dataspace-sdk/data
+      mountPath: /data
     - name: logs-volume
-      mountPath: /dataspace-sdk/logs
+      mountPath: /logs
     - name: backend-config-configmap
       mountPath: /tmp/config/
     - name: tmp
