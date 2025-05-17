@@ -153,10 +153,12 @@ backend:
   volumeMounts:
     - name: data-volume
       mountPath: /industry-core-hub/data
+      subPath: data
     - name: logs-volume
       mountPath: /industry-core-hub/logs
+      subPath: logs
     - name: backend-config-configmap
-      mountPath: /industry-core-hub/config/
+      mountPath: /industry-core-hub/config
     - name: tmpfs
       mountPath: /industry-core-hub/tmp
 

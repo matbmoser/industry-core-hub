@@ -55,17 +55,17 @@ RUN mkdir -p ./data/submodels
 RUN chown -R 10000:10001 /industry-core-hub && chmod -R 775 /industry-core-hub/
 
 ## Set entrypoint to executable
-RUN chmod +x /industry-core-hub/entrypoint.sh
+#RUN chmod +x /industry-core-hub/entrypoint.sh
 
 # Rename configuration.yml to configuration.yml.reference, to be used by env variables inject script
 # Create symlink for tmp for configuration.yml to enable readOnlyRootFilesystem
-RUN mv /industry-core-hub/config/configuration.yml /tmp/configuration.yml.reference \
-    && ln -s /tmp/configuration.yml /industry-core-hub/config/configuration.yml
+#RUN mv /industry-core-hub/config/configuration.yml /tmp/configuration.yml.reference \
+    #&& ln -s /tmp/configuration.yml /industry-core-hub/config/configuration.yml
 
 # Same for logging.yml, but as we don't need to inject env variables, we can just copy it
 # and create the symlink
-RUN mv /industry-core-hub/config/logging.yml /tmp/logging.yml \
-    && ln -s /tmp/logging.yml /industry-core-hub/config/logging.yml
+#RUN mv /industry-core-hub/config/logging.yml /tmp/logging.yml \
+    #&& ln -s /tmp/logging.yml /industry-core-hub/config/logging.yml
 
 ## If necessary to inject documentation do it here:
 # COPY ./resources/docs/* ./resources/docs
@@ -77,4 +77,4 @@ USER 10000:10001
 EXPOSE 8000
 
 ## Execute the application
-CMD ["/industry-core-hub/entrypoint.sh"]
+CMD ["python3","./main.py", "--host", "0.0.0.0", "--port", "8000"]
