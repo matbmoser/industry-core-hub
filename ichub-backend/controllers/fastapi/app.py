@@ -37,6 +37,7 @@ from models.services.part_management import CatalogPartBase, CatalogPartRead, Ca
 from models.services.partner_management import BusinessPartnerRead, BusinessPartnerCreate, DataExchangeAgreementRead
 from models.services.twin_management import TwinRead, TwinAspectRead, TwinAspectCreate, CatalogPartTwinRead, CatalogPartTwinDetailsRead, CatalogPartTwinCreate, CatalogPartTwinShare
 from tools.submodel_type_util import InvalidSemanticIdError
+from tools import InvalidUUIDError
 
 tags_metadata = [
     {
@@ -158,3 +159,13 @@ async def invalid_semantic_id_exception_handler(
     Returns a 400 Bad Request with the error message.
     """
     return JSONResponse(status_code=400, content={"detail": str(exc)})
+
+@app.exception_handler(InvalidUUIDError)
+async def invalid_uuid_error_exception_handler(
+    request: Request,
+    exc: InvalidUUIDError) -> JSONResponse:
+    """
+    Custom exception handler for InvalidUUIDError.
+    Returns a 422 Unprocessable Entity with the error message.
+    """
+    return JSONResponse(status_code=422, content={"detail": str(exc)})
