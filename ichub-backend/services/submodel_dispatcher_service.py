@@ -88,3 +88,14 @@ class SubmodelDispatcherService:
         get_submodel_type(semantic_id)  # Validate the semantic ID
 
         self.submodel_service_manager.upload_twin_aspect_document(global_id, semantic_id, submodel_payload)
+
+    def delete_submodel(self, global_id: UUID, semantic_id: str) -> None:
+        """
+        Deletes a submodel from the submodel service.
+
+        Args:
+            global_id (UUID): The global asset ID.
+            semantic_id (str): The semantic identifier for the submodel.
+        """
+        get_submodel_type(semantic_id)  # Validate the semantic ID
+        self.submodel_service_manager.delete_twin_aspect_document(global_id, semantic_id)

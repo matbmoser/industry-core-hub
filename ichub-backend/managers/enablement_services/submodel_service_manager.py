@@ -75,3 +75,22 @@ class SubmodelServiceManager:
 
         content = self.file_system.read(f"{sha256_semantic_id}/{global_id}.json")
         return content
+
+    def delete_twin_aspect_document(self, global_id: UUID, semantic_id: str) -> None:
+        """Delete a submodel from the service."""
+        if not isinstance(global_id, UUID):
+            try:
+                global_id = UUID(global_id)
+            except ValueError:
+                raise InvalidUUIDError(global_id)
+        sha256_semantic_id = sha256(semantic_id.encode()).hexdigest()
+        self.logger.info(f"Deleting submodel with Global ID: {global_id}")
+        self.logger.debug(f"Semantic ID: {semantic_id}")
+        self.logger.debug(f"SHA256 Semantic ID: {sha256_semantic_id}")
+        
+        file_path = f"{sha256_semantic_id}/{global_id}.json"
+        if self.file_system.exists(file_path):
+            self.file_system.delete(file_path)
+            self.logger.info("Submodel deleted successfully.")
+        else:
+            self.logger.warning(f"Submodel file not found: {file_path}")

@@ -108,6 +108,8 @@ backend:
       apiKey:
         key: "X-Api-Key"
         value: <path:industry-core-hub/data/backend#apiKey>
+      submodel_dispatcher:
+        path: "./data/submodels"
     # -- Database connection config; database connection settings are inferred from postgresql or externalDatabase sections.
     database:
       echo: true
