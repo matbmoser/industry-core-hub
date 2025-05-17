@@ -114,7 +114,7 @@ backend:
       controlplane:
         hostname: "https://edc-provider-ichub-control.int.catena-x.net"
         apikeyheader: "X-Api-Key"
-        apikey: <path:industry-core-hub/data/edc-provifer#authKey>
+        apikey: <path:industry-core-hub/data/edc-provider#authKey>
         managementpath: "/management"
         protocolPath: "/api/v1/dsp"
         catalogPath: "/catalog"
