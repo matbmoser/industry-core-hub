@@ -33,7 +33,7 @@ from services.part_management_service import PartManagementService
 from services.partner_management_service import PartnerManagementService
 from services.twin_management_service import TwinManagementService
 from services.part_sharing_shortcut_service import PartSharingShortcutService
-from models.services.part_management import CatalogPartBase, CatalogPartRead, CatalogPartCreate
+from models.services.part_management import CatalogPartBase, CatalogPartRead, CatalogPartCreate, CatalogPartReadWithStatus
 from models.services.partner_management import BusinessPartnerRead, BusinessPartnerCreate, DataExchangeAgreementRead
 from models.services.twin_management import TwinRead, TwinAspectRead, TwinAspectCreate, CatalogPartTwinRead, CatalogPartTwinDetailsRead, CatalogPartTwinCreate, CatalogPartTwinShare
 from tools.submodel_type_util import InvalidSemanticIdError
@@ -70,12 +70,12 @@ submodel_dispatcher_service = SubmodelDispatcherService()
 async def part_management_get_catalog_part(manufacturer_id: str, manufacturer_part_id: str) -> Optional[CatalogPartRead]:
     return part_management_service.get_catalog_part(manufacturer_id, manufacturer_part_id)
 
-@app.get("/part-management/catalog-part", response_model=List[CatalogPartRead], tags=["Part Management"])
-async def part_management_get_catalog_parts() -> List[CatalogPartRead]:
+@app.get("/part-management/catalog-part", response_model=List[CatalogPartReadWithStatus], tags=["Part Management"])
+async def part_management_get_catalog_parts() -> List[CatalogPartReadWithStatus]:
     return part_management_service.get_catalog_parts()
 
 @app.post("/part-management/catalog-part", response_model=CatalogPartRead, tags=["Part Management"])
-async def part_management_create_catalog_part(catalog_part_create: CatalogPartCreate) -> CatalogPartRead:
+async def part_management_create_catalog_part(catalog_part_create: CatalogPartCreate) -> CatalogPartReadWithStatus:
     return part_management_service.create_catalog_part(catalog_part_create)
 
 @app.get("/partner-management/business-partner", response_model=List[BusinessPartnerRead], tags=["Partner Management"])
