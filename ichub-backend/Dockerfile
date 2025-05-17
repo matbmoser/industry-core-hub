@@ -28,6 +28,10 @@ USER root
 ## Move all the files from the project to the sdk directory
 COPY ./ /industry-core-hub
 
+## Create user groups
+RUN addgroup -g 10001 appgroup \
+	&& adduser -u 10000 -g 10001 -h /home/nonroot -D nonroot
+
 WORKDIR /industry-core-hub
 
 ## List the contents of the /backend directory
@@ -39,10 +43,6 @@ RUN apk add python3 py3-pip libpq gettext --no-cache
 ## Install application requirements
 RUN pip3 install --break-system-packages --no-cache-dir -r ./requirements.txt
 
-## Create user groups
-RUN addgroup -g 3000 appgroup \
-	&& adduser -u 1000 -g 3000 -h /home/nonroot -D nonroot
-
 ## Specify the volumes
 VOLUME ./data ./logs
 
@@ -52,7 +52,7 @@ RUN mkdir -p ./data
 RUN mkdir -p ./data/submodels
 
 ## Update user permissions
-RUN chown -R 1000:3000 /industry-core-hub && chmod -R 775 /industry-core-hub/
+RUN chown -R 10000:10001 /industry-core-hub && chmod -R 775 /industry-core-hub/
 
 ## Set entrypoint to executable
 RUN chmod +x /industry-core-hub/entrypoint.sh
@@ -71,7 +71,7 @@ RUN mv /industry-core-hub/config/logging.yml /tmp/logging.yml \
 # COPY ./resources/docs/* ./resources/docs
 
 ## Choose the user
-USER 1000:3000
+USER 10000:10001 
 
 ## Expose default port
 EXPOSE 8000
