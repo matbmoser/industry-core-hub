@@ -87,5 +87,4 @@ class SubmodelDispatcherService:
         """
         get_submodel_type(semantic_id)  # Validate the semantic ID
 
-        self.submodel_service_manager.upload_twin_aspect_document(
-            global_id, semantic_id, submodel_payload)
+        self.submodel_service_manager.upload_twin_aspect_document(global_id, semantic_id, submodel_payload)
