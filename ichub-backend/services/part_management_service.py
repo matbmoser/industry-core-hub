@@ -119,7 +119,7 @@ class PartManagementService():
         name: str,
         category: Optional[str],
         customer_parts: Optional[List[PartnerCatalogPartBase]]) -> CatalogPartReadWithStatus:
-        bpns: Optional[str],
+        bpns: Optional[str]
           
         """Convenience method to create a catalog part by its IDs."""
 
