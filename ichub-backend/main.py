@@ -20,10 +20,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
 
-from config.log_manager import LoggingManager
-from config.config_manager import ConfigManager
-from database import connect_and_test
-
 ## FAST API example for keycloak
 # from fastapi_keycloak_middleware import CheckPermissions
 # from fastapi_keycloak_middleware import get_user
@@ -35,6 +31,10 @@ from pathlib import Path
 ## Import paths
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 sys.dont_write_bytecode = True
+
+from config.log_manager import LoggingManager
+from config.config_manager import ConfigManager
+from database import connect_and_test
 
 from runtimes.fastapi import start
 
