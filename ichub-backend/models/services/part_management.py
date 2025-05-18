@@ -38,11 +38,14 @@ class PartnerCatalogPartBase(BaseModel):
     customer_part_id: str = Field(alias="customerPartId", description="The customer part ID for partner specific mapping of the catalog part.")
     business_partner_name: str = Field(alias="businessPartnerName", description="The unique name of the business partner to map the catalog part to.")
 
-class CatalogPartRead(CatalogPartBase):
+class SimpleCatalogRead(CatalogPartBase):
     name: str = Field(description="The name of the part.")
     category: Optional[str] = Field(description="The category of the part.", default=None)
-    materials: List[Material] = Field(description="List of materials, e.g. [{'name':'aluminum','share':'20'}]", default=[])
     bpns: Optional[str] = Field(description="The site number (BPNS) the part is attached to.", default=None)
+    
+class CatalogPartRead(SimpleCatalogRead):
+    description: Optional[str] = Field(description="The decription of the part.", default=None)
+    materials: List[Material] = Field(description="List of materials, e.g. [{'name':'aluminum','share':'20'}]", default=[])
     width: Optional[Measurement] = Field(description="The width of the part.", default=None)
     height: Optional[Measurement] = Field(description="The height of the part.", default=None)
     length: Optional[Measurement] = Field(description="The length of the part.", default=None)
@@ -50,6 +53,9 @@ class CatalogPartRead(CatalogPartBase):
     customer_part_ids: Optional[Dict[str, BusinessPartnerRead]] = Field(alias="customerPartIds", description="The list of customer part IDs mapped to the respective Business Partners.", default={})
 
 class CatalogPartReadWithStatus(CatalogPartRead):
+    status: int = Field(description="The status of the part. (0: draft, 1:pending, 2: registered, 3: shared)")
+
+class SimpleCatalogPartReadWithStatus(SimpleCatalogRead):
     status: int = Field(description="The status of the part. (0: draft, 1:pending, 2: registered, 3: shared)")
 
 class CatalogPartCreate(CatalogPartRead):

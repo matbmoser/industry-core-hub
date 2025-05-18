@@ -23,7 +23,7 @@
 #################################################################################
 
 from typing import Dict, List, Optional
-from models.services.part_management import BatchCreate, BatchRead, CatalogPartCreate, CatalogPartDelete, CatalogPartRead, JISPartCreate, JISPartDelete, JISPartRead, PartnerCatalogPartBase, PartnerCatalogPartCreate, PartnerCatalogPartDelete, SerializedPartCreate, SerializedPartDelete, SerializedPartRead, CatalogPartReadWithStatus
+from models.services.part_management import BatchCreate, BatchRead, CatalogPartCreate, CatalogPartDelete, CatalogPartRead,SimpleCatalogPartReadWithStatus, JISPartCreate, JISPartDelete, JISPartRead, PartnerCatalogPartBase, PartnerCatalogPartCreate, PartnerCatalogPartDelete, SerializedPartCreate, SerializedPartDelete, SerializedPartRead, CatalogPartReadWithStatus
 from models.services.partner_management import BusinessPartnerRead
 from managers.metadata_database.repositories import CatalogPartRepository, BusinessPartnerRepository, LegalEntityRepository, PartnerCatalogPartRepository
 from managers.metadata_database.manager import RepositoryManager, RepositoryManagerFactory
@@ -155,7 +155,7 @@ class PartManagementService():
         # Logic to delete a catalog part
         pass
 
-    def get_catalog_parts(self, manufacturer_id: Optional[str] = None, manufacturer_part_id: Optional[str] = None) -> List[CatalogPartReadWithStatus]:
+    def get_catalog_parts(self, manufacturer_id: Optional[str] = None, manufacturer_part_id: Optional[str] = None) -> List[SimpleCatalogPartReadWithStatus]:
         with RepositoryManagerFactory.create() as repos:
             result = []
             
@@ -166,7 +166,7 @@ class PartManagementService():
             if db_catalog_parts:
                 for db_catalog_part, status in db_catalog_parts:
                     result.append(
-                        CatalogPartReadWithStatus(
+                        SimpleCatalogPartReadWithStatus(
                             manufacturerId=db_catalog_part.legal_entity.bpnl,
                             manufacturerPartId=db_catalog_part.manufacturer_part_id,
                             name=db_catalog_part.name,

@@ -24,7 +24,7 @@ from fastapi import APIRouter
 from typing import List, Optional
 
 from services.part_management_service import PartManagementService
-from models.services.part_management import CatalogPartRead, CatalogPartCreate, CatalogPartReadWithStatus
+from models.services.part_management import CatalogPartRead, CatalogPartCreate, CatalogPartReadWithStatus,SimpleCatalogPartReadWithStatus
 
 router = APIRouter(prefix="/part-management", tags=["Part Management"])
 part_management_service = PartManagementService()
@@ -34,8 +34,8 @@ part_management_service = PartManagementService()
 async def part_management_get_catalog_part(manufacturer_id: str, manufacturer_part_id: str) -> Optional[CatalogPartRead]:
     return part_management_service.get_catalog_part(manufacturer_id, manufacturer_part_id)
 
-@router.get("/catalog-part", response_model=List[CatalogPartReadWithStatus])
-async def part_management_get_catalog_parts() -> List[CatalogPartReadWithStatus]:
+@router.get("/catalog-part", response_model=List[SimpleCatalogPartReadWithStatus])
+async def part_management_get_catalog_parts() -> List[SimpleCatalogPartReadWithStatus]:
     return part_management_service.get_catalog_parts()
 
 @router.post("/catalog-part", response_model=CatalogPartRead)
