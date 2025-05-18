@@ -171,16 +171,7 @@ class PartManagementService():
                             manufacturerPartId=db_catalog_part.manufacturer_part_id,
                             name=db_catalog_part.name,
                             category=db_catalog_part.category,
-                            materials=db_catalog_part.materials,
-                            width=db_catalog_part.width,
-                            height=db_catalog_part.height,
-                            length=db_catalog_part.length,
-                            weight=db_catalog_part.weight,
                             bpns=db_catalog_part.bpns,
-                            customerPartIds={partner_catalog_part.customer_part_id: BusinessPartnerRead(
-                                name=partner_catalog_part.business_partner.name,
-                                bpnl=partner_catalog_part.business_partner.bpnl
-                            ) for partner_catalog_part in db_catalog_part.partner_catalog_parts},
                             status=status,
                         )
                     )
