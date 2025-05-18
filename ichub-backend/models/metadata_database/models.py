@@ -206,7 +206,7 @@ class CatalogPart(SQLModel, table=True):
     
     """
     __table_args__ = (
-        UniqueConstraint("legal_entity_id", "manufacturer_part_id", name="uk_catalog_part_legal_entity_id_manufacturer_part_id"),
+        UniqueConstraint("legal_entity_id", "manufacturer_part_id", name="uk_catalog_part_legal_entity_id_manufacturer_part_id")
     )
     """
     __tablename__ = "catalog_part"
@@ -266,7 +266,7 @@ class PartnerCatalogPart(SQLModel, table=True):
 
     # Composite Unique Constraint
     __table_args__ = (
-        UniqueConstraint("business_partner_id", "catalog_part_id", name="uk_partner_catalog_part_business_partner_id_catalog_part_id"),
+        UniqueConstraint("business_partner_id", "catalog_part_id", name="uk_partner_catalog_part_business_partner_id_catalog_part_id")
     )
 
     __tablename__ = "partner_catalog_part"
@@ -305,7 +305,7 @@ class SerializedPart(SQLModel, table=True):
     twin: Optional[Twin] = Relationship(back_populates="serialized_part")
 
     __table_args__ = (
-        UniqueConstraint("part_instance_id", "partner_catalog_part_id", name="uk_serialized_part_partner_catalog_part_id_part_instance_id"),
+        UniqueConstraint("part_instance_id", "partner_catalog_part_id", name="uk_serialized_part_partner_catalog_part_id_part_instance_id")
     )
 
     __tablename__ = "serialized_part"
@@ -345,7 +345,7 @@ class JISPart(SQLModel, table=True):
     twin: Optional[Twin] = Relationship(back_populates="jis_part")
 
     __table_args__ = (
-        UniqueConstraint("jis_number", "partner_catalog_part_id", name="uk_jis_part_partner_catalog_part_id_jis_number"),
+        UniqueConstraint("jis_number", "partner_catalog_part_id", name="uk_jis_part_partner_catalog_part_id_jis_number")
     )
 
     __tablename__ = "jis_part"
@@ -392,7 +392,7 @@ class Batch(SQLModel, table=True):
 
     # Composite Unique Constraint
     __table_args__ = (
-        UniqueConstraint("catalog_part_id", "batch_id", name="uk_batch_catalog_part_id_batch_id"),
+        UniqueConstraint("catalog_part_id", "batch_id", name="uk_batch_catalog_part_id_batch_id")
     )
 
     __tablename__ = "batch"
@@ -567,7 +567,7 @@ class TwinAspect(SQLModel, table=True):
     twin_aspect_registrations: List["TwinAspectRegistration"] = Relationship(back_populates="twin_aspect")
 
     __table_args__ = (
-        UniqueConstraint("twin_id", "semantic_id", name="uk_twin_aspect_twin_id_semantic_id"),
+        UniqueConstraint("twin_id", "semantic_id", name="uk_twin_aspect_twin_id_semantic_id")
     )
 
     __tablename__ = "twin_aspect"
