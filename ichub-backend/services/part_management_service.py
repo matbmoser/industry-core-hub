@@ -60,6 +60,7 @@ class PartManagementService():
                 db_legal_entity = repos.legal_entity_repository.create(
                     LegalEntity(bpnl=catalog_part_create.manufacturer_id)
                 )
+                repos.legal_entity_repository.commit()
             
             if not db_legal_entity:
                 raise ValueError(f"Failed to create or retrieve the legal entity '{catalog_part_create.manufacturer_id}'")
