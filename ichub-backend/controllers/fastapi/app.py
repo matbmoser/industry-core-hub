@@ -22,20 +22,11 @@
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
 
-from typing import Any, Dict, List, Optional
-from uuid import UUID
-
 from fastapi import FastAPI, Request, Header, Body
 from fastapi.responses import JSONResponse
 
-from services.submodel_dispatcher_service import SubmodelDispatcherService, SubmodelNotSharedWithBusinessPartnerError
-from services.part_management_service import PartManagementService
-from services.partner_management_service import PartnerManagementService
-from services.twin_management_service import TwinManagementService
-from services.part_sharing_shortcut_service import PartSharingShortcutService
-from models.services.part_management import CatalogPartBase, CatalogPartRead, CatalogPartCreate, CatalogPartReadWithStatus
-from models.services.partner_management import BusinessPartnerRead, BusinessPartnerCreate, DataExchangeAgreementRead
-from models.services.twin_management import TwinRead, TwinAspectRead, TwinAspectCreate, CatalogPartTwinRead, CatalogPartTwinDetailsRead, CatalogPartTwinCreate, CatalogPartTwinShare
+from services.submodel_dispatcher_service import SubmodelNotSharedWithBusinessPartnerError
+
 from tools.submodel_type_util import InvalidSemanticIdError
 from tools import InvalidUUIDError
 
