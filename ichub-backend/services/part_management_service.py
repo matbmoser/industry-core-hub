@@ -27,7 +27,10 @@ from models.services.part_management import BatchCreate, BatchRead, CatalogPartC
 from models.services.partner_management import BusinessPartnerRead
 from managers.metadata_database.repositories import CatalogPartRepository, BusinessPartnerRepository, LegalEntityRepository, PartnerCatalogPartRepository
 from managers.metadata_database.manager import RepositoryManager, RepositoryManagerFactory
-from models.metadata_database.models import CatalogPart, Batch, SerializedPart, JISPart, PartnerCatalogPart
+from models.metadata_database.models import CatalogPart, Batch, LegalEntity, SerializedPart, JISPart, PartnerCatalogPart
+from managers.config.log_manager import LoggingManager
+
+logger = LoggingManager.get_logger(__name__)
 
 class PartManagementService():
     """
@@ -53,8 +56,15 @@ class PartManagementService():
             # First check if the legal entity exists for the given manufacturer ID
             db_legal_entity = repos.legal_entity_repository.get_by_bpnl(catalog_part_create.manufacturer_id)
             if not db_legal_entity:
-                raise ValueError(f"Legal Entity with manufacturer BPNL '{catalog_part_create.manufacturer_id}' does not exist. Please create it first.")
-
+                logger.warning(f"Legal Entity with manufacturer BPNL '{catalog_part_create.manufacturer_id}' not found. Creating a new one!")
+                db_legal_entity = repos.legal_entity_repository.create(
+                    LegalEntity(bpnl=catalog_part_create.manufacturer_id)
+                )
+            
+            if not db_legal_entity:
+                raise ValueError(f"Failed to create or retrieve the legal entity '{catalog_part_create.manufacturer_id}'")
+            
+            # Check if the business partner exists for the given manufacturer ID
             # Check if the catalog part already exists
             db_catalog_part = repos.catalog_part_repository.get_by_legal_entity_id_manufacturer_part_id(
                 db_legal_entity.id, catalog_part_create.manufacturer_part_id
