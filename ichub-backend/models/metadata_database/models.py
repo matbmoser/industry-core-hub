@@ -203,11 +203,12 @@ class CatalogPart(SQLModel, table=True):
     twin: Optional[Twin] = Relationship(back_populates="catalog_part")
     partner_catalog_parts: List["PartnerCatalogPart"] = Relationship(back_populates="catalog_part")
     batches: List["Batch"] = Relationship(back_populates="catalog_part")
-
+    
+    """
     __table_args__ = (
         UniqueConstraint("legal_entity_id", "manufacturer_part_id", name="uk_catalog_part_legal_entity_id_manufacturer_part_id"),
     )
-
+    """
     __tablename__ = "catalog_part"
 
     def find_partner_catalog_part_by_business_partner_name(self, business_partner_name: str) -> Optional["PartnerCatalogPart"]:
