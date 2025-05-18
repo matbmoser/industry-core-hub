@@ -39,6 +39,8 @@ from models.services.twin_management import TwinRead, TwinAspectRead, TwinAspect
 from tools.submodel_type_util import InvalidSemanticIdError
 from tools import InvalidUUIDError
 
+from tractusx_sdk.dataspace.tools import op
+
 from .routers import (
     part_management,
     partner_management,
@@ -110,3 +112,15 @@ async def invalid_uuid_error_exception_handler(
     return JSONResponse(status_code=422, content={"detail": str(exc)})
 
 
+@app.get("/health")
+def check_health():
+    """
+    Retrieves health information from the server
+
+    Returns:
+        response: :obj:`status, timestamp`
+    """
+    return {
+        "status": "RUNNING",
+        "timestamp": op.timestamp() 
+    }

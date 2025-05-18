@@ -32,7 +32,6 @@ class InvalidSemanticIdError(ValueError):
     Exception raised when the semantic ID is invalid.
     """
 
-
 @dataclass
 class SubmodelType():
     semantic_id: str
@@ -40,8 +39,6 @@ class SubmodelType():
     id_short: str
     version: str
     namespace_prefix: str
-
-
 
 def get_submodel_type(semantic_id: str) -> SubmodelType:
     try:
