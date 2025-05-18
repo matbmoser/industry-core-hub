@@ -30,7 +30,7 @@ metadata:
 data:
   01-init-db-user.sh: |
     postgresql_create_ichub_user() {
-      local -r escaped_password="${ICHUB_PASSWORD//\'/\'\'}"
+      local -r escaped_password="${DATABASE_PASSWORD//\'/\'\'}"
       info "Creating user ichub"
       export PGPASSWORD="$POSTGRES_PASSWORD"
       echo "CREATE USER ichub WITH PASSWORD '${escaped_password}';" | psql -U postgres

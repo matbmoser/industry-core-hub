@@ -54,7 +54,7 @@ tags_metadata = [
     },
     {
         "name": "Submodel Dispatcher",
-        "description": "Internal API called by EDC Data Planes in order the deliver data of of the internall used Submodel Service"
+        "description": "Internal API called by EDC Data Planes or Admins in order the deliver data of of the internal used Submodel Service"
     }
 ]
 
