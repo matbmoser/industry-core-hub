@@ -73,23 +73,14 @@ class PartManagementService():
             if db_catalog_part:
                 raise ValueError("Catalog part already exists.")
             else:
-                # Create the catalog part in the metadata database
+                # Create the catalog part in the metadata database, using legal_entity_id as foreign key
                 db_catalog_part = CatalogPart(
-                    manufacturer_part_id=catalog_part_create.manufacturer_part_id,
-                    legal_entity=db_legal_entity,
-                    name=catalog_part_create.name,
-                    category=catalog_part_create.category,
-                    bpns=catalog_part_create.bpns
+                    legal_entity_id=db_legal_entity.id,
+                    **catalog_part_create.model_dump(by_alias=False)
                 )
                 repos.catalog_part_repository.create(db_catalog_part)
-
-            # Create the catalog part in the metadata database
-            db_catalog_part = CatalogPart(
-                legal_entity=db_legal_entity,
-                **catalog_part_create.model_dump(by_alias=False)
-            )
-            
-            repos.catalog_part_repository.create(db_catalog_part)
+                repos.catalog_part_repository.commit()
+                
             # Prepare the result object
             result = CatalogPartReadWithStatus(
                 **catalog_part_create.model_dump(by_alias=True),
