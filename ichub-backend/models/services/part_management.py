@@ -46,6 +46,7 @@ class SimpleCatalogRead(CatalogPartBase):
 class CatalogPartRead(SimpleCatalogRead):
     description: Optional[str] = Field(description="The decription of the part.", default=None)
     materials: List[Material] = Field(description="List of materials, e.g. [{'name':'aluminum','share':'20'}]", default=[])
+    bpns: Optional[str] = Field(description="The site number (BPNS) the part is attached to.", default=None)
     width: Optional[Measurement] = Field(description="The width of the part.", default=None)
     height: Optional[Measurement] = Field(description="The height of the part.", default=None)
     length: Optional[Measurement] = Field(description="The length of the part.", default=None)
@@ -57,6 +58,7 @@ class CatalogPartReadWithStatus(CatalogPartRead):
 
 class SimpleCatalogPartReadWithStatus(SimpleCatalogRead):
     status: int = Field(description="The status of the part. (0: draft, 1:pending, 2: registered, 3: shared)")
+
 
 class CatalogPartCreate(CatalogPartRead):
     pass
