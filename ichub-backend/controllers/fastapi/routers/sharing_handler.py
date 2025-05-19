@@ -32,7 +32,7 @@ router = APIRouter(prefix="/share", tags=["Sharing Functionality"])
 part_sharing_shortcut_service = SharingService()
 
 @router.post("/catalog-part", response_model=SharedPartBase)
-async def twin_management_create_part_sharing_shortcut(catalog_part_twin_share: ShareCatalogPart) -> SharedPartBase:
+async def twin_management_create_part_sharing_shortcut(catalog_part_to_share: ShareCatalogPart) -> SharedPartBase:
     return part_sharing_shortcut_service.share_catalog_part(
-        catalog_part_twin_share=catalog_part_twin_share
+        catalog_part_to_share=catalog_part_to_share
     )
