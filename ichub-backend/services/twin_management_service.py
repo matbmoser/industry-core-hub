@@ -192,7 +192,7 @@ class TwinManagementService:
             )
             if not db_catalog_parts:
                 raise ValueError("Catalog part not found.")
-            db_catalog_parts, _ = db_catalog_parts[0]
+            db_catalog_part, _ = db_catalog_parts[0]
 
             # Step 2: Retrieve the business partner entity according to the business_partner_name
             # (if not there => raise error)
