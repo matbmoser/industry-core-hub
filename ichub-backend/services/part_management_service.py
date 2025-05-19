@@ -200,6 +200,7 @@ class PartManagementService():
                             height=db_catalog_part.height,
                             length=db_catalog_part.length,
                             weight=db_catalog_part.weight,
+                            description=db_catalog_part.description,
                             customerPartIds={partner_catalog_part.customer_part_id: BusinessPartnerRead(
                                  name=partner_catalog_part.business_partner.name,
                                  bpnl=partner_catalog_part.business_partner.bpnl
