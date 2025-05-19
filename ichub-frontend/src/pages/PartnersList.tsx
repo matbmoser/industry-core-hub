@@ -11,7 +11,7 @@
  * https://www.apache.org/licenses/LICENSE-2.0.
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the
  * License for the specific language govern in permissions and limitations
@@ -22,13 +22,13 @@
 
 import { useState, useEffect, useMemo } from "react";
 //import { useNavigate } from "react-router-dom";
-import sharedPartners from "../tests/payloads/shared-partners.json";
 import { PartnerInstance } from "../types/partner";
 import TablePagination from '@mui/material/TablePagination';
 import { Typography, Grid2, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { PartnerCard } from "../features/partner-management/components/partners-list/PartnerCard";
 import CreatePartnerDialog from "../features/partner-management/components/general/CreatePartnerDialog";
+import { fetchPartners } from '../features/partner-management/api';
 
 const PartnersList = () => {
   const [partnerList, setPartnerList] = useState<PartnerInstance[]>([]);
@@ -76,13 +76,15 @@ const PartnersList = () => {
     // Define the async function inside useEffect
     const fetchData = async () => {
       try {
-        const mappedPartnerList = sharedPartners.map((partner) => ({
-          ...partner
-        }));
-        setPartnerList(mappedPartnerList);
-        setInitialPartnerList(mappedPartnerList);
+        const data = await fetchPartners();
+        
+        setPartnerList(data);
+        setInitialPartnerList(data);
       } catch (error) {
         console.error('Error fetching data:', error);
+
+        setPartnerList([]);
+        setInitialPartnerList([]);
       }
     };
     fetchData();  // Call the async function
