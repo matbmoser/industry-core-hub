@@ -21,8 +21,7 @@
 ********************************************************************************/
 
 import React from "react";
-import { useParams } from "react-router-dom";
-import carPartsData from "../tests/payloads/sample-data.json";
+//import { useParams } from "react-router-dom";
 import sharedPartners from '../tests/payloads/shared-partners.json';
 import { StatusTag, Button, Icon } from '@catena-x/portal-shared-components';
 import { PRODUCT_STATUS } from "../types/common";
@@ -34,10 +33,20 @@ import ShareDropdown from "../features/catalog-management/components/product-det
 import ProductButton from "../features/catalog-management/components/product-detail/ProductButton";
 import ProductData from "../features/catalog-management/components/product-detail/ProductData";
 import ShareDialog from "../components/general/ShareDialog";
+import { PartInstance } from "../types/product";
+import { StatusVariants } from "../features/catalog-management/components/product-list/CardChip";
 
 const ProductsDetails = () => {
-  const { id } = useParams<{ id: string }>();
-  const part = carPartsData.find((part) => part.uuid === id);
+  // const { id } = useParams<{ id: string }>();
+  const part: PartInstance = {
+    "name": "Engine Block V8",
+    "status": StatusVariants.registered,
+    "manufacturerPartId": "TH4SZ-4ASD514-ASD5621284",
+    "manufacturerId": "BPNL0000000001XY",
+    "category": "Engine",
+    "bpns": ""
+  }
+  const productId = part.manufacturerPartId + "/" + part.manufacturerId;
   const [jsonDialogOpen, setJsonDialogOpen] = React.useState(false);
   const [shareDialogOpen, setShareDialogOpen] = React.useState(false);
   const [notification, setNotification] = React.useState<{ open: boolean; severity: "success" | "error"; title: string } | null>(null);
@@ -63,7 +72,7 @@ const ProductsDetails = () => {
   };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(part.uuid)
+    navigator.clipboard.writeText(productId)
       .then(() => {
         setNotification({
           open: true,
@@ -85,7 +94,7 @@ const ProductsDetails = () => {
 
   const handleDownload = () => {
     const fileName = part.name.toLowerCase().replace(/\s+/g, "-") + ".txt";
-    const blob = new Blob([part.uuid], { type: "text/plain" });
+    const blob = new Blob([productId], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
