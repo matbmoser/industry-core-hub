@@ -195,6 +195,12 @@ class PartnerCatalogPartRepository(BaseRepository[PartnerCatalogPart]):
             PartnerCatalogPart.business_partner_id == business_partner_id)
         return self._session.scalars(stmt).first()
     
+    def get_all_by_catalog_part_id_business_partner_id(self, catalog_part_id: int, business_partner_id: int) -> List[PartnerCatalogPart] | None:
+        stmt = select(PartnerCatalogPart).where(
+            PartnerCatalogPart.catalog_part_id == catalog_part_id).where(
+            PartnerCatalogPart.business_partner_id == business_partner_id)
+        return self._session.scalars(stmt).all()
+    
     def create_new(self, catalog_part_id: int, business_partner_id: int, customer_part_id: str) -> PartnerCatalogPart:
         """Create a new PartnerCatalogPart instance."""
         partner_catalog_part = PartnerCatalogPart(
