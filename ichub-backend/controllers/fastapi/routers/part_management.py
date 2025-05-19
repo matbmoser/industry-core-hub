@@ -36,7 +36,7 @@ async def part_management_get_catalog_part(manufacturer_id: str, manufacturer_pa
 
 @router.get("/catalog-part", response_model=List[SimpleCatalogPartReadWithStatus])
 async def part_management_get_catalog_parts() -> List[SimpleCatalogPartReadWithStatus]:
-    return part_management_service.get_catalog_parts()
+    return part_management_service.get_simple_catalog_parts()
 
 @router.post("/catalog-part", response_model=CatalogPartReadWithStatus)
 async def part_management_create_catalog_part(catalog_part_create: CatalogPartCreate) -> CatalogPartReadWithStatus:

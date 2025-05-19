@@ -155,7 +155,7 @@ class PartManagementService():
         # Logic to delete a catalog part
         pass
 
-    def get_catalog_parts(self, manufacturer_id: Optional[str] = None, manufacturer_part_id: Optional[str] = None) -> List[SimpleCatalogPartReadWithStatus]:
+    def get_simple_catalog_parts(self, manufacturer_id: Optional[str] = None, manufacturer_part_id: Optional[str] = None) -> List[SimpleCatalogPartReadWithStatus]:
         with RepositoryManagerFactory.create() as repos:
             result = []
             
@@ -178,7 +178,40 @@ class PartManagementService():
             
             return result
 
-    def get_catalog_part(self, manufacturer_id: str, manufacturer_part_id: str) -> Optional[CatalogPartRead]:
+    def get_catalog_parts(self, manufacturer_id: Optional[str] = None, manufacturer_part_id: Optional[str] = None) -> List[CatalogPartReadWithStatus]:
+        with RepositoryManagerFactory.create() as repos:
+            result = []
+            
+            db_catalog_parts: List[tuple[CatalogPart, int]] = repos.catalog_part_repository.find_by_manufacturer_id_manufacturer_part_id(
+                manufacturer_id, manufacturer_part_id, join_partner_catalog_parts=True
+            )
+            
+            if db_catalog_parts:
+                for db_catalog_part, status in db_catalog_parts:
+                    result.append(
+                        CatalogPartReadWithStatus(
+                            manufacturerId=db_catalog_part.legal_entity.bpnl,
+                            manufacturerPartId=db_catalog_part.manufacturer_part_id,
+                            name=db_catalog_part.name,
+                            category=db_catalog_part.category,
+                            bpns=db_catalog_part.bpns,
+                            materials=db_catalog_part.materials,
+                            width=db_catalog_part.width,
+                            height=db_catalog_part.height,
+                            length=db_catalog_part.length,
+                            weight=db_catalog_part.weight,
+                            customerPartIds={partner_catalog_part.customer_part_id: BusinessPartnerRead(
+                                 name=partner_catalog_part.business_partner.name,
+                                 bpnl=partner_catalog_part.business_partner.bpnl
+                             ) for partner_catalog_part in db_catalog_part.partner_catalog_parts},
+                            status=status
+                        )
+                    )
+            
+            return result
+    
+    
+    def get_catalog_part(self, manufacturer_id: str, manufacturer_part_id: str) -> Optional[CatalogPartReadWithStatus]:
         """
         Retrieve a catalog part from the system.
         """
