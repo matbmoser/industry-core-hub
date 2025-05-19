@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview",    
+    "preview": "vite preview",
     "build:docker": "IMAGE=ichub-frontend && docker build -t $IMAGE -f Dockerfile .",
     "start:docker": "IMAGE=ichub-frontend && docker run --rm -d -p 8080:80 --name ichub-frontend $IMAGE"
   },
@@ -17,6 +17,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.5",
     "@mui/material": "^6.4.5",
+    "axios": "^1.9.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-router-dom": "^7.2.0",
