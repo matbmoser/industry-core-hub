@@ -27,7 +27,6 @@ import enum
 from uuid import UUID
 from typing import Dict, Optional, List, Any
 from pydantic import BaseModel, Field
-from pydantic import BaseModel, Field
 
 
 from models.services.part_management import CatalogPartBase, BusinessPartnerRead, CatalogPartRead, BatchCreate, SerializedPartCreate, JISPartCreate
@@ -36,7 +35,7 @@ from models.services.twin_management import CatalogPartTwinDetailsRead
 
 class SharingBase(BaseModel):
     business_partner_number: str = Field(alias="businessPartnerNumber", description="The business partner number of the business partner with which the catalog part is shared.")
-    customer_part_ids: Optional[List[str]] = Field(alias="customerPartIds", description="The list of customer part IDs which will be mapped to the respective Business Partners.", default=[])
+    customer_part_id: Optional[str] = Field(alias="customerPartId", description="The customer part ID which will be mapped to the respective Business Partner", default=None)
 
 class ShareCatalogPart(SharingBase, CatalogPartBase):
     """Class that stores the information required by request in the sharing functionalit, for catalog parts"""

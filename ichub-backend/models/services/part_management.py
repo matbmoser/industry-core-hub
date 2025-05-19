@@ -75,7 +75,6 @@ class CatalogPartReadWithStatus(CatalogPartRead):
 class SimpleCatalogPartReadWithStatus(SimpleCatalogRead):
     status: SharingStatus = Field(description="The status of the part. (0: draft, 1:pending, 2: registered, 3: shared)")
 
-
 class CatalogPartCreate(CatalogPartRead):
     pass
 

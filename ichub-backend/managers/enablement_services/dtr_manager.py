@@ -63,10 +63,6 @@ class DTRManager:
         self.edc_controlplane_catalog_path = ConfigManager.get_config(
             "edc.controlplane.catalogPath"
         )
-        self.edc_dataplane_hostname = ConfigManager.get_config("edc.dataplane.hostname")
-        self.edc_dataplane_public_path = ConfigManager.get_config(
-            "edc.dataplane.publicPath"
-        )
 
     def create_shell_descriptor(
         self,

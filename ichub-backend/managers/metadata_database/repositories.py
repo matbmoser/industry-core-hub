@@ -80,10 +80,14 @@ class BaseRepository(Generic[ModelType]):
         return list(result)
 
     def update(self, id: int, obj_in: dict) -> Optional[ModelType]:
-        '''
-        TODO
-        '''
-        pass
+        db_obj = self._session.get(self.get_type(), id)
+        if not db_obj:
+            return None
+        for field, value in obj_in.items():
+            setattr(db_obj, field, value)
+        self._session.commit()
+        self._session.refresh(db_obj)
+        return db_obj
 
     def commit(self) -> None:
         self._session.commit()
@@ -195,12 +199,6 @@ class PartnerCatalogPartRepository(BaseRepository[PartnerCatalogPart]):
             PartnerCatalogPart.business_partner_id == business_partner_id)
         return self._session.scalars(stmt).first()
     
-    def get_all_by_catalog_part_id_business_partner_id(self, catalog_part_id: int, business_partner_id: int) -> List[PartnerCatalogPart] | None:
-        stmt = select(PartnerCatalogPart).where(
-            PartnerCatalogPart.catalog_part_id == catalog_part_id).where(
-            PartnerCatalogPart.business_partner_id == business_partner_id)
-        return self._session.scalars(stmt).all()
-    
     def create_new(self, catalog_part_id: int, business_partner_id: int, customer_part_id: str) -> PartnerCatalogPart:
         """Create a new PartnerCatalogPart instance."""
         partner_catalog_part = PartnerCatalogPart(
@@ -210,7 +208,37 @@ class PartnerCatalogPartRepository(BaseRepository[PartnerCatalogPart]):
         )
         self.create(partner_catalog_part)
         return partner_catalog_part
+    def create_or_update(self, catalog_part_id: int, business_partner_id: int, customer_part_id: str) -> PartnerCatalogPart:
+        """Create or update a PartnerCatalogPart instance."""
+        existing = self.get_by_catalog_part_id_business_partner_id(
+            catalog_part_id=catalog_part_id,
+            business_partner_id=business_partner_id
+        )
+        if existing:
+            return self.update(
+                catalog_part_id=catalog_part_id,
+                business_partner_id=business_partner_id,
+                customer_part_id=customer_part_id
+            )
+        return self.create_new(
+            catalog_part_id=catalog_part_id,
+            business_partner_id=business_partner_id,
+            customer_part_id=customer_part_id
+        )
 
+    def update(self, catalog_part_id: int, business_partner_id: int, customer_part_id: str) -> Optional[PartnerCatalogPart]:
+        """Update the customer_part_id for an existing PartnerCatalogPart."""
+        stmt = select(PartnerCatalogPart).where(
+            PartnerCatalogPart.catalog_part_id == catalog_part_id,
+            PartnerCatalogPart.business_partner_id == business_partner_id
+        )
+        existing = self._session.scalars(stmt).first()
+        if existing:
+            existing.customer_part_id = customer_part_id
+            self._session.commit()
+            self._session.refresh(existing)
+        return existing
+    
 class EnablementServiceStackRepository(BaseRepository[EnablementServiceStack]):
     def get_by_name(self, name: str, join_legal_entity: bool = False) -> Optional[EnablementServiceStack]:
         stmt = select(EnablementServiceStack).where(

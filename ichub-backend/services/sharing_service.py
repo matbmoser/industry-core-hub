@@ -130,61 +130,43 @@ class SharingService:
             db_data_exchange_agreement = db_data_exchange_agreements[0]
         return db_data_exchange_agreement
 
-    def _get_or_create_partner_catalog_parts(self, repo: RepositoryManager, customer_part_ids: List[str], db_catalog_part: CatalogPart, db_business_partner: BusinessPartner) -> Dict[str, BusinessPartnerRead]:
+    def _get_or_create_partner_catalog_parts(self, repo: RepositoryManager, customer_part_id: str, db_catalog_part: CatalogPart, db_business_partner: BusinessPartner) -> Dict[str, BusinessPartnerRead]:
         """
-        Retrieve or create partner catalog parts linking the catalog part and business partner for each customer_part_id.
-        If none provided or none exist, create a personalized default one.
+        Retrieve or create a single partner catalog part linking the catalog part and business partner for the given customer_part_id.
+        If not provided or does not exist, create a personalized default one.
         Return a dictionary of customer_part_id -> BusinessPartnerRead.
         """
-        result = {}
-
-        # Get all existing partner catalog parts for the specified catalog part and business partner
-        existing_parts = repo.partner_catalog_part_repository.get_all_by_catalog_part_id_business_partner_id(
-            business_partner_id=db_business_partner.id,
-            catalog_part_id=db_catalog_part.id
-        )
-        # Map them by customer_part_id for quick lookup
-        existing_by_customer_id = {p.customer_part_id: p for p in existing_parts}
-
         # Create a reusable BusinessPartnerRead object
         bp_read = BusinessPartnerRead(
             name=db_business_partner.name,
             bpnl=db_business_partner.bpnl
         )
 
-        if customer_part_ids:
-            # For each provided customer_part_id, ensure there's a corresponding partner catalog part
-            for customer_part_id in customer_part_ids:
-                if customer_part_id not in existing_by_customer_id:
-                    # Create the partner catalog part if it doesn't exist
-                    new_part = self._create_partner_catalog_part(
-                        repo=repo,
-                        customer_part_id=customer_part_id,
-                        db_catalog_part=db_catalog_part,
-                        db_business_partner=db_business_partner
-                    )
-                    existing_by_customer_id[customer_part_id] = new_part
-                # Map customer_part_id to BusinessPartnerRead
-                result[customer_part_id] = bp_read
-        else:
-            # If no customer_part_ids are provided, generate a default one based on BPNL and part ID
-            default_customer_part_id = db_business_partner.bpnl + "_" + db_catalog_part.manufacturer_part_id
-            if default_customer_part_id not in existing_by_customer_id:
-                # Create the default partner catalog part if it doesn't exist
-                new_part = self._create_partner_catalog_part(
-                    repo=repo,
-                    customer_part_id=default_customer_part_id,
-                    db_catalog_part=db_catalog_part,
-                    db_business_partner=db_business_partner
-                )
-                existing_by_customer_id[default_customer_part_id] = new_part
-            # Map the default customer_part_id to BusinessPartnerRead
-            result[default_customer_part_id] = bp_read
+        partner_catalog_part: Optional[PartnerCatalogPart] = repo.partner_catalog_part_repository.get_by_catalog_part_id_business_partner_id(
+            business_partner_id=db_business_partner.id,
+            catalog_part_id=db_catalog_part.id
+        )
 
-        return result
+        if partner_catalog_part and partner_catalog_part.customer_part_id == customer_part_id:
+            return { customer_part_id: bp_read }
+
+        if partner_catalog_part:
+            logger.warning("A provider customer_part_id already exists in the database, updating to the provided one")
+
+        if not customer_part_id:
+            customer_part_id = db_business_partner.bpnl + "_" + db_catalog_part.manufacturer_part_id
+
+        self._create_or_update_partner_catalog_part(
+            repo=repo,
+            customer_part_id=customer_part_id,
+            db_catalog_part=db_catalog_part,
+            db_business_partner=db_business_partner
+        )
+
+        return { customer_part_id: bp_read }
     
-    def _create_partner_catalog_part(self, repo: RepositoryManager, customer_part_id:str, db_catalog_part: CatalogPart, db_business_partner: BusinessPartner) -> PartnerCatalogPart:
-        db_partner_catalog_part = repo.partner_catalog_part_repository.create_new(
+    def _create_or_update_partner_catalog_part(self, repo: RepositoryManager, customer_part_id:str, db_catalog_part: CatalogPart, db_business_partner: BusinessPartner) -> PartnerCatalogPart:
+        db_partner_catalog_part = repo.partner_catalog_part_repository.create_or_update(
             catalog_part_id=db_catalog_part.id,
             business_partner_id=db_business_partner.id,
             customer_part_id=customer_part_id,

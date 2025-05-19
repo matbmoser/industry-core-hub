@@ -312,11 +312,8 @@ class TwinManagementService:
                 
                 # Step 6a: Register the aspect as asset in the EDC (if necessary)
                 if db_twin_aspect_registration.registration_mode == TwinsAspectRegistrationMode.SINGLE.value:
-                    edc_manager.register_submodel_asset(
-                        db_twin.global_id,
-                        db_twin_aspect.semantic_id,
-                        db_twin.aas_id,
-                        db_twin_aspect.submodel_id,
+                    edc_manager.register_submodel_bundle_asset(
+                        asset_id=db_twin_aspect.submodel_id,
                     )
 
                 # Step 6b: Update the registration status to EDC_REGISTERED
