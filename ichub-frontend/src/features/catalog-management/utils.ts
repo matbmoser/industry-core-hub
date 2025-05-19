@@ -20,23 +20,20 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { StatusVariants } from "../features/catalog-management/components/product-list/CardChip";
+import { StatusVariants } from './components/product-list/CardChip';
 
-// Represents the structure of the data received from the API
-export interface ApiPartData {
-  manufacturerId: string;
-  manufacturerPartId: string;
-  name: string;
-  category: string;
-  bpns: string;
-  status: number; // Numeric status from API (e.g., 0, 1, 2, 3)
-}
-
-export interface PartInstance {
-  manufacturerId: string;
-  manufacturerPartId: string;
-  name: string;
-  category: string;
-  status: StatusVariants; // Mapped from numeric API status (0: Draft, 1: Pending, 2: Registered, 3: Shared)
-  bpns: string;
-}
+// Helper function to map numeric API status to StatusVariants
+export const mapApiStatusToVariant = (apiStatus: number): StatusVariants => {
+  switch (apiStatus) {
+    case 0:
+      return StatusVariants.draft;
+    case 1:
+      return StatusVariants.pending;
+    case 2:
+      return StatusVariants.registered;
+    case 3:
+      return StatusVariants.shared;
+    default:
+      return StatusVariants.draft;
+  }
+};

@@ -26,6 +26,7 @@ import MuiChip from '@mui/material/Chip'
 
 export enum StatusVariants {
   registered = 'Registered',
+  pending = 'Pending',
   shared = 'Shared',
   draft = 'Draft',
 }
@@ -55,6 +56,11 @@ const statusStyles: Record<StatusVariants | 'default', ChipStyle> = {
     color: 'bgDefault',
     backgroundColor: 'none',
     border: 'borderDraft',
+  },
+  [StatusVariants.pending]: {
+    color: 'inReview',
+    backgroundColor: 'bgInReview',
+    border: 'inReview',
   },
   default: {
     color: 'default',

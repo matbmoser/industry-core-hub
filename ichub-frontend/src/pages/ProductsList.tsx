@@ -22,14 +22,13 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import carPartsData from "../tests/payloads/sample-data.json";
 import { ProductCard } from "../features/catalog-management/components/product-list/ProductCard";
-import { PartInstance } from "../types/product";
+import { PartInstance, ApiPartData } from "../types/product";
 import TablePagination from '@mui/material/TablePagination';
 import { Typography, Grid2 } from '@mui/material';
-import { StatusVariants } from "../features/catalog-management/components/product-list/CardChip";
 import ShareDialog from "../components/general/ShareDialog";
-
+import { fetchCatalogParts } from "../features/catalog-management/api"
+import { mapApiStatusToVariant } from "../features/catalog-management/utils";
 
 const ProductsList = () => {
   const [carParts, setCarParts] = useState<PartInstance[]>([]);
@@ -51,9 +50,16 @@ const ProductsList = () => {
     // Define the async function inside useEffect
     const fetchData = async () => {
       try {
-        const mappedCarParts = carPartsData.map((part) => ({
-          ...part,
-          status: part.status as StatusVariants,
+        const apiData: ApiPartData[] = await fetchCatalogParts();
+
+        // Map API data to PartInstance[]
+        const mappedCarParts = apiData.map((part) => ({
+          manufacturerId: part.manufacturerId,
+          manufacturerPartId: part.manufacturerPartId,
+          name: part.name,
+          category: part.category,
+          status: mapApiStatusToVariant(part.status), // Map numeric status
+          bpns: part.bpns,
         }));
         setCarParts(mappedCarParts);
         setInitialCarParts(mappedCarParts);
@@ -64,23 +70,39 @@ const ProductsList = () => {
     fetchData();  // Call the async function
   }, []);
 
-  const handleButtonClick = (partUuid: string) => {
-    navigate(`/product/${partUuid}`);  // Navigate to the details page
+  const handleButtonClick = (partId: string) => {
+    navigate(`/product/${partId}`); // Navigate to the details page
   };
 
-  const handleShareDialog = (uuid: string) => {
-    const part = visibleRows.find(p => p.uuid === uuid);
+  const handleShareDialog = (
+    manufacturerId: string,
+    manufacturerPartId: string
+  ) => {
+    const part = visibleRows.find(
+      (p) =>
+        p.manufacturerId === manufacturerId &&
+        p.manufacturerPartId === manufacturerPartId
+    ); // Use carParts directly as visibleRows is a slice
     if (part) {
-      console.log('Share dialog for part:', part);
+      console.log("Share dialog for part:", part);
       setSelectedPart(part);
       setShareDialogOpen(true);
-    } else {
-      console.warn('Part not found for UUID:', uuid);
+    } else {console.warn(
+      "Part not found for manufacturerId:",
+      manufacturerId,
+      ", manufacturerPartId:",
+      manufacturerPartId
+    );
     }
   };
   
-  const handleMore = (itemId: string) => {
-    console.log('More options for item with id:', itemId);
+  const handleMore = (manufacturerId: string, manufacturerPartId: string) => {
+    console.log(
+      "More options for item with manufacturerId:",
+      manufacturerId,
+      "manufacturerPartId:",
+      manufacturerPartId
+    );
     // More options logic
   };
 
@@ -105,10 +127,11 @@ const ProductsList = () => {
           onShare={handleShareDialog}
           onMore={handleMore}
           items={visibleRows.map((part) => ({
-            uuid: part.uuid,
+            manufacturerId: part.manufacturerId,
+            manufacturerPartId: part.manufacturerPartId,
             name: part.name,
-            class: part.class,
-            status: part.status as StatusVariants,
+            category: part.category,
+            status: part.status,
           }))}
         />
       </Grid2>
