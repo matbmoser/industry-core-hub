@@ -118,6 +118,9 @@ backend:
         managementpath: "/management"
         protocolPath: "/api/v1/dsp"
         catalogPath: "/catalog"
+      dataplane:
+         hostname: "https://edc-provider-ichub-dataplane.int.catena-x.net"
+         publicPath: "/api/public"
     # -- Digital Twin Registry configuration
     digitalTwinRegistry:
       hostname: "https://dtr-ichub.int.catena-x.net/"

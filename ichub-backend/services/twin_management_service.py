@@ -310,11 +310,13 @@ class TwinManagementService:
             if db_twin_aspect_registration.status < TwinAspectRegistrationStatus.EDC_REGISTERED.value:
                 edc_manager = _create_edc_manager(db_enablement_service_stack.connection_settings)
                 
-                # Step 6a: Register the aspect as asset in the EDC (if necessary)
-                if db_twin_aspect_registration.registration_mode == TwinsAspectRegistrationMode.SINGLE.value:
-                    edc_manager.register_submodel_bundle_asset(
-                        asset_id=db_twin_aspect.submodel_id,
-                    )
+                # Step 6a: Register the aspect as asset in the EDC (if necessary) only submodel bundle allowed
+                assetid = edc_manager.register_or_get_submodel_bundle_asset(
+                    asset_id="ichub:submodel-bundle:" + db_twin_aspect.semantic_id,
+                    semantic_id=db_twin_aspect.semantic_id,
+                    base_url=""
+                    
+                )
 
                 # Step 6b: Update the registration status to EDC_REGISTERED
                 db_twin_aspect_registration.status = TwinAspectRegistrationStatus.EDC_REGISTERED.value
@@ -331,7 +333,7 @@ class TwinManagementService:
                     submodel_id=db_twin_aspect.submodel_id,
                     semantic_id=db_twin_aspect.semantic_id,
                     # TODO: later we should use the asset id from the EDC manager
-                    edc_asset_id=uuid4()
+                    edc_asset_id=assetid
                 )
 
                 # Step 7b: Update the registration status to DTR_REGISTERED

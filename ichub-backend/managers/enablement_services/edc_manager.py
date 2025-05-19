@@ -59,7 +59,7 @@ class EDCManager:
         print("Submodel asset registered successfully (dummy implementation).")
         print()
 
-    def register_submodel_bundle_asset(self, asset_id:str, base_url:str, semantic_id: str):
+    def register_or_get_submodel_bundle_asset(self, asset_id:str, base_url:str, semantic_id: str):
         """Register a submodel bundle asset in the EDC."""
         
         dct_type = "cx-taxo:SubmodelBundle"
