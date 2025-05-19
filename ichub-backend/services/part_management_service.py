@@ -172,7 +172,7 @@ class PartManagementService():
                             name=db_catalog_part.name,
                             category=db_catalog_part.category,
                             bpns=db_catalog_part.bpns,
-                            status=status,
+                            status=status
                         )
                     )
             

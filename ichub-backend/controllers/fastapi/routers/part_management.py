@@ -30,14 +30,14 @@ router = APIRouter(prefix="/part-management", tags=["Part Management"])
 part_management_service = PartManagementService()
 
 
-@router.get("/catalog-part/{manufacturer_id}/{manufacturer_part_id}", response_model=CatalogPartRead)
-async def part_management_get_catalog_part(manufacturer_id: str, manufacturer_part_id: str) -> Optional[CatalogPartRead]:
+@router.get("/catalog-part/{manufacturer_id}/{manufacturer_part_id}", response_model=CatalogPartReadWithStatus)
+async def part_management_get_catalog_part(manufacturer_id: str, manufacturer_part_id: str) -> Optional[CatalogPartReadWithStatus]:
     return part_management_service.get_catalog_part(manufacturer_id, manufacturer_part_id)
 
 @router.get("/catalog-part", response_model=List[SimpleCatalogPartReadWithStatus])
 async def part_management_get_catalog_parts() -> List[SimpleCatalogPartReadWithStatus]:
     return part_management_service.get_catalog_parts()
 
-@router.post("/catalog-part", response_model=CatalogPartRead)
+@router.post("/catalog-part", response_model=CatalogPartReadWithStatus)
 async def part_management_create_catalog_part(catalog_part_create: CatalogPartCreate) -> CatalogPartReadWithStatus:
     return part_management_service.create_catalog_part(catalog_part_create)
