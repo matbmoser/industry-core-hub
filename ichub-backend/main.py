@@ -23,6 +23,7 @@
 # Import custom logging and configuration modules, and database utility
 from managers.config.log_manager import LoggingManager
 from managers.config.config_manager import ConfigManager
+from managers.enablement_services import ConnectorManager
 from database import connect_and_test
 
 ## FAST API example for keycloak
@@ -67,7 +68,9 @@ if __name__ == "__main__":
     """)
     print("\n\n\t\t\t\t\t\t\t\t\t\tv0.0.1")
     print("Application starting, listening to requests...\n")
-
+    
+    connector_manager = ConnectorManager()
+    connector_manager.register_submodel_bundle_circular_offer(semantic_id="urn:samm:io.catenax.part_type_information:1.0.0#PartTypeInformation")
     start()
 
     print("\nClosing the application... Thank you for using the Eclipse Tractus-X Industry Core Hub Backend!")

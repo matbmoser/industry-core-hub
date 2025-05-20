@@ -28,7 +28,7 @@ from uuid import UUID, uuid4
 from managers.config.config_manager import ConfigManager
 from managers.metadata_database.manager import RepositoryManagerFactory
 from managers.enablement_services.dtr_manager import DTRManager
-from managers.enablement_services.edc_manager import EDCManager
+from managers.enablement_services.connector_manager import ConnectorManager
 from managers.enablement_services.submodel_service_manager import SubmodelServiceManager
 from models.services.partner_management import BusinessPartnerRead, DataExchangeAgreementRead
 from models.services.twin_management import (
@@ -437,12 +437,12 @@ def _create_dtr_manager(connection_settings: Optional[Dict[str, Any]]) -> DTRMan
         dtr_url=dtr_url, dtr_lookup_url=dtr_lookup_url,
         api_path=str(dtr_api_path))
 
-def _create_edc_manager(connection_settings: Optional[Dict[str, Any]]) -> EDCManager:
+def _create_edc_manager(connection_settings: Optional[Dict[str, Any]]) -> ConnectorManager:
     """
     Create a new instance of the EDCManager class.
     """
     # TODO: later we can configure the manager via the connection settings from the DB here
-    return EDCManager()
+    return ConnectorManager()
 
 def _create_submodel_service_manager(connection_settings: Optional[Dict[str, Any]]) -> SubmodelServiceManager:
     """

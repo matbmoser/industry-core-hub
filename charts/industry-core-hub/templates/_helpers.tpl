@@ -257,3 +257,18 @@ Return the postgresql DSN URL
 {{- $sslMode := include "industry-core-hub.postgresql.sslMode" . -}}
 {{- printf "postgresql://%s:$DATABASE_PASSWORD@%s:%s/%s?sslmode=%s" $user $host $port $name $sslMode -}}
 {{- end -}}
+
+{{/*
+Return the external hostname (http or https based on ingress TLS setting)
+*/}}
+{{- define "industry-core-hub.externalHostname" -}}
+{{- if and .Values.backend.ingress.enabled .Values.ingress.hosts }}
+  {{- $scheme := "http" }}
+  {{- if .Values.backend.ingress.tls }}{{ $scheme = "https" }}{{- end }}
+  {{- $host := (index .Values.backend.ingress.hosts 0).host }}
+  {{- $path := (index .Values.backend.ingress.hosts 0).paths | first | default "/" }}
+  {{- printf "%s://%s%s" $scheme $host $path | quote }}
+{{- else }}
+  "http://ichub-backend.url"
+{{- end }}
+{{- end }}
