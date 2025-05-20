@@ -60,8 +60,7 @@ data:
     submodel_dispatcher:
       path: {{ .Values.backend.configuration.submodel_dispatcher.path | quote }}
       apiPath: {{ .Values.backend.configuration.submodel_dispatcher.path | quote }}
-    agreements:
-      {{ toYaml .Values.backend.configuration.agreements | indent 8 }}
+    agreements: {{ toYaml .Values.backend.configuration.agreements | indent 8 }}
   logging.yml: |-
     version: 1
     disable_existing_loggers: False
