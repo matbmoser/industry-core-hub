@@ -24,11 +24,14 @@ import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProductCard } from "../features/catalog-management/components/product-list/ProductCard";
 import { PartInstance, ApiPartData } from "../types/product";
-import TablePagination from '@mui/material/TablePagination';
-import { Typography, Grid2 } from '@mui/material';
+import TablePagination from "@mui/material/TablePagination";
+import { Typography, Grid2, Box } from "@mui/material"; // Removed Paper
+import { Button } from "@catena-x/portal-shared-components";
+import AddIcon from "@mui/icons-material/Add";
 import ShareDialog from "../components/general/ShareDialog";
-import { fetchCatalogParts } from "../features/catalog-management/api"
-import { mapApiStatusToVariant } from "../features/catalog-management/utils";
+import CreateProductListDialog from "../features/partner-management/components/general/CreateProductListDialog";
+import { fetchCatalogParts } from "../features/catalog-management/api";
+import { mapApiPartDataToPartInstance } from "../features/catalog-management/utils";
 
 const ProductsList = () => {
   const [carParts, setCarParts] = useState<PartInstance[]>([]);
@@ -38,36 +41,33 @@ const ProductsList = () => {
   const [page, setPage] = useState(0);
   const rowsPerPage = 10;
   const navigate = useNavigate();
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
   const handleChangePage = (
     _event: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number,
+    newPage: number
   ) => {
     setPage(newPage);
   };
 
-  useEffect(() => {
-    // Define the async function inside useEffect
-    const fetchData = async () => {
-      try {
-        const apiData: ApiPartData[] = await fetchCatalogParts();
+  const fetchData = async () => {
+    try {
+      const apiData: ApiPartData[] = await fetchCatalogParts();
 
-        // Map API data to PartInstance[]
-        const mappedCarParts = apiData.map((part) => ({
-          manufacturerId: part.manufacturerId,
-          manufacturerPartId: part.manufacturerPartId,
-          name: part.name,
-          category: part.category,
-          status: mapApiStatusToVariant(part.status), // Map numeric status
-          bpns: part.bpns,
-        }));
-        setCarParts(mappedCarParts);
-        setInitialCarParts(mappedCarParts);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-    fetchData();  // Call the async function
+      // Map API data to PartInstance[]
+      const mappedCarParts: PartInstance[] = apiData.map((part) =>
+        mapApiPartDataToPartInstance(part)
+      );
+
+      setCarParts(mappedCarParts);
+      setInitialCarParts(mappedCarParts);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData(); // Call the async function
   }, []);
 
   const handleButtonClick = (partId: string) => {
@@ -87,15 +87,16 @@ const ProductsList = () => {
       console.log("Share dialog for part:", part);
       setSelectedPart(part);
       setShareDialogOpen(true);
-    } else {console.warn(
-      "Part not found for manufacturerId:",
-      manufacturerId,
-      ", manufacturerPartId:",
-      manufacturerPartId
-    );
+    } else {
+      console.warn(
+        "Part not found for manufacturerId:",
+        manufacturerId,
+        ", manufacturerPartId:",
+        manufacturerPartId
+      );
     }
   };
-  
+
   const handleMore = (manufacturerId: string, manufacturerPartId: string) => {
     console.log(
       "More options for item with manufacturerId:",
@@ -106,55 +107,94 @@ const ProductsList = () => {
     // More options logic
   };
 
-  const visibleRows = useMemo(
-    () => {
-      return [...carParts].slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-    },
-    [page, rowsPerPage, carParts],
-  );
+  const visibleRows = useMemo(() => {
+    return [...carParts].slice(
+      page * rowsPerPage,
+      page * rowsPerPage + rowsPerPage
+    );
+  }, [page, rowsPerPage, carParts]);
+
+  const handleOpenCreateDialog = () => {
+    setIsCreateDialogOpen(true);
+  };
+
+  const handleCloseCreateDialog = () => {
+    setIsCreateDialogOpen(false);
+  };
+
+  const handleSaveCatalogPart = () => {
+    handleCloseCreateDialog();
+    fetchData(); // Refresh the list after saving
+    console.log("Catalog part saved, refreshing list...");
+  };
 
   return (
-    <Grid2 className="product-catalog" container spacing={1} direction="row">
-      <Grid2 className="title flex flex-content-center">
-        <Typography className="text">
-          Catalog Parts
-        </Typography>
+    <Box sx={{ p: 3, width: "100%" }}>
+      <Grid2 container direction="column" alignItems="center" sx={{ mb: 3 }}>
+        <Grid2 className="product-catalog title flex flex-content-center">
+          <Typography className="text">Catalog Parts</Typography>
+        </Grid2>
+        <Grid2
+          container
+          width={"100%"}
+          direction="row"
+          alignItems="center"
+          justifyContent="flex-end"
+          sx={{ mt: 1 }}
+        >
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={handleOpenCreateDialog}
+            size="small"
+          >
+            Create New Catalog Part
+          </Button>
+        </Grid2>
       </Grid2>
 
-      <Grid2 className="flex flex-content-center" size={12}>
-        <ProductCard
-          onClick={handleButtonClick}
-          onShare={handleShareDialog}
-          onMore={handleMore}
-          items={visibleRows.map((part) => ({
-            manufacturerId: part.manufacturerId,
-            manufacturerPartId: part.manufacturerPartId,
-            name: part.name,
-            category: part.category,
-            status: part.status,
-          }))}
-        />
+      <Grid2 className="product-catalog" container spacing={1} direction="row">
+        <Grid2 className="flex flex-content-center" size={12}>
+          <ProductCard
+            onClick={handleButtonClick}
+            onShare={handleShareDialog}
+            onMore={handleMore}
+            items={visibleRows.map((part) => ({
+              manufacturerId: part.manufacturerId,
+              manufacturerPartId: part.manufacturerPartId,
+              name: part.name,
+              category: part.category,
+              status: part.status,
+            }))}
+          />
+        </Grid2>
+
+        <Grid2 size={12} className="flex flex-content-center">
+          <TablePagination
+            rowsPerPageOptions={[rowsPerPage]}
+            component="div"
+            count={initialCarParts.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            className="product-list-pagination"
+          />
+        </Grid2>
+        {selectedPart && (
+          <ShareDialog
+            open={shareDialogOpen}
+            onClose={() => setShareDialogOpen(false)}
+            partData={selectedPart}
+          />
+        )}
       </Grid2>
 
-      <Grid2 size={12} className="flex flex-content-center">
-        <TablePagination
-          rowsPerPageOptions={[rowsPerPage]}
-          component="div"
-          count={initialCarParts.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          className="product-list-pagination"
-        />
-      </Grid2>
-    {selectedPart && (
-      <ShareDialog
-        open={shareDialogOpen}
-        onClose={() => setShareDialogOpen(false)}
-        partData={selectedPart}
+      <CreateProductListDialog
+        open={isCreateDialogOpen}
+        onClose={handleCloseCreateDialog}
+        onSave={handleSaveCatalogPart}
       />
-    )}
-    </Grid2>
+    </Box>
   );
 };
 
