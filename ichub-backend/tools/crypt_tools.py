@@ -25,6 +25,8 @@ import hashlib
 import base64
 
 @staticmethod
-def blake2b_128bit(data: str) -> str:
-    digest = hashlib.blake2b(data.encode(), digest_size=16).digest()
+def blake2b_128bit(data: str | bytes) -> str:
+    if isinstance(data, str):
+        data = data.encode()
+    digest = hashlib.blake2b(data, digest_size=16).digest()
     return base64.urlsafe_b64encode(digest).decode().rstrip("=")

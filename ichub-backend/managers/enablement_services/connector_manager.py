@@ -259,9 +259,9 @@ class ConnectorManager:
         return asset_id, usage_policy_id, access_policy_id, contract_id
 
     def generate_contract_id(self, asset_id:str, usage_policy_id:str, access_policy_id:str) -> str:
-        return "ichub:contract:"+blake2b_128bit((
+        return "ichub:contract:"+blake2b_128bit(
             asset_id + usage_policy_id + access_policy_id
-        ))
+        )
 
     def get_or_create_contract(self, asset_id:str, usage_policy_id:str, access_policy_id:str) -> str:
         contract_id:str = self.generate_contract_id(asset_id=asset_id, usage_policy_id=usage_policy_id, access_policy_id=access_policy_id)
@@ -410,7 +410,7 @@ class ConnectorManager:
         return "ichub:asset:"+blake2b_128bit(self.build_dispatcher_url(semantic_id=semantic_id))
     
     def generate_dtr_asset_id(self, dtr_url:str):
-        return "ichub:asset:dtr:"+blake2b_128bit(dtr_url.encode())
+        return "ichub:asset:dtr:"+blake2b_128bit(dtr_url)
     
     def create_circular_submodel_asset(self, semantic_id: str):
         headers = None
