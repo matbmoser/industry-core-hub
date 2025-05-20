@@ -23,7 +23,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProductCard } from "../features/catalog-management/components/product-list/ProductCard";
-import { PartInstance, ApiPartData } from "../types/product";
+import { PartType, ApiPartData } from "../types/product";
 import TablePagination from "@mui/material/TablePagination";
 import { Typography, Grid2, Box } from "@mui/material"; // Removed Paper
 import { Button } from "@catena-x/portal-shared-components";
@@ -31,13 +31,13 @@ import AddIcon from "@mui/icons-material/Add";
 import ShareDialog from "../components/general/ShareDialog";
 import CreateProductListDialog from "../features/partner-management/components/general/CreateProductListDialog";
 import { fetchCatalogParts } from "../features/catalog-management/api";
-import { mapApiPartDataToPartInstance } from "../features/catalog-management/utils";
+import { mapApiPartDataToPartType } from "../features/catalog-management/utils";
 
 const ProductsList = () => {
-  const [carParts, setCarParts] = useState<PartInstance[]>([]);
+  const [carParts, setCarParts] = useState<PartType[]>([]);
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
-  const [selectedPart, setSelectedPart] = useState<PartInstance | null>(null);
-  const [initialCarParts, setInitialCarParts] = useState<PartInstance[]>([]);
+  const [selectedPart, setSelectedPart] = useState<PartType | null>(null);
+  const [initialCarParts, setInitialCarParts] = useState<PartType[]>([]);
   const [page, setPage] = useState(0);
   const rowsPerPage = 10;
   const navigate = useNavigate();
@@ -55,8 +55,8 @@ const ProductsList = () => {
       const apiData: ApiPartData[] = await fetchCatalogParts();
 
       // Map API data to PartInstance[]
-      const mappedCarParts: PartInstance[] = apiData.map((part) =>
-        mapApiPartDataToPartInstance(part)
+      const mappedCarParts: PartType[] = apiData.map((part) =>
+        mapApiPartDataToPartType(part)
       );
 
       setCarParts(mappedCarParts);
@@ -134,25 +134,10 @@ const ProductsList = () => {
         <Grid2 className="product-catalog title flex flex-content-center">
           <Typography className="text">Catalog Parts</Typography>
         </Grid2>
-        <Grid2
-          container
-          width={"100%"}
-          direction="row"
-          alignItems="center"
-          justifyContent="flex-end"
-          sx={{ mt: 1 }}
-        >
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={handleOpenCreateDialog}
-            size="small"
-          >
-            Create New Catalog Part
-          </Button>
-        </Grid2>
       </Grid2>
-
+      <Grid2 size={12} container justifyContent="flex-end" marginRight={6} marginBottom={2}>
+        <Button className="add-button" variant="outlined" size="small" onClick={handleOpenCreateDialog} startIcon={<AddIcon />} >Create Catalog Part</Button>
+      </Grid2>
       <Grid2 className="product-catalog" container spacing={1} direction="row">
         <Grid2 className="flex flex-content-center" size={12}>
           <ProductCard

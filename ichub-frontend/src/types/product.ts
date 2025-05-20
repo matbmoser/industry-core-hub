@@ -40,7 +40,7 @@ export interface Material {
   share: number; // Percentage, 0-100
 }
 
-export interface PartInstance {
+export interface PartType {
   manufacturerId: string;
   manufacturerPartId: string;
   name: string;
@@ -56,6 +56,6 @@ export interface PartInstance {
   customer_part_ids?: Record<string, string>; // e.g., { "CUSTOMER_BPNL_XYZ": "CUST_PART_ID_123" }
 }
 
-export type ApiPartData = Omit<PartInstance, 'status'> & {
+export type ApiPartData = Omit<PartType, 'status'> & {
   status: number; // Status from API is a number
 };

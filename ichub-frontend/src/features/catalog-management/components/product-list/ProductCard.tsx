@@ -24,8 +24,10 @@ import IosShare from "@mui/icons-material/IosShare";
 import MoreVert from "@mui/icons-material/MoreVert";
 import Launch from "@mui/icons-material/Launch";
 import { Box, Typography, IconButton, Button } from "@mui/material";
+import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import { CardChip } from "./CardChip";
 import { StatusVariants } from "../../../../types/statusVariants";
+import { ErrorNotFound } from "../../../../components/general/ErrorNotFound";
 
 export interface AppContent {
   id?: string;
@@ -69,6 +71,9 @@ export const ProductCard = ({
 
   return (
     <Box className="custom-cards-list">
+      {items.length === 0 && (
+        <ErrorNotFound icon={ReportProblemIcon} message="No catalog parts available, please check your ichub-backend connection/configuration"/>
+      )}
       {items.map((item) => {
         const name = item.name ?? "";
         const productId = item.manufacturerId + "/" + item.manufacturerPartId;
