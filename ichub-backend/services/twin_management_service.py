@@ -44,6 +44,10 @@ from models.services.twin_management import (
     TwinsAspectRegistrationMode,
 )
 
+from managers.config.log_manager import LoggingManager
+
+logger = LoggingManager.get_logger(__name__)
+
 CATALOG_DIGITAL_TWIN_TYPE = "PartType"
 
 class TwinManagementService:
@@ -313,7 +317,7 @@ class TwinManagementService:
                 
                 # Step 5a: Upload the payload to the submodel service
                 submodel_service_manager.upload_twin_aspect_document(
-                    db_twin.global_id,
+                    db_twin_aspect.submodel_id,
                     db_twin_aspect.semantic_id,
                     twin_aspect_create.payload
                 )
@@ -339,13 +343,15 @@ class TwinManagementService:
                 dtr_manager = _create_dtr_manager(db_enablement_service_stack.connection_settings)
                 
                 # Step 7a: Register the submodel in the DTR (if necessary)
-                dtr_manager.create_submodel_descriptor(
-                    global_id=db_twin.global_id,
-                    aas_id=db_twin.aas_id,
-                    submodel_id=db_twin_aspect.submodel_id,
-                    semantic_id=db_twin_aspect.semantic_id,
-                    edc_asset_id=asset_id
+                try:
+                    dtr_manager.create_submodel_descriptor(
+                        aas_id=db_twin.aas_id,
+                        submodel_id=db_twin_aspect.submodel_id,
+                        semantic_id=db_twin_aspect.semantic_id,
+                        edc_asset_id=asset_id
                 )
+                except Exception as e:
+                    logger.error("It was not possible to create the submodel descriptor")
 
                 # Step 7b: Update the registration status to DTR_REGISTERED
                 db_twin_aspect_registration.status = TwinAspectRegistrationStatus.DTR_REGISTERED.value

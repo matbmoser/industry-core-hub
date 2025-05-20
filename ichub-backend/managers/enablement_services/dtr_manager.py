@@ -44,6 +44,8 @@ from tools.aspect_id_tools import extract_aspect_id_name_from_urn_camelcase
 from urllib.parse import urljoin
 
 
+import json
+
 class DTRManager:
     def __init__(
         self,
@@ -62,7 +64,7 @@ class DTRManager:
              "edc.controlplane.hostname"
          )
         self.edc_controlplane_catalog_path = ConfigManager.get_config(
-            "edc.controlplane.catalogPath"
+            "edc.controlplane.protocolPath"
         )
         self.edc_dataplane_hostname = ConfigManager.get_config("edc.dataplane.hostname")
         self.edc_dataplane_public_path = ConfigManager.get_config(
@@ -175,9 +177,8 @@ class DTRManager:
 
     def create_submodel_descriptor(
         self,
-        global_id: UUID,
-        aas_id: UUID,
-        submodel_id: UUID,
+        aas_id: UUID|str,
+        submodel_id: UUID|str,
         semantic_id: str,
         edc_asset_id: str,
     ) -> SubModelDescriptor:
@@ -193,10 +194,13 @@ class DTRManager:
                 ReferenceKey(type=ReferenceKeyTypes.GLOBAL_REFERENCE, value=semantic_id)
             ],
         )
-
+        if(isinstance(aas_id, str)):
+            aas_id = UUID(aas_id)
+        if(isinstance(submodel_id, str)):
+            submodel_id = UUID(submodel_id)
         # Check that href and DSP URLs are valid
-
-        href_url = f"{self.edc_dataplane_hostname}{self.edc_dataplane_public_path}/{global_id.urn}/submodel"
+        
+        href_url = f"{self.edc_dataplane_hostname}{self.edc_dataplane_public_path}/{submodel_id.urn}/submodel"
 
         parsed_href_url = parse.urlparse(href_url)
         if not (parsed_href_url.scheme == "https" and parsed_href_url.netloc):
@@ -213,7 +217,7 @@ class DTRManager:
                 f"Generated DSP endpoint URL for subprotocolBody is malformed: {dsp_endpoint_url}"
             )
 
-        subprotocol_body_str = f"dspEndpoint={dsp_endpoint_url};id={edc_asset_id}"
+        subprotocol_body_str = f"id={edc_asset_id};dspEndpoint={dsp_endpoint_url}"
 
         endpoint = Endpoint(
             interface="SUBMODEL-3.0",
@@ -239,7 +243,7 @@ class DTRManager:
             semanticId=semantic_id_reference,
             endpoints=[endpoint],
         )  # type: ignore
-
+        
         res = self.aas_service.create_submodel_descriptor(aas_id.urn, submodel)
         if isinstance(res, Result):
             raise Exception("Error creating submodels descriptor", res.to_json_string())

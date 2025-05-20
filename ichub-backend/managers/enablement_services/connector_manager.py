@@ -32,7 +32,7 @@ import json
 from .dtr_manager import DTRManager
 
 logger = LoggingManager.get_logger(__name__)
-
+from tools.crypt_tools import blake2b_128bit
 class ConnectorManager:
     """Manager for handling EDC (Eclipse Data Space Components Connector) related operations."""
 
@@ -259,9 +259,9 @@ class ConnectorManager:
         return asset_id, usage_policy_id, access_policy_id, contract_id
 
     def generate_contract_id(self, asset_id:str, usage_policy_id:str, access_policy_id:str) -> str:
-        return "ichub:contract:"+sha256((
+        return "ichub:contract:"+blake2b_128bit((
             asset_id + usage_policy_id + access_policy_id
-        ).encode()).hexdigest()
+        ))
 
     def get_or_create_contract(self, asset_id:str, usage_policy_id:str, access_policy_id:str) -> str:
         contract_id:str = self.generate_contract_id(asset_id=asset_id, usage_policy_id=usage_policy_id, access_policy_id=access_policy_id)
@@ -320,9 +320,9 @@ class ConnectorManager:
         obligations_str = json.dumps(obligations, sort_keys=True)
         
         # Create a unique ID by hashing the concatenated strings
-        return "ichub:policy:"+sha256((
+        return "ichub:policy:"+blake2b_128bit(
             context_str + permissions_str + prohibitions_str + obligations_str
-        ).encode()).hexdigest()
+        )
     
     def get_or_create_policy(self, context: dict | list[dict] = {}, permissions: dict | list[dict] = [], prohibitions: dict | list[dict] = [], obligations: dict | list[dict] = []) -> str:
         
@@ -407,10 +407,10 @@ class ConnectorManager:
         return self.backend_submodel_dispatcher + "/" + quote(semantic_id, safe="")
     
     def generate_asset_id(self, semantic_id: str):
-        return "ichub:asset:"+sha256(self.build_dispatcher_url(semantic_id=semantic_id).encode()).hexdigest()
+        return "ichub:asset:"+blake2b_128bit(self.build_dispatcher_url(semantic_id=semantic_id))
     
     def generate_dtr_asset_id(self, dtr_url:str):
-        return "ichub:asset:dtr:"+sha256(dtr_url.encode()).hexdigest()
+        return "ichub:asset:dtr:"+blake2b_128bit(dtr_url.encode())
     
     def create_circular_submodel_asset(self, semantic_id: str):
         headers = None

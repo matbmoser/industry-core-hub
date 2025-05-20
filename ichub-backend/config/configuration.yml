@@ -74,14 +74,14 @@ edc:
     hostname: "https://connector.data.plane"
     publicPath: "/api/public"
 digitalTwinRegistry:
-  hostname: https://dataprovider-dtr.tx.test
+  hostname: https://dtr-ichub.int.catena-x.net
   apiPath: /api/v3
-  uri: /semantics/registry
+  uri: ""
   asset_config:
     dct_type: "https://w3id.org/catenax/taxonomy#DigitalTwinRegistry"
     # existing_asset_id: <registry-asset> # -- In case an existing DTR asset wants to be used specify here the id, otherwise it will be created based on the url, if it not exists it will be created
   lookup:
-    uri: /semantics/registry
+    uri: ""
   policy:
     usage:
       context:
