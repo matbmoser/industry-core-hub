@@ -24,7 +24,8 @@ import IosShare from "@mui/icons-material/IosShare";
 import MoreVert from "@mui/icons-material/MoreVert";
 import Launch from "@mui/icons-material/Launch";
 import { Box, Typography, IconButton, Button } from "@mui/material";
-import { CardChip, StatusVariants } from "./CardChip";
+import { CardChip } from "./CardChip";
+import { StatusVariants } from "../../../../types/statusVariants";
 
 export interface AppContent {
   id?: string;

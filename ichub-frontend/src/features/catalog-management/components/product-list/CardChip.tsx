@@ -23,13 +23,8 @@
 import PersonIcon from '@mui/icons-material/Person'
 import { type Palette, useTheme } from '@mui/material'
 import MuiChip from '@mui/material/Chip'
+import { StatusVariants } from '../../../../types/statusVariants'
 
-export enum StatusVariants {
-  registered = 'Registered',
-  pending = 'Pending',
-  shared = 'Shared',
-  draft = 'Draft',
-}
 export interface CardChipProps {
   status?: StatusVariants
   statusText?: string

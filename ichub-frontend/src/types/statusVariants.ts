@@ -20,42 +20,9 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { StatusVariants } from './statusVariants'
-
-export enum Unit {
-  MM = "mm",
-  CM = "cm",
-  M = "m",
-  G = "g",
-  KG = "kg",
-}
-
-export interface Measurement {
-  value: number;
-  unit: Unit;
-}
-
-export interface Material {
-  name: string;
-  share: number; // Percentage, 0-100
-}
-
-export interface PartInstance {
-  manufacturerId: string;
-  manufacturerPartId: string;
-  name: string;
-  status?: StatusVariants;
-  description?: string;
-  category?: string;
-  materials: Material[];
-  bpns?: string; // Site BPN
-  width?: Measurement;
-  height?: Measurement;
-  length?: Measurement;
-  weight?: Measurement;
-  customer_part_ids?: Record<string, string>; // e.g., { "CUSTOMER_BPNL_XYZ": "CUST_PART_ID_123" }
-}
-
-export type ApiPartData = Omit<PartInstance, 'status'> & {
-  status: number; // Status from API is a number
-};
+export enum StatusVariants {
+    registered = 'Registered',
+    pending = 'Pending',
+    shared = 'Shared',
+    draft = 'Draft',
+  }

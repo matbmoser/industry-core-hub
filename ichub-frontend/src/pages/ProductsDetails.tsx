@@ -34,7 +34,7 @@ import ProductButton from "../features/catalog-management/components/product-det
 import ProductData from "../features/catalog-management/components/product-detail/ProductData";
 import ShareDialog from "../components/general/ShareDialog";
 import { PartInstance } from "../types/product";
-import { StatusVariants } from "../features/catalog-management/components/product-list/CardChip";
+import { StatusVariants } from "../types/statusVariants";
 
 const ProductsDetails = () => {
   // const { id } = useParams<{ id: string }>();
@@ -43,6 +43,7 @@ const ProductsDetails = () => {
     "status": StatusVariants.registered,
     "manufacturerPartId": "TH4SZ-4ASD514-ASD5621284",
     "manufacturerId": "BPNL0000000001XY",
+    "materials": [],
     "category": "Engine",
     "bpns": ""
   }
@@ -126,7 +127,7 @@ const ProductsDetails = () => {
       <Grid2 container direction="column" className="productDetail">
         <Grid2 container spacing={2} className="mb-5">
           <Grid2 size={{lg: 4, md: 6, sm: 6}} display="flex" justifyContent="start">
-            {getStatusTag(part.status)}
+            {getStatusTag(part.status ?? PRODUCT_STATUS.DRAFT)}
           </Grid2>
           <Grid2 size={{lg: 4, md: 6, sm: 6}} display="flex" justifyContent={{ lg: "center", md: "end", sm: "end" }}>
             <Button size="small" onClick={() => console.log("DCM v2.0 button")} className="update-button" endIcon={<Icon fontSize="16" iconName="Edit" />}>            

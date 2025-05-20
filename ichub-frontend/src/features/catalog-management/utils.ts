@@ -20,7 +20,8 @@
  * SPDX-License-Identifier: Apache-2.0
  ********************************************************************************/
 
-import { StatusVariants } from './components/product-list/CardChip';
+import { StatusVariants } from '../../types/statusVariants';
+import { ApiPartData, PartInstance } from '../../types/product';
 
 // Helper function to map numeric API status to StatusVariants
 export const mapApiStatusToVariant = (apiStatus: number): StatusVariants => {
@@ -36,4 +37,38 @@ export const mapApiStatusToVariant = (apiStatus: number): StatusVariants => {
     default:
       return StatusVariants.draft;
   }
+};
+
+// Helper function to map StatusVariants to numeric API status
+export const mapVariantToApiStatus = (variant: StatusVariants): number => {
+  switch (variant) {
+    case StatusVariants.draft:
+      return 0;
+    case StatusVariants.pending:
+      return 1;
+    case StatusVariants.registered:
+      return 2;
+    case StatusVariants.shared:
+      return 3;
+    default:
+      return 0; // Default to draft if unknown variant
+  }
+};
+
+// Maps ApiPartData to PartInstance
+export const mapApiPartDataToPartInstance = (apiData: ApiPartData): PartInstance => {
+  const { status, ...rest } = apiData;
+  return {
+    ...rest,
+    status: mapApiStatusToVariant(status),
+  };
+};
+
+// Maps PartInstance to ApiPartData
+export const mapPartInstanceToApiPartData = (partInstance: PartInstance): ApiPartData => {
+  const { status, ...rest } = partInstance;
+  return {
+    ...rest,
+    status: mapVariantToApiStatus(status ?? StatusVariants.draft),
+  };
 };
