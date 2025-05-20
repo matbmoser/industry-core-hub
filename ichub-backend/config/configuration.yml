@@ -21,8 +21,6 @@
 #################################################################################
 
 hostname: "https://ichub-backend.url"
-submodel_dispatcher:
-  apiPath: /submodel-dispatcher
 authorization:
   enabled: true
   apiKey: 
@@ -79,7 +77,44 @@ digitalTwinRegistry:
   hostname: https://dataprovider-dtr.tx.test
   apiPath: /api/v3
   uri: /semantics/registry
+  asset_config:
+    dct_type: "https://w3id.org/catenax/taxonomy#DigitalTwinRegistry"
+    # existing_asset_id: <registry-asset> # -- In case an existing DTR asset wants to be used specify here the id, otherwise it will be created based on the url, if it not exists it will be created
   lookup:
     uri: /semantics/registry
-submodel_service:
+  policy:
+    usage:
+      context:
+        odrl: http://www.w3.org/ns/odrl/2/
+        cx-policy: https://w3id.org/catenax/policy/
+      permission:
+        - action: odrl:use
+          LogicalConstraint: odrl:and
+          constraints:
+            - leftOperand: cx-policy:FrameworkAgreement
+              operator: odrl:eq
+              rightOperand: DataExchangeGovernance:1.0
+            - leftOperand: cx-policy:Membership
+              operator: odrl:eq
+              rightOperand: active
+            - leftOperand: cx-policy:UsagePurpose
+              operator: odrl:eq
+              rightOperand: cx.core.digitalTwinRegistry:1
+      prohibition: []
+      obligation: []
+    access:
+      context:
+        odrl: http://www.w3.org/ns/odrl/2/
+        cx-policy: https://w3id.org/catenax/policy/
+      permission:
+        - action: odrl:use
+          constraints:
+            - leftOperand: cx-policy:Membership
+              operator: odrl:eq
+              rightOperand: active
+      prohibition: []
+      obligation: []
+
+submodel_dispatcher:
   path: "./data/submodels"
+  apiPath: /submodel-dispatcher

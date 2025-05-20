@@ -52,10 +52,16 @@ data:
       hostname: {{ .Values.backend.configuration.digitalTwinRegistry.hostname | quote }}
       apiPath: {{ .Values.backend.configuration.digitalTwinRegistry.apiPath | quote }}
       uri: {{ .Values.backend.configuration.digitalTwinRegistry.uri | quote }}
+      asset_config:
+        dct_type: {{ .Values.backend.configuration.digitalTwinRegistry.asset_config.dct_type | quote }}
+        {{- with .Values.backend.configuration.digitalTwinRegistry.asset_config.existing_asset_id }}
+        existing_asset_id: {{ . | quote }}
+        {{- end }}
       lookup:
         uri: {{ .Values.backend.configuration.digitalTwinRegistry.lookup.uri | quote }}
-    submodel_service:
+    submodel_dispatcher:
       path: {{ .Values.backend.configuration.submodel_dispatcher.path | quote }}
+      apiPath: {{ .Values.backend.configuration.submodel_dispatcher.path | quote }}
     agreements: |-
       {{ toYaml .Values.backend.configuration.agreements | indent 8 }}
   logging.yml: |-

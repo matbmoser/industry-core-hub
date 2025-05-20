@@ -41,6 +41,7 @@ from urllib import parse
 
 from managers.config.config_manager import ConfigManager
 from tools.aspect_id_tools import extract_aspect_id_name_from_urn_camelcase
+from urllib.parse import urljoin
 
 
 class DTRManager:
@@ -67,6 +68,17 @@ class DTRManager:
         self.edc_dataplane_public_path = ConfigManager.get_config(
             "edc.dataplane.publicPath"
         )
+        
+    @staticmethod
+    def get_dtr_url(base_dtr_url: str = '', uri: str = '', api_path: str = '') -> str:
+        base_dtr_url = base_dtr_url or ''
+        uri = uri or ''
+        api_path = api_path or ''
+
+        base_plus_uri = urljoin(base_dtr_url.rstrip('/') + '/', uri.lstrip('/'))
+        full_url = urljoin(base_plus_uri.rstrip('/') + '/', api_path.lstrip('/'))
+        return full_url
+    
     def create_shell_descriptor(
         self,
         aas_id: UUID,
@@ -184,7 +196,7 @@ class DTRManager:
 
         # Check that href and DSP URLs are valid
 
-        href_url = f"{self.edc_dataplane_hostname}{self.edc_dataplane_public_path}/{semantic_id}/{global_id.urn}/submodel"
+        href_url = f"{self.edc_dataplane_hostname}{self.edc_dataplane_public_path}/{global_id.urn}/submodel"
 
         parsed_href_url = parse.urlparse(href_url)
         if not (parsed_href_url.scheme == "https" and parsed_href_url.netloc):

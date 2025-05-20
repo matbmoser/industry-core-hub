@@ -29,6 +29,7 @@ from managers.config.config_manager import ConfigManager
 from managers.config.log_manager import LoggingManager
 import json
 
+from .dtr_manager import DTRManager
 
 logger = LoggingManager.get_logger(__name__)
 
@@ -46,6 +47,7 @@ class ConnectorManager:
     backend_api_key_value: str
     authorization: bool
     agreements:list[dict]
+    dtr_dct_type:str
     
     def __init__(self):
 
@@ -77,7 +79,6 @@ class ConnectorManager:
         self.agreements = ConfigManager.get_config(
             "agreements"
         )
-        
         
         self.path_submodel_dispatcher = ConfigManager.get_config("submodel_dispatcher.apiPath", default="/submodel-dispatcher")
         
@@ -182,32 +183,41 @@ class ConnectorManager:
                 "odrl:obligation": self.build_rules(entry.get("obligation", []))
             }
         }
-        
-    def register_submodel_asset(self, global_id: str, semantic_id: str, aas_id: UUID, submodel_id: UUID):
-        """Register a submodel asset in the EDC."""
-        # Implementation for registering a submodel asset
-        logger.info("=====================================")
-        logger.info("==== Eclipse Dataspace Connector ====")
-        logger.info("=====================================")
-        logger.info(f"Registering submodel asset with Global ID: {global_id}")
-        logger.info(f"Semantic ID: {semantic_id}")
-        logger.info(f"AAS ID: {aas_id}")
-        logger.info(f"Submodel ID: {submodel_id}")
-        logger.info("Submodel asset registered successfully (dummy implementation).")
-        logger.info()
 
-    def register_submodel_bundle_circular_offer(self, semantic_id: str) -> tuple[str, str, str, str]:
+    
+    def register_dtr_offer(self, 
+                           base_dtr_url:str, 
+                           uri:str, 
+                           api_path:str, 
+                           dtr_policy_config=dict, 
+                           dct_type:str="https://w3id.org/catenax/taxonomy#DigitalTwinRegistry", 
+                           existing_asset_id:str=None,
+                           version="3.0",
+                           headers:dict=None) -> tuple[str, str, str, str]:
+        
+        dtr_url = DTRManager.get_dtr_url(base_dtr_url=base_dtr_url, uri=uri, api_path=api_path)
         ## step 1: Create the submodel bundle asset
-        asset_id = self.get_or_create_circular_submodel_asset(semantic_id)
+        asset_id = self.get_or_create_dtr_asset(dtr_url=dtr_url, dct_type=dct_type, existing_asset_id=existing_asset_id, version=version, headers=headers)
 
-        ## step 2: Lookup corresponding policy configuration
-        policy_entry = next((entry for entry in self.agreements if entry.get("semanticid") == semantic_id), None)
+        usage_policy_id, access_policy_id, contract_id = self.get_or_create_contract_with_policies(
+            asset_id=asset_id,
+            policy_config=dtr_policy_config
+        )
         
-        if not policy_entry:
-            raise ValueError(f"No agreement found for semantic ID: {semantic_id}")
-        
-        usage_policy = policy_entry.get("usage", self.emtpy_policy)
-        access_policy = policy_entry.get("access", self.emtpy_policy)
+        return asset_id, usage_policy_id, access_policy_id, contract_id
+    
+    def get_or_create_contract_with_policies(self, asset_id:str, policy_config:dict) -> tuple[str, str, str]:
+        usage_policy_id, access_policy_id = self.get_or_create_usage_and_access_policies(policy_config=policy_config)
+        contract_id = self.get_or_create_contract(
+            asset_id=asset_id,
+            usage_policy_id=usage_policy_id,
+            access_policy_id=access_policy_id
+        )
+        return usage_policy_id, access_policy_id, contract_id
+    
+    def get_or_create_usage_and_access_policies(self, policy_config:dict) -> tuple[str, str]:
+        usage_policy = policy_config.get("usage", self.emtpy_policy)
+        access_policy = policy_config.get("access", self.emtpy_policy)
         
         usage_policy_id=self.get_or_create_policy(
             usage_policy.get("context", {
@@ -229,11 +239,23 @@ class ConnectorManager:
             prohibitions=self.build_rules(access_policy.get("prohibitions", []))
             )
         
-        contract_id = self.get_or_create_contract(
+        return usage_policy_id, access_policy_id
+        
+    def register_submodel_bundle_circular_offer(self, semantic_id: str) -> tuple[str, str, str, str]:
+        ## step 1: Create the submodel bundle asset
+        asset_id = self.get_or_create_circular_submodel_asset(semantic_id)
+
+        ## step 2: Lookup corresponding policy configuration
+        policy_entry = next((entry for entry in self.agreements if entry.get("semanticid") == semantic_id), None)
+        
+        if not policy_entry:
+            raise ValueError(f"No agreement found for semantic ID: {semantic_id}")
+        
+        usage_policy_id, access_policy_id, contract_id = self.get_or_create_contract_with_policies(
             asset_id=asset_id,
-            usage_policy_id=usage_policy_id,
-            access_policy_id=access_policy_id
+            policy_config=policy_entry
         )
+        
         return asset_id, usage_policy_id, access_policy_id, contract_id
 
     def generate_contract_id(self, asset_id:str, usage_policy_id:str, access_policy_id:str) -> str:
@@ -284,7 +306,7 @@ class ConnectorManager:
         created_contract = self.edc_service.contract_definitions.create(obj=contract)
         
         if created_contract.status_code != 200:
-            raise (f"Failed to create contract {contract_id}. Status code: {created_contract.status_code}")
+            raise Exception(f"Failed to create contract {contract_id}. Status code: {created_contract.status_code}")
         
         logger.info(f"Contract {contract_id} created successfully.")
         return created_contract.json()
@@ -342,11 +364,28 @@ class ConnectorManager:
         created_policy = self.edc_service.policies.create(obj=policy)
         
         if created_policy.status_code != 200:
-            raise (f"Failed to create policy {policy_id}. Status code: {created_policy.status_code}")
+            raise Exception(f"Failed to create policy {policy_id}. Status code: {created_policy.status_code}")
         
         logger.info(f"Policy {policy_id} created successfully.")
         return created_policy.json()
+    
+    
+    def get_or_create_dtr_asset(self, dtr_url:str, dct_type:str, existing_asset_id:str=None, headers:dict=None, version:str="3.0") -> str:
         
+        if(not existing_asset_id):
+            existing_asset_id = self.generate_dtr_asset_id(dtr_url=dtr_url)
+        """Get or create a circular submodel asset."""
+        # Check if the asset already exists
+        existing_asset = self.edc_service.assets.get_by_id(oid=existing_asset_id)
+        
+        if existing_asset.status_code == 200:
+            logger.debug(f"[DTR] Asset with ID {existing_asset_id} already exists.")
+            return existing_asset_id
+        
+        # If it doesn't exist, create it
+        logger.info(f"[DTR] Creating new asset with ID {existing_asset_id}.")
+        asset = self.create_dtr_asset(asset_id=existing_asset_id, dtr_url=dtr_url, dct_type=dct_type, version=version, headers=headers)
+        return asset.get("@id", existing_asset_id)
     
     def get_or_create_circular_submodel_asset(self, semantic_id:str) -> str:
         
@@ -369,6 +408,9 @@ class ConnectorManager:
     
     def generate_asset_id(self, semantic_id: str):
         return "ichub:asset:"+sha256(self.build_dispatcher_url(semantic_id=semantic_id).encode()).hexdigest()
+    
+    def generate_dtr_asset_id(self, dtr_url:str):
+        return "ichub:asset:dtr:"+sha256(dtr_url.encode()).hexdigest()
     
     def create_circular_submodel_asset(self, semantic_id: str):
         headers = None
@@ -400,6 +442,21 @@ class ConnectorManager:
             headers=headers
         )
     
+    def create_dtr_asset(self, asset_id: str, dtr_url: str, dct_type:str, version:str="3.0", headers: dict = None):           
+        # Create the submodel bundle asset
+        return self.create_asset(
+            asset_id=asset_id,
+            base_url=dtr_url,
+            dct_type=dct_type,
+            version=version,
+            headers=headers,
+            proxyParams={ 
+                "proxyQueryParams": "true",
+                "proxyPath": "true",
+                "proxyMethod": "true",
+                "proxyBody": "true"
+            }
+        )
     
     def create_asset(self, 
                      asset_id: str, 
@@ -421,7 +478,7 @@ class ConnectorManager:
             "edc": "https://w3id.org/edc/v0.0.1/ns/",
             "cx-common": "https://w3id.org/catenax/ontology/common#",
             "cx-taxo": "https://w3id.org/catenax/taxonomy#",
-            "dct": "https://purl.org/dc/terms/"
+            "dct": "http://purl.org/dc/terms/"
         }
 
         data_address = { 
@@ -459,6 +516,12 @@ class ConnectorManager:
             private_properties=private_properties,
             data_address=data_address
         )
+        
         asset_response = self.edc_service.assets.create(obj=asset)
+        
+        if asset_response.status_code != 200:
+            logger.error(asset_response.text)
+            raise Exception(f"Failed to create asset {asset_id}. Status code: {asset_response.status_code}")
+
         return asset_response.json()
     

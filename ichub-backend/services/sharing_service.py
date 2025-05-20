@@ -32,6 +32,10 @@ from models.services.sharing_management import SharedPartBase, ShareCatalogPart
 from models.services.partner_management import BusinessPartnerRead
 from typing import Dict, Optional, List, Any, Tuple
 
+from managers.config.log_manager import LoggingManager
+
+logger = LoggingManager.get_logger(__name__)
+
 class SharingService:
     """
     Service to handle part sharing shortcuts.
@@ -47,13 +51,14 @@ class SharingService:
             # Step 1: Retrieve the catalog part from the repository
             db_catalog_part = self._get_catalog_part(repo, catalog_part_to_share)
             # Step 2: Get or create the enablement service stack for the manufacturer
+            ## Note: this is not used at the moment
             db_enablement_service_stack = self._get_or_create_enablement_service_stack(repo, catalog_part_to_share)
             # Step 3: Get or create the business partner entity
             db_business_partner = self._get_or_create_business_partner(repo, catalog_part_to_share)
             # Step 4: Get or create the data exchange agreement for the business partner
             db_data_exchange_agreement = self._get_or_create_data_exchange_agreement(repo, db_business_partner)
             # Step 5: Get or create the partner catalog part
-            db_partner_catalog_parts:Dict[str, BusinessPartnerRead] = self._get_or_create_partner_catalog_parts(repo, catalog_part_to_share.customer_part_ids, db_catalog_part, db_business_partner)
+            db_partner_catalog_parts:Dict[str, BusinessPartnerRead] = self._get_or_create_partner_catalog_parts(repo, catalog_part_to_share.customer_part_id, db_catalog_part, db_business_partner)
             # Step 6: Create and retrieve the catalog part twin
             db_twin = self._create_and_get_twin(repo, catalog_part_to_share)
             # Step 7: Ensure a twin exchange exists between the twin and the data exchange agreement
@@ -151,7 +156,7 @@ class SharingService:
             return { customer_part_id: bp_read }
 
         if partner_catalog_part:
-            logger.warning("A provider customer_part_id already exists in the database, updating to the provided one")
+            logger.warning(f"A provider customer_part_id already exists in the database {partner_catalog_part.customer_part_id}, updating to the provided one {customer_part_id}")
 
         if not customer_part_id:
             customer_part_id = db_business_partner.bpnl + "_" + db_catalog_part.manufacturer_part_id
