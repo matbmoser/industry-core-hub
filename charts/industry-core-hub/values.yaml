@@ -251,7 +251,6 @@ backend:
     # -- temporary file system mount
     - name: tmpfs
       emptyDir: {}
-      
   # -- Persistance configuration for the backend
   persistence:
     # -- Create a PVC to persist storage (if disabled, data and logs will not be persisted)
