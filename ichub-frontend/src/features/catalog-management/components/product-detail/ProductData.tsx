@@ -40,39 +40,39 @@ const ProductData = ({ part, sharedParts }: ProductDataProps) => {
         <Grid2 size={{lg: 6, md: 12, sm: 12}}>
             <Grid2 className="title-subtitle">
                 <Typography variant="h2">{part.name}</Typography>
-                <Typography variant="caption1">{part.class}</Typography>
+                <Typography variant="caption1">{part.category}</Typography>
             </Grid2>
 
             <Grid2 className="ml-3 mb-2 product-card">
-                <Box>
+                {/* <Box>
                 <Typography variant="label3">Manufacturer</Typography>
                 <Typography variant="body1">{part.manufacturer}</Typography>
-                </Box>
+                </Box> */}
                 <Box>
                 <Typography variant="label3">Manufacturer Part Id</Typography>
                 <Typography variant="body1">{part.manufacturerPartId}</Typography>
                 </Box>
-                <Box>
+                {/* <Box>
                 <Typography variant="label4">Description</Typography>
                 <Typography variant="body2">{part.description}</Typography>
-                </Box>
+                </Box> */}
                 <Grid2 container>
-                <Grid2 size={{md:6, xs:12}}>
+                {/* <Grid2 size={{md:6, xs:12}}>
                     <Typography variant="label4">Created</Typography>
                     <Typography variant="body2">{part.created}</Typography>
-                </Grid2>
-                <Grid2 size={{md:6, xs:12}}>
+                </Grid2> */}
+                {/* <Grid2 size={{md:6, xs:12}}>
                     <Typography variant="label4">Updated</Typography>
                     <Typography variant="body2">{part.created}</Typography>
-                </Grid2>
+                </Grid2> */}
                 </Grid2>
             </Grid2>
         </Grid2>
         <Grid2 size={{lg: 6, md: 12, sm: 12}}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+            {/* <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
                 <img src={part.image} alt={part.name} className="product-image" />
                 <Typography variant="label4">{part.uuid}</Typography>
-            </Box>
+            </Box> */}
             <Typography variant="h6" className="mt-4">Shared With:</Typography>
 
             <Box component="ul" sx={{ listStyle: 'none', padding: 0, mt: 2 }}>
