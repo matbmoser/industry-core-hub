@@ -125,7 +125,7 @@ const PartnersList = () => {
       </Grid2>
 
       <Grid2 size={12} container justifyContent="flex-end" marginRight={6} marginBottom={2}>
-        <Button className="add-partner-button" variant="outlined" size="small" onClick={handleOpenCreatePartnerDialog} startIcon={<AddIcon />} >New</Button>
+        <Button className="add-button" variant="outlined" size="small" onClick={handleOpenCreatePartnerDialog} startIcon={<AddIcon />} >New</Button>
       </Grid2>
 
       <Grid2 className="flex flex-content-center" size={12}>

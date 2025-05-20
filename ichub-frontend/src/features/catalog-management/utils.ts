@@ -21,7 +21,7 @@
  ********************************************************************************/
 
 import { StatusVariants } from '../../types/statusVariants';
-import { ApiPartData, PartInstance } from '../../types/product';
+import { ApiPartData, PartType } from '../../types/product';
 
 // Helper function to map numeric API status to StatusVariants
 export const mapApiStatusToVariant = (apiStatus: number): StatusVariants => {
@@ -56,7 +56,7 @@ export const mapVariantToApiStatus = (variant: StatusVariants): number => {
 };
 
 // Maps ApiPartData to PartInstance
-export const mapApiPartDataToPartInstance = (apiData: ApiPartData): PartInstance => {
+export const mapApiPartDataToPartType = (apiData: ApiPartData): PartType => {
   const { status, ...rest } = apiData;
   return {
     ...rest,
@@ -65,7 +65,7 @@ export const mapApiPartDataToPartInstance = (apiData: ApiPartData): PartInstance
 };
 
 // Maps PartInstance to ApiPartData
-export const mapPartInstanceToApiPartData = (partInstance: PartInstance): ApiPartData => {
+export const mapPartInstanceToApiPartData = (partInstance: PartType): ApiPartData => {
   const { status, ...rest } = partInstance;
   return {
     ...rest,

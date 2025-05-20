@@ -22,7 +22,7 @@
 
 import { Box, Grid2 } from '@mui/material'
 import { Icon, Typography } from '@catena-x/portal-shared-components';
-import { PartInstance } from '../../../../types/product';
+import { PartType } from '../../../../types/product';
 import { PieChart } from '@mui/x-charts/PieChart';
 
 interface SharedPartner {
@@ -31,33 +31,51 @@ interface SharedPartner {
 }
 
 interface ProductDataProps {
-    part: PartInstance;
+    part: PartType;
     sharedParts: SharedPartner[];
+}
+
+const sharedInformation = {
+    created: "Not yet created",
+    updated: "Not yet created"
 }
 
 const ProductData = ({ part, sharedParts }: ProductDataProps) => {
   return (
     <Grid2 container justifyContent="space-between" className="mb-5" spacing={8} display={"flex"} flexDirection={"row"}>
-        <Grid2 size={{lg: 6, md: 12, sm: 12}}>
-            {/*Content on the left side*/}
-            <Grid2 className="title-subtitle">
+        <Grid2 size={{lg: 6, md: 12, sm: 12}} display={"flex"} flexDirection={"column"}>
+            <Grid2 className="ml-5 mb-5 title-subtitle">
                 <Typography variant="h2">{part.name}</Typography>
                 <Typography variant="caption1">{part.category}</Typography>
             </Grid2>
-
-            <Grid2 className="ml-3 mb-2 product-card">
-                {/* <Box>
+            {/*Content on the left side*/}
+            <Grid2 className="ml-2 mt-5 product-card-details">
+                <Box>
                 <Typography variant="label3">Manufacturer</Typography>
-                <Typography variant="body1">{part.manufacturer}</Typography>
-                </Box> */}
+                <Typography variant="body1">{part.manufacturerId}</Typography>
+                </Box>
                 <Box>
                 <Typography variant="label3">Manufacturer Part Id</Typography>
                 <Typography variant="body1">{part.manufacturerPartId}</Typography>
                 </Box>
                 <Box>
-                    <Typography variant="label4">Description</Typography>
-                    <Typography variant="body2">{part.description}</Typography>
+                    <Typography variant="label3">Country of Origin (BPNS)</Typography>
+                    <Typography variant="body1">{part.bpns}</Typography>
                 </Box>
+                <Box>
+                    <Typography variant="label3">Description</Typography>
+                    <Typography variant="body3">{part.description ?? "-"}</Typography>
+                </Box>
+                <Grid2 container>
+                    <Grid2 size={{md:6, xs:12}}>
+                        <Typography variant="label4">Created</Typography>
+                        <Typography variant="body2">{sharedInformation.created}</Typography>
+                    </Grid2> 
+                    <Grid2 size={{md:6, xs:12}}>
+                        <Typography variant="label4">Updated</Typography>
+                        <Typography variant="body2">{sharedInformation.updated}</Typography>
+                    </Grid2> 
+                </Grid2>
             </Grid2>
         </Grid2>
 

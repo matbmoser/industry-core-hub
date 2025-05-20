@@ -33,6 +33,15 @@ export const fetchCatalogParts = async (): Promise<ApiPartData[]> => {
   return response.data;
 };
 
+export const fetchCatalogPart = async (
+  manufacturerId: string ,
+  manufacturerPartId: string
+): Promise<ApiPartData> => {
+  const response = await axios.get<ApiPartData>(
+    `${backendUrl}${CATALOG_PART_MANAGEMENT_BASE_PATH}/${manufacturerId}/${manufacturerPartId}`
+  );
+  return response.data;
+};
 export const shareCatalogPart = async (
   manufacturerId: string,
   manufacturerPartId: string,

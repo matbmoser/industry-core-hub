@@ -37,7 +37,7 @@ import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import { createCatalogPart } from "../../api";
 import {
-  PartInstance,
+  PartType,
   Unit,
   Measurement,
   Material,
@@ -71,7 +71,7 @@ const initialJsonPlaceholder = JSON.stringify(
     customer_part_ids: {
       BPNL0000000CUSTA: "CUSTA-PART-EXAMPLE",
     },
-  } as Omit<PartInstance, "status">, // Use Omit to exclude status from placeholder type
+  } as Omit<PartType, "status">, // Use Omit to exclude status from placeholder type
   null,
   2
 );
@@ -116,7 +116,7 @@ const CreateProductListDialog = ({
     if (typeof obj !== "object" || obj === null) {
       return "Data must be an object.";
     }
-    const data = obj as Partial<Omit<PartInstance, "status">>; // Validate against structure without status
+    const data = obj as Partial<Omit<PartType, "status">>; // Validate against structure without status
 
     const errors: string[] = [];
 
@@ -218,7 +218,7 @@ const CreateProductListDialog = ({
     }
 
     // Check for unexpected properties (optional, for stricter validation)
-    const allowedKeys: Set<keyof Omit<PartInstance, "status">> = new Set([
+    const allowedKeys: Set<keyof Omit<PartType, "status">> = new Set([
       // Exclude status
       "manufacturerId",
       "manufacturerPartId",
@@ -234,7 +234,7 @@ const CreateProductListDialog = ({
       "customer_part_ids",
     ]);
     for (const key in data) {
-      if (!allowedKeys.has(key as keyof Omit<PartInstance, "status">)) {
+      if (!allowedKeys.has(key as keyof Omit<PartType, "status">)) {
         errors.push(`Unexpected property: ${key}.`);
       }
     }
@@ -285,7 +285,7 @@ const CreateProductListDialog = ({
     try {
       // POST to /part-management/catalog-part
       await createCatalogPart(
-        mapPartInstanceToApiPartData(parsedPayload as PartInstance)
+        mapPartInstanceToApiPartData(parsedPayload as PartType)
       );
       console.log(
         `Catalog Part created via API with content: ${jsonContent.substring(
