@@ -28,7 +28,7 @@ metadata:
     {{- include "industry-core-hub.backend.labels" . | nindent 4 }}
 data:
   configuration.yml: |-
-    hostname: {{ include "industry-core-hub.externalHostname" . | quote }}
+    hostname: {{ include "industry-core-hub.ingressUrl" . | quote }}
     authorization:
       enabled: {{ .Values.backend.configuration.authorization.enabled }}
       apiKey: 
@@ -57,11 +57,11 @@ data:
         existing_asset_id: {{ .Values.backend.configuration.digitalTwinRegistry.asset_config.existing_asset_id | default nil }}
       lookup:
         uri: {{ .Values.backend.configuration.digitalTwinRegistry.lookup.uri | quote }}
+      policy: {{ .Values.backend.configuration.digitalTwinRegistry.policy | toYaml | nindent 7 }}
     submodel_dispatcher:
       path: {{ .Values.backend.configuration.submodel_dispatcher.path | quote }}
-      apiPath: {{ .Values.backend.configuration.submodel_dispatcher.path | quote }}
-    agreements:
-    {{ toYaml .Values.backend.configuration.agreements | indent 8 }}
+      apiPath: {{ .Values.backend.configuration.submodel_dispatcher.apiPath | quote }}
+    agreements: {{ .Values.backend.configuration.agreements | toYaml | nindent 6 }}
   logging.yml: |-
     version: 1
     disable_existing_loggers: False

@@ -48,7 +48,7 @@ backend:
   # -- Backend configuration, changes to these values will be reflected in the configuration.yml file.
   configuration:
     agreements:
-      - semanticid: urn:samm:io.catenax.part_type_information:1.0.0#PartTypeInformation
+      - semanticid: "urn:samm:io.catenax.part_type_information:1.0.0#PartTypeInformation"
         usage:
           context:
             odrl: http://www.w3.org/ns/odrl/2/

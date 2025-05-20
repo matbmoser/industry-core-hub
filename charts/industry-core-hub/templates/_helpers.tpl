@@ -258,17 +258,30 @@ Return the postgresql DSN URL
 {{- printf "postgresql://%s:$DATABASE_PASSWORD@%s:%s/%s?sslmode=%s" $user $host $port $name $sslMode -}}
 {{- end -}}
 
-{{/*
-Return the external hostname (http or https based on ingress TLS setting)
-*/}}
-{{- define "industry-core-hub.externalHostname" -}}
-{{- if and .Values.backend.ingress.enabled (hasKey .Values "ingress") (hasKey .Values.ingress "hosts") }}
-  {{- $scheme := "http" }}
-  {{- if .Values.backend.ingress.tls }}{{ $scheme = "https" }}{{- end }}
-  {{- $host := (index .Values.ingress.hosts 0).host }}
-  {{- $path := (index .Values.ingress.hosts 0).paths | first | default "/" }}
-  {{- printf "%s://%s%s" $scheme $host $path | quote }}
+{{- define "industry-core-hub.ingressUrl" -}}
+{{- $ingress := .Values.backend.ingress }}
+{{- $host := "" }}
+{{- $path := "/" }}
+{{- $tlsHosts := dict }}
+{{- range $tls := $ingress.tls }}
+  {{- range $tlsHost := $tls.hosts }}
+    {{- $_ := set $tlsHosts $tlsHost true }}
+  {{- end }}
+{{- end }}
+{{- if $ingress.hosts }}
+  {{- $first := index $ingress.hosts 0 }}
+  {{- $host = $first.host }}
+  {{- if and $first.paths (gt (len $first.paths) 0) }}
+    {{- $firstPath := index $first.paths 0 }}
+    {{- if and $firstPath.path (ne $firstPath.path "/") }}
+      {{- $path = $firstPath.path }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+{{- $scheme := ternary "https" "http" (hasKey $tlsHosts $host) }}
+{{- if eq $path "/" }}
+  {{- printf "%s://%s" $scheme $host }}
 {{- else }}
-  "http://ichub-backend.url"
+  {{- printf "%s://%s%s" $scheme $host $path }}
 {{- end }}
 {{- end }}
