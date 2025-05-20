@@ -45,5 +45,5 @@ class SharedPartBase(BaseModel):
     business_partner_number: str = Field(alias="businessPartnerNumber", description="The business partner number of the business partner with which the catalog part is shared.")
     customer_part_ids: Optional[Dict[str, BusinessPartnerRead]] = Field(alias="customerPartIds", description="The list of customer part IDs mapped to the respective Business Partners.", default={})
     shared_at: datetime = Field(alias="sharedAt", description="The date and time when the catalog part was shared.")
-    twin: CatalogPartTwinDetailsRead = Field(alias="twin", description="The digital twin created for part that was shared.")
+    twin: Optional[CatalogPartTwinDetailsRead] = Field(alias="twin", description="The digital twin created for part that was shared.", default=None)
 

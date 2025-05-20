@@ -67,9 +67,9 @@ class SharingService:
             self._create_part_twin_aspect(db_twin, db_catalog_part, catalog_part_to_share)
             # Step 9: Return the shared part information
             return SharedPartBase(
-                business_partner_number=catalog_part_to_share.business_partner_number,
-                customer_part_ids=db_partner_catalog_parts,
-                shared_at=shared_at,
+                businessPartnerNumber=catalog_part_to_share.business_partner_number,
+                customerPartIds=db_partner_catalog_parts,
+                sharedAt=shared_at,
                 twin=self.twin_management_service.get_catalog_part_twin_details(db_twin.global_id)
             )
 
