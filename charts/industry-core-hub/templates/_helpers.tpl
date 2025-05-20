@@ -262,11 +262,11 @@ Return the postgresql DSN URL
 Return the external hostname (http or https based on ingress TLS setting)
 */}}
 {{- define "industry-core-hub.externalHostname" -}}
-{{- if and .Values.backend.ingress.enabled .Values.ingress.hosts }}
+{{- if and .Values.backend.ingress.enabled (hasKey .Values "ingress") (hasKey .Values.ingress "hosts") }}
   {{- $scheme := "http" }}
   {{- if .Values.backend.ingress.tls }}{{ $scheme = "https" }}{{- end }}
-  {{- $host := (index .Values.backend.ingress.hosts 0).host }}
-  {{- $path := (index .Values.backend.ingress.hosts 0).paths | first | default "/" }}
+  {{- $host := (index .Values.ingress.hosts 0).host }}
+  {{- $path := (index .Values.ingress.hosts 0).paths | first | default "/" }}
   {{- printf "%s://%s%s" $scheme $host $path | quote }}
 {{- else }}
   "http://ichub-backend.url"

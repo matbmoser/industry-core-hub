@@ -28,7 +28,7 @@ metadata:
     {{- include "industry-core-hub.backend.labels" . | nindent 4 }}
 data:
   configuration.yml: |-
-    hostname: {{ include "industry-core-hub.externalHostname" . }}
+    hostname: {{ include "industry-core-hub.externalHostname" . | quote }}
     authorization:
       enabled: {{ .Values.backend.configuration.authorization.enabled }}
       apiKey: 
@@ -54,9 +54,7 @@ data:
       uri: {{ .Values.backend.configuration.digitalTwinRegistry.uri | quote }}
       asset_config:
         dct_type: {{ .Values.backend.configuration.digitalTwinRegistry.asset_config.dct_type | quote }}
-        {{- with .Values.backend.configuration.digitalTwinRegistry.asset_config.existing_asset_id }}
-        existing_asset_id: {{ . | quote }}
-        {{- end }}
+        existing_asset_id: {{ .Values.backend.configuration.digitalTwinRegistry.asset_config.existing_asset_id | default nil }}
       lookup:
         uri: {{ .Values.backend.configuration.digitalTwinRegistry.lookup.uri | quote }}
     submodel_dispatcher:
