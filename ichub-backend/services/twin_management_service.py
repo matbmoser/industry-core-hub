@@ -43,6 +43,7 @@ from models.services.twin_management import (
     TwinAspectRegistrationStatus,
     TwinsAspectRegistrationMode,
 )
+from models.metadata_database.models import Twin
 
 from managers.config.log_manager import LoggingManager
 
@@ -371,8 +372,8 @@ class TwinManagementService:
                     )
                 }
             )
-
-    def get_catalog_part_twin_details(self, global_id: UUID) -> Optional[CatalogPartTwinDetailsRead]:
+            
+    def get_catalog_part_twin_details(self, global_id:UUID) -> Optional[CatalogPartTwinDetailsRead]:
         with RepositoryManagerFactory.create() as repo:
             db_twins = repo.twin_repository.find_catalog_part_twins(
                 global_id=global_id,
@@ -384,6 +385,25 @@ class TwinManagementService:
                 return None
             
             db_twin = db_twins[0]
+            return self.build_catalog_part_twin_details(db_twin=db_twin)
+    
+    def get_catalog_part_twin_details(self, manufacturerId:str, manufacturerPartId:str) -> Optional[CatalogPartTwinDetailsRead]:
+        with RepositoryManagerFactory.create() as repo:
+            db_twins = repo.twin_repository.find_catalog_part_twins(
+                manufacturer_id=manufacturerId,
+                manufacturer_part_id=manufacturerPartId,
+                include_data_exchange_agreements=True,
+                include_aspects=True,
+                include_registrations=True
+            )
+            if not db_twins:
+                return None
+            
+            db_twin = db_twins[0]
+            return self.build_catalog_part_twin_details(db_twin=db_twin)
+        
+    
+    def build_catalog_part_twin_details(self, db_twin: Twin) -> Optional[CatalogPartTwinDetailsRead]:
             
             db_catalog_part = db_twin.catalog_part
             twin_result = CatalogPartTwinDetailsRead(

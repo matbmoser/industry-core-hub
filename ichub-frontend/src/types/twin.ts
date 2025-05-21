@@ -11,27 +11,40 @@
  * https://www.apache.org/licenses/LICENSE-2.0.
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
  * either express or implied. See the
  * License for the specific language govern in permissions and limitations
  * under the License.
  *
  * SPDX-License-Identifier: Apache-2.0
-********************************************************************************/
+ ********************************************************************************/
 
-declare const ENV: Record<string, string>
+import { UUIDTypes } from 'uuid';
 
-export const isRequireHttpsUrlPattern = () =>
-  ENV.REQUIRE_HTTPS_URL_PATTERN !== 'false';
+interface BusinessPartner {
+  name: string;
+  bpnl: string;
+}
 
-export const getIchubBackendUrl = () => ENV.ICHUB_BACKEND_URL ?? '';
-export const getParticipantId = () => ENV.PARTICIPANT_ID ?? 'BPNL000000000000';
+interface ShareInfo {
+  businessPartner: BusinessPartner;
+  name: string;
+  contracts: unknown[]; // Assuming contracts can be an array of any type for now
+}
 
-const EnvironmentService = {
-  isRequireHttpsUrlPattern,
-  getIchubBackendUrl,
-  getParticipantId
-};
+export interface TwinReadType {
+  globalId: UUIDTypes;
+  dtrAasId: UUIDTypes;
+  createdDate: string;
+  modifiedDate: string;
+  shares?: ShareInfo[];
+}
 
-export default EnvironmentService;
+export interface CatalogPartTwinCreateType {
+  manufacturerId: string;
+  manufacturerPartId: string;
+  globalId?: UUIDTypes;
+  dtrAasId?: UUIDTypes;
+}
+

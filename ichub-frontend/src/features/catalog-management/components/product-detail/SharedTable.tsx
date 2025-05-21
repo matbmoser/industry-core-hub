@@ -50,9 +50,9 @@ const SharedTable = ({ sharedParts }: SharedTableProps) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
+              <TableCell>Company Name</TableCell>
               <TableCell>BPNL</TableCell>
-              <TableCell>Customer part ID</TableCell>
+              <TableCell>Customer Part ID</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
