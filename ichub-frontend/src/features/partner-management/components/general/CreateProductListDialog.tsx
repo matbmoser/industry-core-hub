@@ -67,10 +67,7 @@ const initialJsonPlaceholder = JSON.stringify(
     width: { value: 200, unit: Unit.MM },
     height: { value: 100, unit: Unit.MM },
     length: { value: 50, unit: Unit.MM },
-    weight: { value: 5, unit: Unit.KG },
-    customer_part_ids: {
-      BPNL0000000CUSTA: "CUSTA-PART-EXAMPLE",
-    },
+    weight: { value: 5, unit: Unit.KG }
   } as Omit<PartType, "status">, // Use Omit to exclude status from placeholder type
   null,
   2
@@ -287,16 +284,10 @@ const CreateProductListDialog = ({
       await createCatalogPart(
         mapPartInstanceToApiPartData(parsedPayload as PartType)
       );
-      console.log(
-        `Catalog Part created via API with content: ${jsonContent.substring(
-          0,
-          100
-        )}...`
-      );
-      onSave?.({ jsonContent: jsonContent.trim() });
-      setSuccessMessage(`Catalog Part created successfully.`);
+      setSuccessMessage(`Catalog part created successfully.`);
       setTimeout(() => {
         setSuccessMessage("");
+        onSave?.({ jsonContent: jsonContent.trim() });
         onClose();
       }, 3000);
     } catch (axiosError) {

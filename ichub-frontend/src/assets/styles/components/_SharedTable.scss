@@ -20,6 +20,27 @@
  * SPDX-License-Identifier: Apache-2.0
 ********************************************************************************/
 
-@forward 'CustomCardList';
-@forward 'Dialog';
-@forward 'SharedTable';
+@use "../config/variables" as *;
+@use '../config/mixins';
+
+.shared-table {
+    width: 100%;
+    overflow: hidden;
+    background-color: $brand-dark!important;
+    margin-top: 16px;
+
+    tbody td {
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+
+    thead th {
+        padding-bottom: 10px;
+        padding-top: 10px;
+        background: $brand-dark-gray;
+    }
+}
+
+div#menu-[role="presentation"] li {
+    color: $brand-text!important;
+}

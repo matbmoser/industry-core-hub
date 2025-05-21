@@ -61,6 +61,8 @@ const ProductsList = () => {
         mapApiPartDataToPartType(part)
       );
 
+      mappedCarParts.reverse(); // Reverse the order of the array
+
       setCarParts(mappedCarParts);
       setInitialCarParts(mappedCarParts);
     } catch (error) {
