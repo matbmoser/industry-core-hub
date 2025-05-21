@@ -20,6 +20,8 @@
  * SPDX-License-Identifier: Apache-2.0
 ********************************************************************************/
 
-@forward 'CustomCardList';
-@forward 'Dialog';
-@forward 'SharedTable';
+export interface SharedPartner {
+    name: string;
+    bpnl: string;
+    customerPartId: string;
+}
