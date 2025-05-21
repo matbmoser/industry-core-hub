@@ -22,7 +22,6 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import sharedPartners from '../tests/payloads/shared-partners.json';
 import { StatusTag, Button, Icon } from '@catena-x/portal-shared-components';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import Grid2 from '@mui/material/Grid2';
@@ -56,7 +55,7 @@ const ProductsDetails = () => {
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const [notification, setNotification] = useState<{ open: boolean; severity: "success" | "error"; title: string } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  
+  const [sharedPartners, setSharedPartners] = useState([]);
 
   useEffect(() => {
     if (!manufacturerId || !manufacturerPartId) return;

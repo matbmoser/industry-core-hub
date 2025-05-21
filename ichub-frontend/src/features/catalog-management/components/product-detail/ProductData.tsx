@@ -24,7 +24,7 @@ import { Box, Grid2 } from '@mui/material'
 import { Typography } from '@catena-x/portal-shared-components';
 import { PartType } from '../../../../types/product';
 import { PieChart } from '@mui/x-charts/PieChart';
-
+import WifiTetheringErrorIcon from '@mui/icons-material/WifiTetheringError';
 import { SharedPartner } from '../../../../types/sharedPartners';
 import SharedTable from './SharedTable';
 
@@ -89,7 +89,16 @@ const ProductData = ({ part, sharedParts }: ProductDataProps) => {
             {/*Sharing information*/}
             <Box className="product-card mb-5">
                 <Typography variant="h6" className="mt-4">Shared With:</Typography>
-                <SharedTable sharedParts={sharedParts} />
+                {
+                    sharedParts.length > 0 ? (
+                        <SharedTable sharedParts={sharedParts} />
+                    ) : (
+                        <Grid2 justifyContent={"left"} display={"flex"} alignContent={"center"}>
+                            <WifiTetheringErrorIcon className="mr-2"/>
+                            <span className="">No sharing insights are available for this part at the moment. Please share with a partner to see information displayed here.</span>
+                        </Grid2>
+                    )
+                }
             </Box>
             {/*Materials and dimensions*/}
             <Box className="product-card mb-5">
