@@ -43,6 +43,7 @@ import {
   Material,
 } from "../../../../types/product";
 import { mapPartInstanceToApiPartData } from "../../../catalog-management/utils";
+import { getParticipantId } from "../../../../services/EnvironmentService";
 
 // Define props for ProductListDialog
 interface ProductListDialogProps {
@@ -54,8 +55,8 @@ interface ProductListDialogProps {
 
 const initialJsonPlaceholder = JSON.stringify(
   {
-    manufacturerId: "BPNL000000000000",
-    manufacturerPartId: "TX-4003", // Changed example ID
+    manufacturerId: `${getParticipantId()}`,
+    manufacturerPartId: "TX-EXAMPLE",
     name: "Example Part Name",
     description: "Detailed description of the example part.",
     category: "example-category",
@@ -68,9 +69,6 @@ const initialJsonPlaceholder = JSON.stringify(
     height: { value: 100, unit: Unit.MM },
     length: { value: 50, unit: Unit.MM },
     weight: { value: 5, unit: Unit.KG },
-    customer_part_ids: {
-      BPNL0000000CUSTA: "CUSTA-PART-EXAMPLE",
-    },
   } as Omit<PartType, "status">, // Use Omit to exclude status from placeholder type
   null,
   2
@@ -194,29 +192,6 @@ const CreateProductListDialog = ({
     checkMeasurement(data.length, "length");
     checkMeasurement(data.weight, "weight");
 
-    if (
-      data.customer_part_ids !== undefined &&
-      data.customer_part_ids !== null
-    ) {
-      if (
-        typeof data.customer_part_ids !== "object" ||
-        Array.isArray(data.customer_part_ids)
-      ) {
-        errors.push(
-          "customer_part_ids must be an object (key-value map) if provided."
-        );
-      } else {
-        for (const key in data.customer_part_ids) {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          if (typeof (data.customer_part_ids as any)[key] !== "string") {
-            errors.push(
-              `customer_part_ids value for key "${key}" must be a string.`
-            );
-          }
-        }
-      }
-    }
-
     // Check for unexpected properties (optional, for stricter validation)
     const allowedKeys: Set<keyof Omit<PartType, "status">> = new Set([
       // Exclude status
@@ -231,7 +206,6 @@ const CreateProductListDialog = ({
       "height",
       "length",
       "weight",
-      "customer_part_ids",
     ]);
     for (const key in data) {
       if (!allowedKeys.has(key as keyof Omit<PartType, "status">)) {
