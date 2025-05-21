@@ -28,6 +28,7 @@ metadata:
     {{- include "industry-core-hub.backend.labels" . | nindent 4 }}
 data:
   configuration.yml: |-
+    participantId: {{ .Values.participantId | quote }}
     hostname: {{ include "industry-core-hub.ingressUrl" . | quote }}
     authorization:
       enabled: {{ .Values.backend.configuration.authorization.enabled }}

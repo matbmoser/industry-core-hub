@@ -21,13 +21,14 @@
 ---
 ## For being used in the Integration ArgoCD test environment from the Catena-X Association
 
+participantId : "<path:industry-core-hub/data/edc-provider#bpn>"
+
 postgresql:
   auth:
     ## Root password override
     password: <path:industry-core-hub/data/db#rootPass>
     ## Industry Core User Password
     ichubPassword: <path:industry-core-hub/data/db#ichubPass>
-    
 # -- pgAdmin4 configuration
 pgadmin4:
   enabled: true
@@ -135,7 +136,7 @@ backend:
         uri: ""
     # -- Database connection config; database connection settings are inferred from postgresql or externalDatabase sections.
     database:
-      echo: true
+      echo: false
   ingress:
       enabled: true
       className: "nginx"

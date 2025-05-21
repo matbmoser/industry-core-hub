@@ -20,6 +20,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #################################################################################
 
+participantId: "BPNL000000000000"
 hostname: "https://ichub-backend.url"
 authorization:
   enabled: true
