@@ -95,7 +95,7 @@ const ProductData = ({ part, sharedParts }: ProductDataProps) => {
                     ) : (
                         <Grid2 justifyContent={"left"} display={"flex"} alignContent={"center"}>
                             <WifiTetheringErrorIcon className="mr-2"/>
-                            <span className="">No sharing insights are available for this part at the moment. Please share with a partner to see information displayed here.</span>
+                            <span className="">No sharing insights are currently available. Share this part with a partner to view the information here.</span>
                         </Grid2>
                     )
                 }
