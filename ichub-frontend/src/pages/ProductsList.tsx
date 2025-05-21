@@ -46,6 +46,7 @@ const ProductsList = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' >('success');
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleChangePage = (
     _event: React.MouseEvent<HTMLButtonElement> | null,
@@ -55,6 +56,7 @@ const ProductsList = () => {
   };
 
   const fetchData = async () => {
+    setIsLoading(true);
     try {
       const apiData: ApiPartData[] = await fetchCatalogParts();
 
@@ -67,6 +69,8 @@ const ProductsList = () => {
       setInitialCarParts(mappedCarParts);
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -182,6 +186,7 @@ const ProductsList = () => {
               category: part.category,
               status: part.status,
             }))}
+            isLoading={isLoading}
           />
         </Grid2>
 
