@@ -20,20 +20,27 @@
  * SPDX-License-Identifier: Apache-2.0
 ********************************************************************************/
 
-import React from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import sharedPartners from '../tests/payloads/shared-partners.json';
 import { StatusTag, Button, Icon } from '@catena-x/portal-shared-components';
-import { PRODUCT_STATUS } from "../types/common";
-import JsonViewerDialog from "../features/catalog-management/components/product-detail/JsonViewerDialog";
+import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import Grid2 from '@mui/material/Grid2';
+
 import InstanceProductsTable from "../features/catalog-management/components/product-detail/InstanceProductsTable";
-import PageNotification from "../components/general/PageNotification";
 import ShareDropdown from "../features/catalog-management/components/product-detail/ShareDropdown";
 import ProductButton from "../features/catalog-management/components/product-detail/ProductButton";
 import ProductData from "../features/catalog-management/components/product-detail/ProductData";
+import JsonViewerDialog from "../features/catalog-management/components/product-detail/JsonViewerDialog";
+
 import ShareDialog from "../components/general/ShareDialog";
+import {ErrorNotFound} from "../components/general/ErrorNotFound";
+import LoadingSpinner from "../components/general/LoadingSpinner";
+import PageNotification from "../components/general/PageNotification";
+
 import { PartType } from "../types/product";
+import { PRODUCT_STATUS } from "../types/common";
+
 import { fetchCatalogPart } from "../features/catalog-management/api";
 import { mapApiPartDataToPartType } from "../features/catalog-management/utils";
 
@@ -44,13 +51,14 @@ const ProductsDetails = () => {
     manufacturerPartId: string;
   }>();
 
-  const [partType, setPartType] = React.useState<PartType>();
-  const [jsonDialogOpen, setJsonDialogOpen] = React.useState(false);
-  const [shareDialogOpen, setShareDialogOpen] = React.useState(false);
-  const [notification, setNotification] = React.useState<{ open: boolean; severity: "success" | "error"; title: string } | null>(null);
+  const [partType, setPartType] = useState<PartType>();
+  const [jsonDialogOpen, setJsonDialogOpen] = useState(false);
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
+  const [notification, setNotification] = useState<{ open: boolean; severity: "success" | "error"; title: string } | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!manufacturerId || !manufacturerPartId) return;
 
       fetchData();
@@ -62,6 +70,7 @@ const ProductsDetails = () => {
   const productId = manufacturerId + "/" + manufacturerPartId
 
   const fetchData = async () => {
+    setIsLoading(true);
     try {
       const apiData = await fetchCatalogPart(manufacturerId, manufacturerPartId);
       console.log(apiData)
@@ -71,12 +80,18 @@ const ProductsDetails = () => {
       setPartType(mappedCarParts);
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-        // Map API data to PartInstance[]
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+  
+  // Map API data to PartInstance[]
   if (!partType) {
-    return <div>Product not found</div>;
+    return <ErrorNotFound icon={ReportProblemIcon} message="Product not found"/>;
   }
 
   const handleOpenJsonDialog = () => {

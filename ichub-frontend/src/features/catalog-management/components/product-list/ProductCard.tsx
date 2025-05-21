@@ -28,6 +28,7 @@ import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import { CardChip } from "./CardChip";
 import { StatusVariants } from "../../../../types/statusVariants";
 import { ErrorNotFound } from "../../../../components/general/ErrorNotFound";
+import LoadingSpinner from "../../../../components/general/LoadingSpinner";
 
 export interface AppContent {
   id?: string;
@@ -43,6 +44,7 @@ export interface CardDecisionProps {
   onShare: (e1: string, e2: string) => void;
   onMore: (e1: string, e2: string) => void;
   onClick: (e: string) => void;
+  isLoading: boolean;
 }
 
 export enum ButtonEvents {
@@ -55,6 +57,7 @@ export const ProductCard = ({
   onShare,
   onMore,
   onClick,
+  isLoading,
 }: CardDecisionProps) => {
 
   const handleDecision = (
@@ -71,7 +74,10 @@ export const ProductCard = ({
 
   return (
     <Box className="custom-cards-list">
-      {items.length === 0 && (
+      {isLoading && (
+        <LoadingSpinner />
+      )}
+      {!isLoading && items.length === 0 && (
         <ErrorNotFound icon={ReportProblemIcon} message="No catalog parts available, please check your ichub-backend connection/configuration"/>
       )}
       {items.map((item) => {

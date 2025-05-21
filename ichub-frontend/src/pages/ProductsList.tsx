@@ -25,7 +25,7 @@ import { useNavigate } from "react-router-dom";
 import { ProductCard } from "../features/catalog-management/components/product-list/ProductCard";
 import { PartType, ApiPartData } from "../types/product";
 import TablePagination from "@mui/material/TablePagination";
-import { Typography, Grid2, Box } from "@mui/material"; // Removed Paper
+import { Typography, Grid2, Box } from "@mui/material";
 import { Button } from "@catena-x/portal-shared-components";
 import AddIcon from "@mui/icons-material/Add";
 import ShareDialog from "../components/general/ShareDialog";
@@ -42,6 +42,7 @@ const ProductsList = () => {
   const rowsPerPage = 10;
   const navigate = useNavigate();
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleChangePage = (
     _event: React.MouseEvent<HTMLButtonElement> | null,
@@ -51,6 +52,7 @@ const ProductsList = () => {
   };
 
   const fetchData = async () => {
+    setIsLoading(true);
     try {
       const apiData: ApiPartData[] = await fetchCatalogParts();
 
@@ -63,6 +65,8 @@ const ProductsList = () => {
       setInitialCarParts(mappedCarParts);
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -151,6 +155,7 @@ const ProductsList = () => {
               category: part.category,
               status: part.status,
             }))}
+            isLoading={isLoading}
           />
         </Grid2>
 
