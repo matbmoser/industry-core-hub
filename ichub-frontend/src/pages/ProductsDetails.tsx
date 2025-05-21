@@ -42,8 +42,8 @@ import { PRODUCT_STATUS } from "../types/common";
 
 import { SharedPartner } from "../types/sharedPartners"
 
-import { fetchCatalogPart, fetchSharedPartners } from "../features/catalog-management/api";
-import { mapApiPartDataToPartType } from "../features/catalog-management/utils";
+import { fetchCatalogPart } from "../features/catalog-management/api";
+import { mapApiPartDataToPartType, mapSharePartCustomerPartIds} from "../features/catalog-management/utils";
 
 const ProductsDetails = () => {
 
@@ -76,11 +76,14 @@ const ProductsDetails = () => {
       const apiData = await fetchCatalogPart(manufacturerId, manufacturerPartId);
       console.log(apiData)
       // Map API data to PartInstance[]
-      const mappedCarParts: PartType = mapApiPartDataToPartType(apiData)
-      setPartType(mappedCarParts);
-      const sharedPartnersResponse: SharedPartner[]  = await fetchSharedPartners(manufacturerId, manufacturerPartId);
-    
-      setSharedPartners(sharedPartnersResponse)
+      const mappedPart: PartType = mapApiPartDataToPartType(apiData)
+      setPartType(mappedPart);
+      
+      // Just if the customer part ids are available we can see if they are shared
+      if(mappedPart.customer_part_ids){
+          setSharedPartners(mapSharePartCustomerPartIds(mappedPart.customer_part_ids))
+      }
+      setSharedPartners([])
 
     } catch (error) {
       console.error("Error fetching data:", error);
