@@ -23,8 +23,8 @@
 import IosShare from "@mui/icons-material/IosShare";
 import MoreVert from "@mui/icons-material/MoreVert";
 import Launch from "@mui/icons-material/Launch";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CloudQueueIcon from '@mui/icons-material/CloudQueue';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { Box, Typography, IconButton, Button, Tooltip } from "@mui/material";
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import { CardChip } from "./CardChip";
@@ -119,9 +119,9 @@ export const ProductCard = ({
                           disabled={item.status === StatusVariants.pending}
                         >
                           {item.status === StatusVariants.draft ? (
-                            <CheckCircleOutlineIcon sx={{ color: "white" }} />
+                            <CloudUploadIcon className="register-btn"/>
                           ) : (
-                            <CheckCircleIcon sx={{ color: "rgba(255, 255, 255, 0.5)" }} />
+                            <CloudQueueIcon sx={{ color: "rgba(255, 255, 255, 0.5)" }} />
                           )}
                         </IconButton>
                       </span>

@@ -59,7 +59,7 @@ const ProductData = ({ part, sharedParts }: ProductDataProps) => {
                 <Typography variant="body1">{part.manufacturerPartId}</Typography>
                 </Box>
                 <Box>
-                    <Typography variant="label3">Country of Origin (BPNS)</Typography>
+                    <Typography variant="label3">Site of Origin (BPNS)</Typography>
                     <Typography variant="body1">{part.bpns}</Typography>
                 </Box>
                 <Box>
