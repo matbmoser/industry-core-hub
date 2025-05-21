@@ -57,7 +57,7 @@ export const PartnerCard = ({ items, onClick, onDelete, onEdit }: CardDecisionPr
               <Box className="custom-card-header">
                 <Box></Box>
                 <Box className="custom-card-header-buttons">
-                  <IconButton
+                  {/* <IconButton
                     onClick={() => {
                       onEdit?.(bpnl);
                     }}
@@ -72,7 +72,7 @@ export const PartnerCard = ({ items, onClick, onDelete, onEdit }: CardDecisionPr
                     }}
                   >
                     <DeleteIcon sx={{ color: "rgba(255, 255, 255, 0.68)" }} />
-                  </IconButton>
+                  </IconButton> */}
                 </Box>
               </Box>
               <Box className="custom-card-content">
