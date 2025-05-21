@@ -43,6 +43,7 @@ export interface CardDecisionProps {
   onShare: (e1: string, e2: string) => void;
   onMore: (e1: string, e2: string) => void;
   onClick: (e: string) => void;
+  isLoading: boolean;
 }
 
 export enum ButtonEvents {
@@ -55,6 +56,7 @@ export const ProductCard = ({
   onShare,
   onMore,
   onClick,
+  isLoading,
 }: CardDecisionProps) => {
 
   const handleDecision = (
@@ -71,7 +73,20 @@ export const ProductCard = ({
 
   return (
     <Box className="custom-cards-list">
-      {items.length === 0 && (
+      {isLoading && (
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            margin: "auto",
+          }}
+        >
+          <span className="spinner"></span>
+        </Box>
+      )}
+      {!isLoading && items.length === 0 && (
         <ErrorNotFound icon={ReportProblemIcon} message="No catalog parts available, please check your ichub-backend connection/configuration"/>
       )}
       {items.map((item) => {
