@@ -24,6 +24,7 @@ import axios from 'axios';
 import { getIchubBackendUrl } from '../../services/EnvironmentService';
 import { ApiPartData } from '../../types/product';
 import { CatalogPartTwinCreateType, TwinReadType } from '../../types/twin';
+import { SharedPartner } from '../../types/sharedPartners';
 
 const CATALOG_PART_MANAGEMENT_BASE_PATH = '/part-management/catalog-part';
 const SHARE_CATALOG_PART_BASE_PATH = '/share/catalog-part';
@@ -41,6 +42,16 @@ export const fetchCatalogPart = async (
 ): Promise<ApiPartData> => {
   const response = await axios.get<ApiPartData>(
     `${backendUrl}${CATALOG_PART_MANAGEMENT_BASE_PATH}/${manufacturerId}/${manufacturerPartId}`
+  );
+  return response.data;
+};
+
+export const fetchSharedPartners = async (
+  manufacturerId: string,
+  manufacturerPartId: string
+): Promise<SharedPartner[]> => {
+  const response = await axios.get<SharedPartner[]>(
+    `${backendUrl}${SHARE_CATALOG_PART_BASE_PATH}/${manufacturerId}/${manufacturerPartId}`
   );
   return response.data;
 };

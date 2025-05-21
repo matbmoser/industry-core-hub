@@ -40,7 +40,9 @@ import PageNotification from "../components/general/PageNotification";
 import { PartType } from "../types/product";
 import { PRODUCT_STATUS } from "../types/common";
 
-import { fetchCatalogPart } from "../features/catalog-management/api";
+import { SharedPartner } from "../types/sharedPartners"
+
+import { fetchCatalogPart, fetchSharedPartners } from "../features/catalog-management/api";
 import { mapApiPartDataToPartType } from "../features/catalog-management/utils";
 
 const ProductsDetails = () => {
@@ -55,7 +57,7 @@ const ProductsDetails = () => {
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const [notification, setNotification] = useState<{ open: boolean; severity: "success" | "error"; title: string } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [sharedPartners, setSharedPartners] = useState([]);
+  const [sharedPartners, setSharedPartners] = useState<SharedPartner[]>([]);
 
   useEffect(() => {
     if (!manufacturerId || !manufacturerPartId) return;
@@ -75,8 +77,11 @@ const ProductsDetails = () => {
       console.log(apiData)
       // Map API data to PartInstance[]
       const mappedCarParts: PartType = mapApiPartDataToPartType(apiData)
-
       setPartType(mappedCarParts);
+      const sharedPartnersResponse: SharedPartner[]  = await fetchSharedPartners(manufacturerId, manufacturerPartId);
+    
+      setSharedPartners(sharedPartnersResponse)
+
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
