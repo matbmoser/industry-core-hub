@@ -78,12 +78,11 @@ const ProductsDetails = () => {
       // Map API data to PartInstance[]
       const mappedPart: PartType = mapApiPartDataToPartType(apiData)
       setPartType(mappedPart);
-      
       // Just if the customer part ids are available we can see if they are shared
-      if(mappedPart.customer_part_ids){
-          setSharedPartners(mapSharePartCustomerPartIds(mappedPart.customer_part_ids))
+      if(mappedPart.customerPartIds){
+          const mappedResult:SharedPartner[] = mapSharePartCustomerPartIds(mappedPart.customerPartIds)
+          setSharedPartners(mappedResult)
       }
-      setSharedPartners([])
 
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -158,6 +157,8 @@ const ProductsDetails = () => {
         return <StatusTag color="confirmed" label="Registered" variant="outlined" />;
       case PRODUCT_STATUS.DRAFT:
         return <StatusTag color="label" label="Draft" variant="outlined" />;
+      case PRODUCT_STATUS.PENDING:
+        return <StatusTag color="declined" label="Pending" variant="filled" />;
       case PRODUCT_STATUS.SHARED:
         return <StatusTag color="pending" label="Shared" variant="filled" />;
       default:
