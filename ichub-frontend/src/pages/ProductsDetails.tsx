@@ -24,19 +24,25 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import sharedPartners from '../tests/payloads/shared-partners.json';
 import { StatusTag, Button, Icon } from '@catena-x/portal-shared-components';
-import { PRODUCT_STATUS } from "../types/common";
-import JsonViewerDialog from "../features/catalog-management/components/product-detail/JsonViewerDialog";
+import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import Grid2 from '@mui/material/Grid2';
+
 import InstanceProductsTable from "../features/catalog-management/components/product-detail/InstanceProductsTable";
-import PageNotification from "../components/general/PageNotification";
 import ShareDropdown from "../features/catalog-management/components/product-detail/ShareDropdown";
 import ProductButton from "../features/catalog-management/components/product-detail/ProductButton";
 import ProductData from "../features/catalog-management/components/product-detail/ProductData";
+import JsonViewerDialog from "../features/catalog-management/components/product-detail/JsonViewerDialog";
+
 import ShareDialog from "../components/general/ShareDialog";
+import {ErrorNotFound} from "../components/general/ErrorNotFound";
+import LoadingSpinner from "../components/general/LoadingSpinner";
+import PageNotification from "../components/general/PageNotification";
+
 import { PartType } from "../types/product";
+import { PRODUCT_STATUS } from "../types/common";
+
 import { fetchCatalogPart } from "../features/catalog-management/api";
 import { mapApiPartDataToPartType } from "../features/catalog-management/utils";
-import LoadingSpinner from "../components/general/LoadingSpinner";
 
 const ProductsDetails = () => {
 
@@ -85,7 +91,7 @@ const ProductsDetails = () => {
   
   // Map API data to PartInstance[]
   if (!partType) {
-    return <div>Product not found</div>;
+    return <ErrorNotFound icon={ReportProblemIcon} message="Product not found"/>;
   }
 
   const handleOpenJsonDialog = () => {
