@@ -21,14 +21,12 @@
 ********************************************************************************/
 
 import { Box, Grid2 } from '@mui/material'
-import { Icon, Typography } from '@catena-x/portal-shared-components';
+import { Typography } from '@catena-x/portal-shared-components';
 import { PartType } from '../../../../types/product';
 import { PieChart } from '@mui/x-charts/PieChart';
 
-interface SharedPartner {
-    name: string;
-    bpnl: string;
-}
+import { SharedPartner } from '../../../../types/sharedPartners';
+import SharedTable from './SharedTable';
 
 interface ProductDataProps {
     part: PartType;
@@ -42,12 +40,14 @@ const sharedInformation = {
 
 const ProductData = ({ part, sharedParts }: ProductDataProps) => {
   return (
-    <Grid2 container justifyContent="space-between" className="mb-5" spacing={8} display={"flex"} flexDirection={"row"}>
-        <Grid2 size={{lg: 6, md: 12, sm: 12}} display={"flex"} flexDirection={"column"}>
-            <Grid2 className="ml-5 mb-5 title-subtitle">
+    <Grid2 container justifyContent="space-between" className="mb-5" columnSpacing={8} display={"flex"} flexDirection={"row"}>
+        <Grid2 size={12}>
+            <Grid2 className="ml-5 title-subtitle">
                 <Typography variant="h2">{part.name}</Typography>
                 <Typography variant="caption1">{part.category}</Typography>
             </Grid2>
+        </Grid2>
+        <Grid2 size={{lg: 5, md: 12, sm: 12}} display={"flex"} flexDirection={"column"}>
             {/*Content on the left side*/}
             <Grid2 className="ml-2 mt-5 product-card-details">
                 <Box>
@@ -80,7 +80,7 @@ const ProductData = ({ part, sharedParts }: ProductDataProps) => {
         </Grid2>
 
         {/*Content on the right side*/}
-        <Grid2 size={{lg: 6, md: 12, sm: 12}}>
+        <Grid2 size={{lg: 7, md: 12, sm: 12}}>
             {/* <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
                 <img src={part.image} alt={part.name} className="product-image" />
                 <Typography variant="label4">{part.uuid}</Typography>
@@ -89,19 +89,7 @@ const ProductData = ({ part, sharedParts }: ProductDataProps) => {
             {/*Sharing information*/}
             <Box component="ul" sx={{ listStyle: 'none', padding: 0, mt: 2 }} className={"product-card"}>
                 <Typography variant="h6" className="mt-4">Shared With:</Typography>
-                {(sharedParts ?? []).map(({ name, bpnl }, index) => (
-                    <Box key={index} component="li" sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: 'flex-start' }}>
-                        <Icon fontSize="16" iconName="Polyline" className="my-auto mr-1" />
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                            <Typography variant="label2" sx={{ mr: '5px', fontWeight: 'bold' }}> {name} -</Typography>
-                            <Typography variant="body2">{bpnl}</Typography>
-                        </Box>
-                    </Box>
-                ))}
-                <Box component="li" sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
-                <Icon fontSize="16" iconName="Launch" className="my-auto mr-1" />
-                    <a href="">512 more</a>
-                </Box>
+                <SharedTable sharedParts={sharedParts} />
             </Box>
             {/*Materials and dimensions*/}
             <Box className="product-card">
