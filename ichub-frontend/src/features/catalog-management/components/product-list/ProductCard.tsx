@@ -28,6 +28,7 @@ import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import { CardChip } from "./CardChip";
 import { StatusVariants } from "../../../../types/statusVariants";
 import { ErrorNotFound } from "../../../../components/general/ErrorNotFound";
+import LoadingSpinner from "../../../../components/general/LoadingSpinner";
 
 export interface AppContent {
   id?: string;
@@ -74,17 +75,7 @@ export const ProductCard = ({
   return (
     <Box className="custom-cards-list">
       {isLoading && (
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            margin: "auto",
-          }}
-        >
-          <span className="spinner"></span>
-        </Box>
+        <LoadingSpinner />
       )}
       {!isLoading && items.length === 0 && (
         <ErrorNotFound icon={ReportProblemIcon} message="No catalog parts available, please check your ichub-backend connection/configuration"/>

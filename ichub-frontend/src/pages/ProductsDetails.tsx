@@ -20,7 +20,7 @@
  * SPDX-License-Identifier: Apache-2.0
 ********************************************************************************/
 
-import React from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import sharedPartners from '../tests/payloads/shared-partners.json';
 import { StatusTag, Button, Icon } from '@catena-x/portal-shared-components';
@@ -36,6 +36,7 @@ import ShareDialog from "../components/general/ShareDialog";
 import { PartType } from "../types/product";
 import { fetchCatalogPart } from "../features/catalog-management/api";
 import { mapApiPartDataToPartType } from "../features/catalog-management/utils";
+import LoadingSpinner from "../components/general/LoadingSpinner";
 
 const ProductsDetails = () => {
 
@@ -44,13 +45,14 @@ const ProductsDetails = () => {
     manufacturerPartId: string;
   }>();
 
-  const [partType, setPartType] = React.useState<PartType>();
-  const [jsonDialogOpen, setJsonDialogOpen] = React.useState(false);
-  const [shareDialogOpen, setShareDialogOpen] = React.useState(false);
-  const [notification, setNotification] = React.useState<{ open: boolean; severity: "success" | "error"; title: string } | null>(null);
+  const [partType, setPartType] = useState<PartType>();
+  const [jsonDialogOpen, setJsonDialogOpen] = useState(false);
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
+  const [notification, setNotification] = useState<{ open: boolean; severity: "success" | "error"; title: string } | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!manufacturerId || !manufacturerPartId) return;
 
       fetchData();
@@ -62,6 +64,7 @@ const ProductsDetails = () => {
   const productId = manufacturerId + "/" + manufacturerPartId
 
   const fetchData = async () => {
+    setIsLoading(true);
     try {
       const apiData = await fetchCatalogPart(manufacturerId, manufacturerPartId);
       console.log(apiData)
@@ -71,10 +74,16 @@ const ProductsDetails = () => {
       setPartType(mappedCarParts);
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-        // Map API data to PartInstance[]
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+  
+  // Map API data to PartInstance[]
   if (!partType) {
     return <div>Product not found</div>;
   }
