@@ -27,6 +27,18 @@
     width: 100%;
     overflow: hidden;
     background-color: $brand-dark!important;
+    margin-top: 16px;
+
+    tbody td {
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+
+    thead th {
+        padding-bottom: 10px;
+        padding-top: 10px;
+        background: $brand-dark-gray;
+    }
 }
 
 div#menu-[role="presentation"] li {
