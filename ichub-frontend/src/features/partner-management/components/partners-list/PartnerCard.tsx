@@ -57,7 +57,7 @@ export const PartnerCard = ({ items, onClick, onDelete, onEdit }: CardDecisionPr
               <Box className="custom-card-header">
                 <Box></Box>
                 <Box className="custom-card-header-buttons">
-                  {/* <IconButton
+                  <IconButton sx={{ cursor: "default", pointerEvents: "none", opacity: 0.4 }}
                     onClick={() => {
                       onEdit?.(bpnl);
                     }}
@@ -65,14 +65,14 @@ export const PartnerCard = ({ items, onClick, onDelete, onEdit }: CardDecisionPr
                     <EditIcon sx={{ color: "white" }} />
                   </IconButton>
                   
-                  <IconButton
+                  <IconButton sx={{ cursor: "default", pointerEvents: "none", opacity: 0.4 }}
                     onClick={(e) => {
                       e.stopPropagation();
                       onDelete?.(bpnl);
                     }}
                   >
                     <DeleteIcon sx={{ color: "rgba(255, 255, 255, 0.68)" }} />
-                  </IconButton> */}
+                  </IconButton>
                 </Box>
               </Box>
               <Box className="custom-card-content">
