@@ -49,7 +49,7 @@ const ProductData = ({ part, sharedParts }: ProductDataProps) => {
         </Grid2>
         <Grid2 size={{lg: 5, md: 12, sm: 12}} display={"flex"} flexDirection={"column"}>
             {/*Content on the left side*/}
-            <Grid2 className="product-card-details">
+            <Grid2 className="product-card-details mb-5">
                 <Box>
                 <Typography variant="label3">Manufacturer</Typography>
                 <Typography variant="body1">{part.manufacturerId}</Typography>
@@ -87,12 +87,12 @@ const ProductData = ({ part, sharedParts }: ProductDataProps) => {
             </Box> */}
 
             {/*Sharing information*/}
-            <Box className="product-card">
+            <Box className="product-card mb-5">
                 <Typography variant="h6" className="mt-4">Shared With:</Typography>
                 <SharedTable sharedParts={sharedParts} />
             </Box>
             {/*Materials and dimensions*/}
-            <Box className="product-card">
+            <Box className="product-card mb-5">
                 <Typography variant="h6" className="mt-4">More Information:</Typography>
                 <Box
                     component="ul"
