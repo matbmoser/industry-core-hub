@@ -116,7 +116,6 @@ export const ProductCard = ({
                           onClick={(e) => {
                             handleDecision(e, item.manufacturerId, item.manufacturerPartId, ButtonEvents.REGISTER);
                           }}
-                          disabled={item.status === StatusVariants.pending}
                         >
                           {item.status === StatusVariants.draft ? (
                             <CloudUploadIcon className="register-btn"/>

@@ -55,16 +55,15 @@ interface ProductListDialogProps {
 
 const initialJsonPlaceholder = JSON.stringify(
   {
-    manufacturerId: `${getParticipantId()}`,
-    manufacturerPartId: "TX-EXAMPLE",
-    name: "Example Part Name",
-    description: "Detailed description of the example part.",
-    category: "example-category",
+    manufacturerPartId: "<<Your Manufacturer Part ID>>",
+    name: "<<Your Part Name>>",
+    description: "<<Your Part Description>>",
+    category: "<<Your Part Category>>",
     materials: [
       { name: "Aluminum", share: 80 },
-      { name: "Rubber", share: 20 },
+      { name: "Rubber", share: 20 }
     ],
-    bpns: "BPNS000000000ZZ", // Example Site BPN
+    bpns: "BPNS0000000000ZZ", // Example Site BPN
     width: { value: 200, unit: Unit.MM },
     height: { value: 100, unit: Unit.MM },
     length: { value: 50, unit: Unit.MM },
@@ -118,8 +117,6 @@ const CreateProductListDialog = ({
 
     const errors: string[] = [];
 
-    if (typeof data.manufacturerId !== "string" || !data.manufacturerId)
-      errors.push("manufacturerId (non-empty string) is required.");
     if (typeof data.manufacturerPartId !== "string" || !data.manufacturerPartId)
       errors.push("manufacturerPartId (non-empty string) is required.");
     if (typeof data.name !== "string" || !data.name)
@@ -195,7 +192,6 @@ const CreateProductListDialog = ({
     // Check for unexpected properties (optional, for stricter validation)
     const allowedKeys: Set<keyof Omit<PartType, "status">> = new Set([
       // Exclude status
-      "manufacturerId",
       "manufacturerPartId",
       "name",
       "description",
@@ -255,6 +251,8 @@ const CreateProductListDialog = ({
       return;
     }
 
+    parsedPayload["manufacturerId"] = getParticipantId()
+
     // API call for creating catalog part
     try {
       // POST to /part-management/catalog-part
@@ -312,10 +310,19 @@ const CreateProductListDialog = ({
         <CloseIcon />
       </IconButton>
       <DialogContent dividers>
-        <Typography variant="body2" gutterBottom>
+        <Typography variant="body2" gutterBottom sx={{color: "white"}}>
           Use the placeholder below to define the new catalog part. Please
           ensure the JSON is valid.
         </Typography>
+         <TextField
+            label="manufacturerId"
+            variant="outlined"
+            size="small"
+            fullWidth
+            sx={{ marginBottom: '16px' }}
+            value={getParticipantId()}
+            disabled={true}
+          />
         <Box sx={{ mt: 2, width: "100%" }}>
           <TextField
             label="Catalog Part JSON"

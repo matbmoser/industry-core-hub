@@ -129,8 +129,20 @@ class DTRManager:
         if digital_twin_type and ("digitalTwinType", digital_twin_type) not in existing_keys:
             specific_asset_ids.append(self._add_or_update_asset_id("digitalTwinType", digital_twin_type, bpn_list, fallback_id=manufacturer_id))
 
-        if manufacturer_part_id and ("manufacturerPartId", manufacturer_part_id) not in existing_keys:
-            specific_asset_ids.append(self._add_or_update_asset_id("manufacturerPartId", manufacturer_part_id, bpn_list, fallback_id=manufacturer_id))
+        if manufacturer_part_id:
+            specific_manufacturer_part_asset_id = SpecificAssetId(
+                name="manufacturerPartId",
+                value=manufacturer_part_id,
+                externalSubjectId=Reference(
+                    type=ReferenceTypes.EXTERNAL_REFERENCE,
+                    keys=[
+                        ReferenceKey(
+                            type=ReferenceKeyTypes.GLOBAL_REFERENCE, value="PUBLIC_READABLE"
+                        ),
+                    ],
+                ),
+            )  # type: ignore
+            specific_asset_ids.append(specific_manufacturer_part_asset_id)
 
         if customer_part_ids:
             for customer_part_id, bpn in customer_part_ids.items():
@@ -215,17 +227,16 @@ class DTRManager:
 
         # manufacturerPartId
         if manufacturer_part_id:
-            ref_keys = (
-                [ReferenceKey(type=ReferenceKeyTypes.GLOBAL_REFERENCE, value=bpn) for bpn in bpn_list]
-                if bpn_list else
-                [ReferenceKey(type=ReferenceKeyTypes.GLOBAL_REFERENCE, value=manufacturer_id)]
-            )
             specific_manufacturer_part_asset_id = SpecificAssetId(
                 name="manufacturerPartId",
                 value=manufacturer_part_id,
                 externalSubjectId=Reference(
                     type=ReferenceTypes.EXTERNAL_REFERENCE,
-                    keys=ref_keys,
+                    keys=[
+                        ReferenceKey(
+                            type=ReferenceKeyTypes.GLOBAL_REFERENCE, value="PUBLIC_READABLE"
+                        ),
+                    ],
                 ),
             )  # type: ignore
             specific_asset_ids.append(specific_manufacturer_part_asset_id)
