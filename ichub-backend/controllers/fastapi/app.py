@@ -37,7 +37,8 @@ from .routers import (
     partner_management,
     twin_management,
     submodel_dispatcher,
-    sharing_handler
+    sharing_handler,
+    social_network
 )
 
 tags_metadata = [
@@ -60,6 +61,10 @@ tags_metadata = [
     {
         "name": "Submodel Dispatcher",
         "description": "Internal API called by EDC Data Planes or Admins in order the deliver data of of the internal used Submodel Service"
+    },
+    {
+        "name": "Social Network",
+        "description": "Social Network profile management as Digital Twins with Tractus-X SDK"
     }
 ]
 
@@ -71,6 +76,7 @@ app.include_router(partner_management.router)
 app.include_router(twin_management.router)
 app.include_router(submodel_dispatcher.router)
 app.include_router(sharing_handler.router)
+app.include_router(social_network.router)
 
 @app.exception_handler(SubmodelNotSharedWithBusinessPartnerError)
 async def submodel_not_shared_with_business_partner_exception_handler(
